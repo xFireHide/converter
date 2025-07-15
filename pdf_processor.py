@@ -1,7 +1,6 @@
 import fitz
 import os
 
-
 class PDFProcessor:
     def __init__(self, dpi=150, limite_branco=0.999):
         self.dpi = dpi
@@ -32,31 +31,43 @@ class PDFProcessor:
             if novo_pdf.page_count > 0:
                 novo_pdf.save(output_path, deflate=True, garbage=4)
                 stats["novas"] = novo_pdf.page_count
-                return (True, stats)
-            return (False, "PDF resultante vazio")
+                return True, stats
+            return False, "PDF resultante vazio"
 
         except Exception as e:
-            return (False, f"Erro: {str(e)}")
+            return False, f"Erro: {e}"
+
         finally:
             novo_pdf.close()
 
     def _processar_pagina(self, pagina, novo_pdf):
         rect = pagina.rect
-        largura = rect.width
-        altura = rect.height
+        largura, altura = rect.width, rect.height
 
-        # Divisão fixa em 4 quadrantes
         quadrantes = [
-            fitz.Rect(0, 0, largura / 2, altura / 2),
-            fitz.Rect(largura / 2, 0, largura, altura / 2),
-            fitz.Rect(0, altura / 2, largura / 2, altura),
-            fitz.Rect(largura / 2, altura / 2, largura, altura),
+            fitz.Rect(0, 0, largura/2, altura/2),
+            fitz.Rect(largura/2, 0, largura, altura/2),
+            fitz.Rect(0, altura/2, largura/2, altura),
+            fitz.Rect(largura/2, altura/2, largura, altura),
         ]
 
-        # Adicionar quadrantes com conteúdo
         for q in quadrantes:
             if not self.is_area_branca(pagina, q):
                 nova_pag = novo_pdf.new_page(width=q.width, height=q.height)
-                nova_pag.show_pdf_page(
-                    nova_pag.rect, pagina.parent, pagina.number, clip=q
-                )
+                nova_pag.show_pdf_page(nova_pag.rect, pagina.parent, pagina.number, clip=q)
+
+
+def process_pdf(input_path, output_path=None):
+    """
+    Processa o PDF de input_path e retorna o caminho do arquivo processado.
+    Se output_path não for especificado, salva em input_path_processed.pdf.
+    """
+    if output_path is None:
+        base, _ = os.path.splitext(input_path)
+        output_path = f"{base}_processed.pdf"
+
+    processor = PDFProcessor()
+    sucesso, resultado = processor.processar_pdf(input_path, output_path)
+    if not sucesso:
+        raise RuntimeError(f"Falha ao processar PDF: {resultado}")
+    return output_path
