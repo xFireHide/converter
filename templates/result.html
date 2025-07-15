@@ -14,26 +14,20 @@
         <p>Seu PDF foi processado com sucesso!</p>
 
         <div class="button-group">
-          <!-- Link de download via rota dedicada -->
+          <!-- Baixar via rota dedicada -->
           <a class="btn" href="{{ url_for('download_file', filename=filename) }}" download>
             📥 Baixar PDF
           </a>
+          <!-- Copiar link -->
           <button id="copy-link-btn">📋 Copiar link</button>
-          <a class="btn" href="{{ url_for('index') }}">🔄 Processar outro PDF</a>
+          <!-- Voltar ao início -->
+          <a class="btn" href="{{ url_for('index') }}">
+            🔄 Processar outro PDF
+          </a>
         </div>
       </main>
     </div>
+<script src="{{ url_for('static', filename='result.js') }}"></script>
 
-    <script>
-      // Copiar link para área de transferência
-      document.getElementById("copy-link-btn").addEventListener("click", function () {
-        const link = window.location.origin +
-          "" +
-          "{{ url_for('download_file', filename=filename) }}";
-        navigator.clipboard.writeText(link)
-          .then(() => alert("Link copiado!"))
-          .catch(() => alert("Falha ao copiar link."));
-      });
-    </script>
   </body>
 </html>
