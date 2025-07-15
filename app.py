@@ -18,19 +18,17 @@ def index():
             error = "Selecione um arquivo PDF válido."
             return render_template('index.html', error=error)
 
-        # Salva o PDF
         filename    = pdf.filename
         input_path  = os.path.join(UPLOAD_FOLDER, filename)
         pdf.save(input_path)
 
-        # Define output
-        base_name    = os.path.splitext(filename)[0]
-        output_name  = f"{base_name}_processed.pdf"
-        output_path  = os.path.join(PROCESSED_FOLDER, output_name)
+        base_name   = os.path.splitext(filename)[0]
+        output_name = f"{base_name}_processed.pdf"
+        output_path = os.path.join(PROCESSED_FOLDER, output_name)
 
         try:
             process_pdf(input_path, output_path)
-            # Redireciona para a página de download
+            # → Redireciona para a página de resultado
             return redirect(url_for('download_page', filename=output_name))
         except Exception as e:
             error = f"Erro ao processar o PDF: {e}"
@@ -38,20 +36,18 @@ def index():
     return render_template('index.html', error=error)
 
 
-@app.route('/download-page/<filename>')
+@app.route('/download/<filename>')
 def download_page(filename):
     """
-    Página de resultado com links de:
-     - Baixar: /download-file/<filename>
-     - Voltar: /
+    Exibe a página com o link 'Baixar PDF'.
     """
     return render_template('result.html', filename=filename)
 
 
-@app.route('/download-file/<filename>')
-def download_file(filename):
+@app.route('/download/file/<filename>')
+def serve_file(filename):
     """
-    Serve o arquivo processado como attachment.
+    Serve o PDF como anexo — rota que o <a download> deve chamar.
     """
     return send_from_directory(PROCESSED_FOLDER, filename, as_attachment=True)
 
