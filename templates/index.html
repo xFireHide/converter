@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Processador de PDF</title>
+  <meta charset="UTF-8">
+  <title>Processador de PDF</title>
 </head>
 <body>
-    <h1>Enviar PDF</h1>
-    <form action="/" method="post" enctype="multipart/form-data">
-        <input type="file" name="pdf" accept="application/pdf" required>
-        <button type="submit">Processar</button>
-    </form>
+  <h1>Enviar PDF</h1>
+
+  {% if error %}
+    <p style="color:red">{{ error }}</p>
+  {% endif %}
+
+  <form action="/" method="post" enctype="multipart/form-data">
+    <input type="file" name="pdf" accept="application/pdf" required>
+    <button type="submit">Processar</button>
+  </form>
 </body>
 </html>
