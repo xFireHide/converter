@@ -21,7 +21,7 @@
         <p>Seu PDF foi processado com sucesso!</p>
 
         <div class="button-group">
-          <!-- Baixar via rota dedicada -->
+          
           <a
             class="btn"
             href="{{ url_for('serve_file', filename=filename) }}"
@@ -30,10 +30,10 @@
             📥 Baixar PDF
           </a>
 
-          <!-- Copiar link -->
+          
           <button id="copy-link-btn">📋 Copiar link</button>
 
-          <!-- Processar outro PDF -->
+          
           <a class="btn" href="{{ url_for('index') }}">
             🔄 Processar outro PDF
           </a>
@@ -49,13 +49,11 @@
       <aside class="sidebar"></aside>
     </div>
 
-    <!-- Injeta a URL do arquivo para o JS copiar -->
     <script>
       window.DOWNLOAD_LINK =
         window.location.origin +
         "{{ url_for('serve_file', filename=filename) }}";
     </script>
-    <!-- Script externo para copiar link -->
     <script src="{{ url_for('static', filename='result.js') }}"></script>
   </body>
 </html>

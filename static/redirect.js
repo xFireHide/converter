@@ -8,7 +8,6 @@ form.addEventListener("submit", async function (event) {
   form.classList.add("hidden");
   progressContainer.classList.remove("hidden");
 
-  // Cria FormData e envia via fetch
   const formData = new FormData(form);
   const response = await fetch("/", {
     method: "POST",
