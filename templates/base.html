@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6031916610010710"
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>{% block title %}FireTools{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <a href="{{ url_for('home') }}">🏠 Home</a>
+      <a href="{{ url_for('pdf_divisor') }}">📄 Divisor de PDF</a>
+      <!-- outras páginas aqui -->
+    </nav>
+    <main class="container">{% block content %}{% endblock %}</main>
+  </body>
+</html>

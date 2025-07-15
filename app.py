@@ -17,14 +17,25 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 
-@app.route("/", methods=["GET", "POST"])
-def index():
+@app.route("/", methods=["GET"])
+def home():
+    """
+    Página inicial do site.
+    """
+    return render_template("home.html")
+
+
+@app.route("/pdf", methods=["GET", "POST"])
+def pdf_divisor():
+    """
+    Divisor de PDF: upload e processamento do arquivo.
+    """
     error = None
     if request.method == "POST":
         pdf = request.files.get("pdf")
         if not pdf or not pdf.filename.lower().endswith(".pdf"):
             error = "Selecione um arquivo PDF válido."
-            return render_template("index.html", error=error)
+            return render_template("pdf_divisor.html", error=error)
 
         filename = pdf.filename
         input_path = os.path.join(UPLOAD_FOLDER, filename)
@@ -39,14 +50,15 @@ def index():
             return redirect(url_for("download_page", filename=output_name))
         except Exception as e:
             error = f"Erro ao processar o PDF: {e}"
+            return render_template("pdf_divisor.html", error=error)
 
-    return render_template("index.html", error=error)
+    return render_template("pdf_divisor.html", error=error)
 
 
 @app.route("/download/<filename>")
 def download_page(filename):
     """
-    Exibe a página com o link 'Baixar PDF'.
+    Exibe a página com botão de download.
     """
     return render_template("result.html", filename=filename)
 
@@ -54,7 +66,7 @@ def download_page(filename):
 @app.route("/download/file/<filename>")
 def serve_file(filename):
     """
-    Serve o PDF como anexo — rota que o <a download> deve chamar.
+    Serve o PDF processado como anexo.
     """
     return send_from_directory(PROCESSED_FOLDER, filename, as_attachment=True)
 

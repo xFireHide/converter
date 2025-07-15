@@ -15,6 +15,13 @@
     />
   </head>
   <body>
+    <!-- Barra de navegação para múltiplas páginas -->
+    <nav class="navbar">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('pdf_divisor') }}">Divisor de PDF</a>
+      <!-- Adicione outras páginas aqui -->
+    </nav>
+
     <div class="container">
       <main class="main-content">
         <h1 id="page-title">Divisor de PDF</h1>
@@ -34,8 +41,8 @@
             <span id="progress-text">0%</span>
           </div>
         </div>
-        <div class="ads-banner-top"></div>
 
+        <div class="ads-banner-top"></div>
         <div class="adsense-bottom"></div>
       </main>
       <aside class="sidebar"></aside>
