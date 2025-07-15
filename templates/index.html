@@ -8,6 +8,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6031916610010710"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <div class="container">
@@ -16,14 +21,11 @@
 
         <!-- Descrição da ferramenta -->
         <p class="description">
-          Divida cada página do seu PDF em quatro quadrantes e extraia somente
-          as partes que contêm conteúdo, tudo de forma automática e instantânea.
+          Divida cada página do seu PDF em quatro quadrantes, tudo de forma
+          automática e instantânea.
         </p>
 
-        <!-- AdSense Aqui: Entre o título e a barra de progresso -->
-        <div class="ads-banner-top">
-          <!-- AdSense Aqui -->
-        </div>
+        <div class="ads-banner-top"></div>
 
         <form id="upload-form" method="POST" enctype="multipart/form-data">
           <input type="file" name="pdf" id="pdf-input" required />
@@ -36,17 +38,11 @@
           </div>
         </div>
 
-        <!-- AdSense Aqui: Parte inferior da página -->
-        <div class="adsense-bottom">
-          <!-- AdSense Aqui -->
-        </div>
+        <div class="adsense-bottom"></div>
       </main>
-      <aside class="sidebar">
-        <!-- AdSense Aqui: Lateral direita sticky -->
-      </aside>
+      <aside class="sidebar"></aside>
     </div>
 
-    <!-- Carrega o JS de redirecionamento -->
     <script src="{{ url_for('static', filename='redirect.js') }}"></script>
   </body>
 </html>
