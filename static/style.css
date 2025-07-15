@@ -44,9 +44,10 @@ body {
   line-height: 1.6;
 }
 
+/* Container com área principal e lateral para anúncios */
 .container {
   display: grid;
-  grid-template-columns: 1fr 300px;
+  grid-template-columns: 1fr auto;
   gap: 20px;
   max-width: 1000px;
   margin: 0 auto;
@@ -54,36 +55,41 @@ body {
   min-height: 100vh;
 }
 
-.main-content,
-.sidebar {
+/* Conteúdo principal */
+.main-content {
   background-color: var(--card-bg);
   padding: 20px;
   border-radius: 8px;
-}
-
-.main-content {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
 }
 
+/* Área lateral transparente para AdSense */
 .sidebar {
   position: sticky;
   top: 20px;
-  height: fit-content;
+  width: 300px;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
 }
 
 h1 {
   font-size: 2.5rem;
   margin-bottom: 15px;
-  text-align: center;
 }
 
 p,
 .description {
   margin: 10px 0;
   font-size: 1.1rem;
-  text-align: center;
-  color: var(--text-color);
+}
+
+.ads-banner-top,
+.adsense-bottom {
+  background-color: var(--secondary-color);
+  height: 100px;
+  margin: 20px 0;
 }
 
 form {
@@ -147,11 +153,6 @@ button:hover,
 
 .hidden {
   display: none;
-}
-
-.adsense-bottom {
-  margin-top: 20px;
-  text-align: center;
 }
 
 .button-group {
