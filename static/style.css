@@ -128,7 +128,7 @@ button {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s ease;
-  font-weight: 500;
+  font-weight: 700;
   letter-spacing: 0.5px;
 }
 button:hover,
@@ -180,12 +180,17 @@ button:hover,
   text-decoration: none;
   border-radius: 4px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   transition: background 0.3s ease;
 }
 .btn:hover,
 .button-group a:hover {
   background-color: #357ab8;
+}
+
+/* Botão de cópia também como .btn para consistência */
+.button-group button {
+  font-weight: 700;
 }
 
 /* Responsividade */
