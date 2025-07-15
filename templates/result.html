@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>PDF Processado</title>
+</head>
+<body>
+    <h1>Seu PDF foi processado com sucesso!</h1>
+    <p>
+        <a href="{{ file_url }}" download>📥 Clique aqui para baixar: {{ filename }}</a>
+    </p>
+    <p>
+        <a href="{{ url_for('index') }}">🔙 Voltar e processar outro PDF</a>
+    </p>
+</body>
+</html>
