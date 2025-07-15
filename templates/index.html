@@ -3,22 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divisor de PDF em 4 Quadrantes</title>
-    <meta
-      name="description"
-      content="Divida PDFs em 4 quadrantes automaticamente e extraia só as áreas com texto e imagens úteis. Simplifique o processamento de documentos em instantes."
+    <title>Processador de PDF</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
   <body>
     <div class="container">
       <main class="main-content">
-        <h1 id="page-title">Divisor de PDF</h1>
+        <h1 id="page-title">Processador de PDF</h1>
+
+        <!-- Descrição da ferramenta -->
         <p class="description">
-          Divida cada página do seu PDF em quatro quadrantes.
+          Divida cada página do seu PDF em quatro quadrantes e extraia somente
+          as partes que contêm conteúdo, tudo de forma automática e instantânea.
         </p>
 
-        <div class="ads-banner-top"></div>
+        <!-- AdSense Aqui: Entre o título e a barra de progresso -->
+        <div class="ads-banner-top">
+          <!-- AdSense Aqui -->
+        </div>
 
         <form id="upload-form">
           <input type="file" id="pdf-input" accept="application/pdf" required />
@@ -31,11 +36,17 @@
           </div>
         </div>
 
-        <div class="adsense-bottom"></div>
+        <!-- AdSense Aqui: Parte inferior da página -->
+        <div class="adsense-bottom">
+          <!-- AdSense Aqui -->
+        </div>
       </main>
-      <aside class="sidebar"></aside>
+      <aside class="sidebar">
+        <!-- AdSense Aqui: Lateral direita sticky -->
+      </aside>
     </div>
 
+    <!-- Carrega o JS de redirecionamento -->
     <script src="{{ url_for('static', filename='redirect.js') }}"></script>
   </body>
 </html>
