@@ -64,14 +64,16 @@ body {
   text-align: center;
 }
 
-/* Área lateral transparente para AdSense */
+/* Área lateral para AdSense, soma espaço apenas se houver conteúdo */
 .sidebar {
   position: sticky;
   top: 20px;
-  width: 300px;
   background-color: transparent;
   padding: 0;
   margin: 0;
+}
+.sidebar:empty {
+  display: none;
 }
 
 h1 {
@@ -79,10 +81,11 @@ h1 {
   margin-bottom: 15px;
 }
 
-p,
-.description {
+.description,
+p {
   margin: 10px 0;
   font-size: 1.1rem;
+  text-align: center;
 }
 
 .ads-banner-top,
