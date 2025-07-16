@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from .processor import process_pdf
+from .pdf_divisor import process_pdf  # Import relativo
 
 bp = Blueprint("pdf_divisor", __name__, url_prefix="/divisorpdf")
 
