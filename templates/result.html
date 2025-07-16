@@ -1,11 +1,11 @@
-{# templates/result.html #} {% extends 'base.html' %} {% block title %} PDF
-Processado {% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %} PDF Processado {% endblock %} {%
+block content %}
 <div class="main-content">
   <h1>PDF Processado</h1>
   <p>Seu PDF foi processado com sucesso!</p>
 
   <div class="button-group">
-    {# 1) Baixar PDF: chama diretamente a rota serve_file #}
+    <!-- 1) Baixar PDF -->
     <a
       class="btn"
       href="{{ url_for('serve_file', filename=filename) }}"
@@ -14,13 +14,13 @@ Processado {% endblock %} {% block content %}
       📥 Baixar PDF
     </a>
 
-    {# 2) Copiar link: será preenchido no script abaixo #}
+    <!-- 2) Copiar link -->
     <button id="copy-link-btn" class="btn">📋 Copiar link</button>
 
-    {# 3) Processar outro: volta ao divisor #}
-    <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
-      >🔄 Processar outro PDF</a
-    >
+    <!-- 3) Processar outro PDF (rota corrigida) -->
+    <a class="btn" href="{{ url_for('pdf_divisor') }}">
+      🔄 Processar outro PDF
+    </a>
   </div>
 
   <div class="ads-banner-top"></div>
@@ -28,7 +28,6 @@ Processado {% endblock %} {% block content %}
 </div>
 {% endblock %} {% block scripts %}
 <script>
-  // Aqui Jinja gera a URL completa do PDF (rota serve_file)
   window.DOWNLOAD_LINK =
     "{{ url_for('serve_file', filename=filename, _external=True) }}";
 </script>
