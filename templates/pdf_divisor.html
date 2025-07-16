@@ -1,53 +1,41 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-  <head>
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6031916610010710"
-      crossorigin="anonymous"
-    ></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Divisor de PDF</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
+{% extends 'base.html' %} {% block title %}Divisor de PDF{% endblock %} {% block
+content %}
+<div class="main-content">
+  <h1 id="page-title">Divisor de PDF</h1>
+
+  <p class="description">
+    Divida cada página do seu PDF em quatro quadrantes, transformando uma página
+    em quatro, tudo de forma automática e instantânea.
+  </p>
+
+  <form
+    id="upload-form"
+    action="{{ url_for('pdf_divisor.index') }}"
+    method="POST"
+    enctype="multipart/form-data"
+  >
+    <input
+      type="file"
+      name="pdf"
+      id="pdf-input"
+      accept="application/pdf"
+      required
     />
-  </head>
-  <body>
-    <!-- Barra de navegação para múltiplas páginas -->
-    <nav class="navbar">
-      <a href="{{ url_for('home') }}">Home</a>
-      <a href="{{ url_for('pdf_divisor.index') }}">Divisor de PDF</a>
-      <!-- Adicione outras páginas aqui -->
-    </nav>
+    <button type="submit">Enviar</button>
+  </form>
 
-    <div class="container">
-      <main class="main-content">
-        <h1 id="page-title">Divisor de PDF</h1>
-
-        <p class="description">
-          Divida cada página do seu PDF em quatro quadrantes, transformando uma
-          página em quatro, tudo de forma automática e instantânea.
-        </p>
-
-        <form id="upload-form" method="POST" enctype="multipart/form-data">
-          <input type="file" name="pdf" id="pdf-input" required />
-          <button type="submit">Enviar</button>
-        </form>
-
-        <div id="progress-container" class="hidden">
-          <div id="progress-bar">
-            <span id="progress-text">0%</span>
-          </div>
-        </div>
-
-        <div class="ads-banner-top"></div>
-        <div class="adsense-bottom"></div>
-      </main>
-      <aside class="sidebar"></aside>
+  <div id="progress-container" class="hidden">
+    <div id="progress-bar">
+      <span id="progress-text">0%</span>
     </div>
+  </div>
 
-    <script src="{{ url_for('static', filename='redirect.js') }}"></script>
-  </body>
-</html>
+  <!-- AdSense Aqui: Entre conteúdo -->
+  <div class="ads-banner-top"></div>
+
+  <!-- AdSense Aqui: Rodapé do conteúdo -->
+  <div class="adsense-bottom"></div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='redirect.js') }}"></script>
+{% endblock %}
