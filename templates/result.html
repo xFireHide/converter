@@ -1,28 +1,24 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} {% block title %}PDF Processado{% endblock %} {% block
+content %}
 <div class="main-content">
   <h1>PDF Processado</h1>
   <p>Seu PDF foi processado com sucesso!</p>
-
   <div class="button-group">
     <a
       class="btn"
       href="{{ url_for('serve_file', filename=filename) }}"
       download
+      >📥 Baixar PDF</a
     >
-      📥 Baixar PDF
-    </a>
-
     <button id="copy-link-btn" class="btn">📋 Copiar link</button>
-
-    <a class="btn" href="{{ url_for('pdf_divisor.index') }}">
-      🔄 Processar outro PDF
-    </a>
+    <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
+      >🔄 Processar outro PDF</a
+    >
   </div>
-
   <div class="ads-banner-top"></div>
   <div class="adsense-bottom"></div>
 </div>
-
+{% endblock %} {% block scripts %}
 <script>
   window.DOWNLOAD_LINK =
     "{{ url_for('serve_file', filename=filename, _external=True) }}";

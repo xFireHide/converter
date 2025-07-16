@@ -2,12 +2,10 @@
 content %}
 <div class="main-content">
   <h1 id="page-title">Divisor de PDF</h1>
-
   <p class="description">
     Divida cada página do seu PDF em quatro quadrantes, transformando uma página
     em quatro, tudo de forma automática e instantânea.
   </p>
-
   <form
     id="upload-form"
     action="{{ url_for('pdf_divisor.index') }}"
@@ -23,17 +21,15 @@ content %}
     />
     <button type="submit">Enviar</button>
   </form>
-
   <div id="progress-container" class="hidden">
     <div id="progress-bar">
       <span id="progress-text">0%</span>
     </div>
   </div>
-
   <div class="ads-banner-top"></div>
   <div class="adsense-bottom"></div>
 </div>
-
 {% endblock %} {% block scripts %}
-<script src="{{ url_for('static', filename='progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/redirect.js') }}"></script>
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
 {% endblock %}
