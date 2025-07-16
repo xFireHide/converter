@@ -8,7 +8,7 @@ Processado {% endblock %} {% block content %}
     {# 1) Baixar PDF: chama diretamente a rota serve_file #}
     <a
       class="btn"
-      href="{{ url_for('serve_file', filename=filename, _external=False) }}"
+      href="{{ url_for('serve_file', filename=filename) }}"
       download
     >
       📥 Baixar PDF
