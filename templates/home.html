@@ -1,11 +1,23 @@
 {% extends 'base.html' %} {% block title %} Página Inicial {% endblock %} {%
 block content %}
-<h1>Bem-vindo!</h1>
-<p>Este é o site principal. Navegue:</p>
-<ul>
-  <li>
-    <a href="{{ url_for('pdf_divisor.index') }}">Ir ao Divisor de PDF</a>
-  </li>
-  <!-- links para outras páginas -->
-</ul>
+<div class="main-content">
+  <h1>Bem-vindo!</h1>
+  <p class="description">
+    Este é o site principal. Use o menu para navegar entre as ferramentas
+    disponíveis.
+  </p>
+
+  <div class="button-group">
+    <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
+      >📄 Divisor de PDF</a
+    >
+    <!-- <a class="btn" href="{{ url_for('short_cut.index') }}">🔗 Encurtador de URL</a> -->
+  </div>
+
+  <!-- AdSense Aqui: Entre conteúdo -->
+  <div class="ads-banner-top"></div>
+
+  <!-- AdSense Aqui: Rodapé do conteúdo -->
+  <div class="adsense-bottom"></div>
+</div>
 {% endblock %}
