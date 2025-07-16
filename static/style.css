@@ -180,3 +180,24 @@ button:hover,
     display: none;
   }
 }
+.navbar {
+  display: flex;
+  gap: 16px;
+  background-color: var(--card-bg);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+.navbar a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.navbar a:hover {
+  color: var(--primary-color);
+}
