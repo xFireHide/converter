@@ -5,32 +5,36 @@ const progressText = document.getElementById("progress-text");
 
 form.addEventListener("submit", async function (event) {
   event.preventDefault();
+
+  // Esconde o form e mostra a barra
   form.classList.add("hidden");
   progressContainer.classList.remove("hidden");
 
+  // Prepara o envio
   const formData = new FormData(form);
-  const response = await fetch("/", {
-    method: "POST",
+  // Use o action/method do próprio form
+  const response = await fetch(form.action, {
+    method: form.method,
     body: formData,
   });
 
   if (response.redirected) {
+    // Simula o progresso até 100% antes de realmente navegar
     let progress = 0;
     const interval = setInterval(() => {
-      progress += Math.random() * 10;
-      if (progress >= 100) {
+      progress = Math.min(progress + Math.random() * 10, 100);
+      progressBar.style.width = progress + "%";
+      progressText.textContent = Math.floor(progress) + "%";
+
+      if (progress === 100) {
         clearInterval(interval);
-        progressBar.style.width = "100%";
-        progressText.textContent = "100%";
         setTimeout(() => {
           window.location.href = response.url;
-        }, 500);
-      } else {
-        progressBar.style.width = progress + "%";
-        progressText.textContent = Math.floor(progress) + "%";
+        }, 300);
       }
-    }, 300);
+    }, 200);
   } else {
+    // Se não teve redirect, volta tudo ao normal
     alert("Erro ao enviar o arquivo.");
     form.classList.remove("hidden");
     progressContainer.classList.add("hidden");
