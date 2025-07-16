@@ -33,5 +33,6 @@ def index():
 
 
 @bp.route("/download/<filename>")
-def download_page(filename):
-    return render_template("result.html", filename=filename)
+def download_file(filename):
+    processed_folder = current_app.config["PROCESSED_FOLDER"]
+    return send_from_directory(processed_folder, filename, as_attachment=True)
