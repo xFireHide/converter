@@ -1,19 +1,18 @@
-{% extends 'base.html' %} {% block title %} Página Inicial {% endblock %} {%
-block content %}
+{% extends 'base.html' %} {% block title %}Página Inicial{% endblock %} {% block
+content %}
 <div class="main-content">
   <h1>Bem-vindo!</h1>
   <p class="description">
     Este é o site principal. Use o menu para navegar entre as ferramentas
     disponíveis.
   </p>
-
   <div class="button-group">
-    <a class="btn" href="{{ url_for('pdf_divisor.index') }}">
-      📄 Divisor de PDF
-    </a>
+    <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
+      >📄 Divisor de PDF</a
+    >
   </div>
-
   <div class="ads-banner-top"></div>
+
   <h1>Bem-vindo ao FireTools!</h1>
   <p>
     O FireTools é um conjunto de ferramentas online desenvolvidas para tornar o
@@ -75,7 +74,6 @@ block content %}
       >FireTools — ferramentas simples, poderosas e feitas para você.</strong
     >
   </p>
-
   <div class="adsense-bottom"></div>
 </div>
 {% endblock %}
