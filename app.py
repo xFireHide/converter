@@ -34,10 +34,10 @@ def home():
     return render_template("home.html")
 
 
-# Rota genérica para download de arquivos processados
 @app.route("/download/file/<filename>")
 def serve_file(filename):
-    return send_from_directory(PROCESSED_FOLDER, filename, as_attachment=True)
+    folder = current_app.config["PROCESSED_FOLDER"]
+    return send_from_directory(folder, filename, as_attachment=True)
 
 
 # Config global de pastas (opcional)
