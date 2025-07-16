@@ -207,18 +207,34 @@ button:hover,
 
 #progress-container {
   width: 100%;
-  background-color: #eee;
-  border-radius: 5px;
+  margin: 20px 0;
+  background: #ececec;
+  border-radius: 8px;
   overflow: hidden;
-  margin-top: 20px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 1px 5px #0001;
 }
-
 #progress-bar {
-  height: 25px;
-  width: 0;
-  background-color: #4caf50;
-  text-align: center;
-  line-height: 25px;
-  color: white;
-  transition: width 0.3s ease;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #4a90e2 70%, #6bcdf6 100%);
+  transition: width 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 16px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+#progress-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #333;
+  font-weight: bold;
+  z-index: 2;
 }
