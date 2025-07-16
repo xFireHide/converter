@@ -1,7 +1,8 @@
 import os
 import pkgutil
 import importlib
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, send_from_directory, current_app
+
 
 # Cria a aplicação Flask
 app = Flask(__name__)
