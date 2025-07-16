@@ -3,7 +3,9 @@ content %}
 <h1>Bem-vindo!</h1>
 <p>Este é o site principal. Navegue:</p>
 <ul>
-  <li><a href="{{ url_for('pdf_divisor') }}">Ir ao Divisor de PDF</a></li>
+  <li>
+    <a href="{{ url_for('pdf_divisor.index') }}">Ir ao Divisor de PDF</a>
+  </li>
   <!-- links para outras páginas -->
 </ul>
 {% endblock %}

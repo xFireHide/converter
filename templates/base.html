@@ -17,7 +17,8 @@
   <body>
     <nav class="navbar">
       <a href="{{ url_for('home') }}">🏠 Home</a>
-      <a href="{{ url_for('pdf_divisor') }}">📄 Divisor de PDF</a>
+      <a href="{{ url_for('pdf_divisor.index') }}">📄 Divisor de PDF</a>
+      <a href="{{ url_for('short_cut.index') }}">🔗 Encurtador de URL</a>
       <!-- outras páginas aqui -->
     </nav>
     <main class="container">{% block content %}{% endblock %}</main>
