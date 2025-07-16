@@ -8,10 +8,11 @@ Processado {% endblock %} {% block content %}
     {# 1) Baixar PDF: chama diretamente a rota serve_file #}
     <a
       class="btn"
-      href="{{ url_for('serve_file', filename=filename) }}"
+      href="{{ url_for('serve_file', filename=filename, _external=False) }}"
       download
-      >📥 Baixar PDF</a
     >
+      📥 Baixar PDF
+    </a>
 
     {# 2) Copiar link: será preenchido no script abaixo #}
     <button id="copy-link-btn" class="btn">📋 Copiar link</button>
