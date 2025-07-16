@@ -19,8 +19,8 @@ content %}
 {% endblock %} {% block scripts %}
 <script>
   window.DOWNLOAD_LINK =
-    "{{ url_for('pdf_divisor.download_file', filename=filename, _external=True) }}";
+    "{{ url_for('download_file', filename=filename, _external=True) }}";
 </script>
+<script src="{{ url_for('static', filename='js/result.js') }}"></script>
 
-<script src="{{ url_for('static', filename='result.js') }}"></script>
 {% endblock %}
