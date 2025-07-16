@@ -1,73 +1,37 @@
-from flask import (
-    Flask,
-    render_template,
-    request,
-    redirect,
-    url_for,
-    send_from_directory,
-)
 import os
-from pdf_processor import process_pdf
+import pkgutil
+import importlib
+from flask import Flask, render_template, send_from_directory
 
+# Inicializa o Flask
 app = Flask(__name__)
 
-UPLOAD_FOLDER = "uploads"
-PROCESSED_FOLDER = "processed"
+# Diretórios para upload e arquivos processados
+UPLOAD_FOLDER = os.path.join(app.root_path, "uploads")
+PROCESSED_FOLDER = os.path.join(app.root_path, "processed")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/")
 def home():
-    """
-    Página inicial do site.
-    """
+    """Página inicial do site."""
     return render_template("home.html")
 
 
-@app.route("/pdf", methods=["GET", "POST"])
-def pdf_divisor():
-    """
-    Divisor de PDF: upload e processamento do arquivo.
-    """
-    error = None
-    if request.method == "POST":
-        pdf = request.files.get("pdf")
-        if not pdf or not pdf.filename.lower().endswith(".pdf"):
-            error = "Selecione um arquivo PDF válido."
-            return render_template("pdf_divisor.html", error=error)
-
-        filename = pdf.filename
-        input_path = os.path.join(UPLOAD_FOLDER, filename)
-        pdf.save(input_path)
-
-        base_name = os.path.splitext(filename)[0]
-        output_name = f"{base_name}_processed.pdf"
-        output_path = os.path.join(PROCESSED_FOLDER, output_name)
-
-        try:
-            process_pdf(input_path, output_path)
-            return redirect(url_for("download_page", filename=output_name))
-        except Exception as e:
-            error = f"Erro ao processar o PDF: {e}"
-            return render_template("pdf_divisor.html", error=error)
-
-    return render_template("pdf_divisor.html", error=error)
-
-
-@app.route("/download/<filename>")
-def download_page(filename):
-    """
-    Exibe a página com botão de download.
-    """
-    return render_template("result.html", filename=filename)
+# Descobre e registra automaticamente cada ferramenta em tools/
+TOOLS_DIR = os.path.join(app.root_path, "tools")
+if os.path.isdir(TOOLS_DIR):
+    for finder, name, ispkg in pkgutil.iter_modules([TOOLS_DIR]):
+        module = importlib.import_module(f"tools.{name}")
+        # Cada módulo em tools/ deve expor um Blueprint chamado 'bp'
+        if hasattr(module, "bp"):
+            app.register_blueprint(module.bp)
 
 
 @app.route("/download/file/<filename>")
 def serve_file(filename):
-    """
-    Serve o PDF processado como anexo.
-    """
+    """Serve qualquer arquivo processado como anexo."""
     return send_from_directory(PROCESSED_FOLDER, filename, as_attachment=True)
 
 
