@@ -21,13 +21,13 @@ content %}
   </div>
 
   <div class="ads-banner-top"></div>
-
   <div class="adsense-bottom"></div>
 </div>
 {% endblock %} {% block scripts %}
 <script>
+  // Gera a URL completa do PDF para copiar
   window.DOWNLOAD_LINK =
-    window.location.origin + "{{ url_for('serve_file', filename=filename) }}";
+    "{{ url_for('serve_file', filename=filename, _external=True) }}";
 </script>
 <script src="{{ url_for('static', filename='result.js') }}"></script>
 {% endblock %}
