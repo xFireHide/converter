@@ -25,16 +25,15 @@ def index():
             return render_template("pdf_divisor.html", error=error)
 
         upload_folder = current_app.config["UPLOAD_FOLDER"]
+        processed_folder = current_app.config["PROCESSED_FOLDER"]
         filename = pdf.filename
         input_path = os.path.join(upload_folder, filename)
         pdf.save(input_path)
 
         try:
-            processed_folder = current_app.config["PROCESSED_FOLDER"]
             out_filename = os.path.splitext(filename)[0] + "_processed.pdf"
             output_path = os.path.join(processed_folder, out_filename)
-            process_pdf(input_path, output_path)  # Agora salva DIRETO na pasta correta!
-
+            process_pdf(input_path, output_path)
             return redirect(url_for("pdf_divisor.result_page", filename=out_filename))
         except Exception as e:
             error = f"Erro ao processar o PDF: {e}"
