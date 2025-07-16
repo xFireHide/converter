@@ -4,6 +4,7 @@ import importlib
 from flask import Flask, render_template, send_from_directory
 from tools.pdf_divisor.routes import bp as pdf_divisor_bp
 
+
 app = Flask(__name__)
 app.register_blueprint(pdf_divisor_bp)
 
