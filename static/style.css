@@ -201,3 +201,24 @@ button:hover,
 .navbar a:hover {
   color: var(--primary-color);
 }
+.hidden {
+  display: none !important;
+}
+
+#progress-container {
+  width: 100%;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+#progress-bar {
+  height: 25px;
+  width: 0;
+  background-color: #4caf50;
+  text-align: center;
+  line-height: 25px;
+  color: white;
+  transition: width 0.3s ease;
+}
