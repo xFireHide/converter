@@ -1,5 +1,3 @@
-# tools/pdf_divisor/routes.py
-
 from flask import (
     Blueprint,
     render_template,
@@ -43,7 +41,6 @@ def index():
 
 @bp.route("/result/<filename>")
 def result_page(filename):
-    # Mostra a página de sucesso, com botão baixar e copiar link
     return render_template("result.html", filename=filename)
 
 

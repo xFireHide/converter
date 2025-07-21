@@ -1,11 +1,9 @@
-# tools/short_curter/routes.py
-
 from flask import Blueprint, render_template, request, redirect, flash, url_for
 from .service import shorten_url, get_original_url, init_db
 
 bp = Blueprint("short_curter", __name__, url_prefix="/short_curter")
 
-# Garante que o banco esteja criado ao carregar o blueprint
+
 init_db()
 
 
