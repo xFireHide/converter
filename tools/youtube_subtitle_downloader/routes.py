@@ -1,39 +1,74 @@
 # tools/nova_funcionalidade/routes.py
 
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import (
+    Blueprint,
+    render_template,
+    request,
+    redirect,
+    url_for,
+    flash,
+    send_file,
+)
 import os
 import subprocess
+import tempfile
+import shutil
+import re
+import uuid
+import zipfile
 from pytube import Playlist
 
 bp = Blueprint("nova_funcionalidade", __name__, url_prefix="/nova_funcionalidade")
 
+# Configurações de segurança
+MAX_VIDEOS = 50
+ALLOWED_YT_PLAYLIST = re.compile(
+    r"^https:\/\/(www\.)?(youtube\.com|youtu\.be)\/.*(list=.+)$"
+)
+
+
+def sanitize_url(url):
+    """Remove espaços e controla o input para só aceitar playlist do YouTube."""
+    url = url.strip()
+    if not ALLOWED_YT_PLAYLIST.match(url):
+        return None
+    return url
+
 
 @bp.route("/", methods=["GET", "POST"])
 def index():
-    msg = None
     legendas_baixadas = []
+    download_link = None
 
     if request.method == "POST":
-        playlist_url = request.form.get("playlist_url", "").strip()
-        if not playlist_url:
-            flash("Por favor, cole o link da playlist.", "warning")
+        playlist_url = request.form.get("playlist_url", "")
+        url = sanitize_url(playlist_url)
+        if not url:
+            flash("Por favor, forneça uma URL válida de playlist do YouTube.", "danger")
             return render_template(
-                "nova_funcionalidade/index.html", legendas_baixadas=[]
+                "nova_funcionalidade/index.html",
+                legendas_baixadas=[],
+                download_link=None,
             )
 
-        output_dir = "legendas"
-        os.makedirs(output_dir, exist_ok=True)
+        # Pasta temporária única por requisição
+        tmp_dir = tempfile.mkdtemp(prefix="yt_legendas_")
+        zip_path = os.path.join(tmp_dir, "legendas.zip")
+
         try:
-            playlist = Playlist(playlist_url)
-            total_videos = len(playlist.video_urls)
-            if total_videos == 0:
+            playlist = Playlist(url)
+            video_urls = playlist.video_urls[:MAX_VIDEOS]  # Limita quantidade de vídeos
+            if not video_urls:
                 flash("Nenhum vídeo encontrado na playlist.", "danger")
                 return render_template(
-                    "nova_funcionalidade/index.html", legendas_baixadas=[]
+                    "nova_funcionalidade/index.html",
+                    legendas_baixadas=[],
+                    download_link=None,
                 )
 
-            for url in playlist.video_urls:
+            for idx, vurl in enumerate(video_urls):
                 try:
+                    # Baixar legenda automática com yt-dlp, idioma pt
                     subprocess.run(
                         [
                             "yt-dlp",
@@ -42,21 +77,64 @@ def index():
                             "pt",
                             "--skip-download",
                             "--output",
-                            f"{output_dir}/%(title)s.%(ext)s",
-                            url,
+                            os.path.join(tmp_dir, "%(title)s.%(ext)s"),
+                            vurl,
                         ],
                         check=True,
-                        capture_output=True,
+                        timeout=90,  # Limite de tempo por vídeo (segundos)
+                        stdout=subprocess.DEVNULL,  # Não expõe saída
+                        stderr=subprocess.DEVNULL,
                     )
-                    legendas_baixadas.append(url)
-                except Exception as e:
-                    print(f"Erro ao baixar legenda de {url}: {e}")
-            flash(
-                f"Legendas baixadas de {len(legendas_baixadas)}/{total_videos} vídeos.",
-                "success",
-            )
-        except Exception as e:
-            flash(f"Erro ao processar playlist: {e}", "danger")
+                    legendas_baixadas.append(vurl)
+                except subprocess.TimeoutExpired:
+                    flash(
+                        f"Tempo esgotado ao processar um vídeo. Tente novamente.",
+                        "warning",
+                    )
+                    break
+                except Exception:
+                    continue  # Pula vídeo com erro
+
+            # Compacta as legendas para download
+            legendas_files = [
+                f
+                for f in os.listdir(tmp_dir)
+                if f.endswith(".vtt") or f.endswith(".srt")
+            ]
+            if legendas_files:
+                with zipfile.ZipFile(zip_path, "w") as zipf:
+                    for filename in legendas_files:
+                        zipf.write(os.path.join(tmp_dir, filename), arcname=filename)
+                # Gera um identificador para download
+                download_token = str(uuid.uuid4())
+                # Salva caminho do arquivo temporário usando o token (implementação básica)
+                # Em produção, usar cache, banco ou armazenamento próprio (Redis, DB, etc)
+                request.environ.setdefault("downloads", {})[download_token] = zip_path
+                download_link = url_for(
+                    "nova_funcionalidade.download", token=download_token
+                )
+                flash(
+                    f"Legendas baixadas de {len(legendas_baixadas)}/{len(video_urls)} vídeos.",
+                    "success",
+                )
+            else:
+                flash("Nenhuma legenda em português encontrada nos vídeos.", "warning")
+        except Exception:
+            flash("Ocorreu um erro inesperado ao processar a playlist.", "danger")
+        # Limpeza do diretório temporário seria ideal após o download.
     return render_template(
-        "nova_funcionalidade/index.html", legendas_baixadas=legendas_baixadas
+        "nova_funcionalidade/index.html",
+        legendas_baixadas=legendas_baixadas,
+        download_link=download_link,
     )
+
+
+@bp.route("/download/<token>")
+def download(token):
+    downloads = request.environ.get("downloads", {})
+    zip_path = downloads.get(token)
+    if zip_path and os.path.exists(zip_path):
+        # O nome do arquivo baixado será 'legendas.zip'
+        return send_file(zip_path, as_attachment=True, download_name="legendas.zip")
+    flash("Arquivo de download expirado ou inválido.", "danger")
+    return redirect(url_for(".index"))
