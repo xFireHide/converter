@@ -16,7 +16,7 @@ content %}
         <label for="playlist_url">Cole o link da playlist do YouTube:</label>
         <input type="text" id="playlist_url" name="playlist_url" required size="60" pattern="https://.*(list=).*">
         <button type="submit">Baixar Legendas</button>
-        {{ csrf_token() }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
     </form>
 
     {% if legendas_baixadas %}

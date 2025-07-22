@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fetch(form.action, {
       method: "POST",
       body: formData,
+      credentials: "same-origin",
     })
       .then((response) => {
         clearInterval(interval);

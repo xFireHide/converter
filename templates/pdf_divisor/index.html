@@ -20,7 +20,7 @@ content %}
       required
     />
     <button type="submit">Enviar</button>
-    {{ csrf_token() }}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
   <div id="progress-container" class="hidden">
     <div id="progress-bar">

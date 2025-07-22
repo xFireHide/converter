@@ -7,7 +7,7 @@ content %}
     <label for="url">Insira sua URL:</label>
     <input type="url" name="url" id="url" required />
     <button type="submit">Encurtar</button>
-    {{ csrf_token() }}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
   {% if short_url %}
   <p>

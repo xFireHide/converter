@@ -12,6 +12,7 @@ form.addEventListener("submit", async function (e) {
   const response = await fetch(form.action, {
     method: form.method,
     body: formData,
+    credentials: "same-origin",
   });
 
   if (response.redirected) {
