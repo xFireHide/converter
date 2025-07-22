@@ -101,6 +101,16 @@ input[type="file"] {
   color: var(--text-color);
 }
 
+input[type="url"] {
+  padding: 10px;
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
 button,
 .btn,
 .button-group a,
