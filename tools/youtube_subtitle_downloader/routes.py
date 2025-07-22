@@ -17,9 +17,9 @@ import zipfile
 from pytube import Playlist
 
 bp = Blueprint(
-    "youtube_subtitle_downloader`",
+    "youtube_subtitle_downloader",
     __name__,
-    url_prefix="/youtube_subtitle_downloader`e",
+    url_prefix="/youtube_subtitle_downloader",
 )
 
 # Configurações de segurança
