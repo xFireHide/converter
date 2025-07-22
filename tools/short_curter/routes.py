@@ -3,7 +3,7 @@ from .service import shorten_url, get_original_url, init_db
 
 bp = Blueprint("short_curter", __name__, url_prefix="/short_curter")
 
-
+# Inicializa o banco (só chame uma vez ao importar, está OK)
 init_db()
 
 
@@ -14,6 +14,7 @@ def index():
         original_url = request.form.get("url")
         if original_url:
             code = shorten_url(original_url)
+            # Cria o link completo encurtado
             short_url = url_for(
                 "short_curter.redirect_short", code=code, _external=True
             )
