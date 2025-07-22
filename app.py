@@ -3,9 +3,7 @@ import pkgutil
 import importlib
 from flask import Flask, render_template, send_from_directory, current_app
 
-
 app = Flask(__name__)
-
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
@@ -14,6 +12,9 @@ PROCESSED_FOLDER = os.path.join(BASE_DIR, "processed")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
+# Configura antes de importar os blueprints!
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
 
 TOOLS_DIR = os.path.join(BASE_DIR, "tools")
 if os.path.isdir(TOOLS_DIR):
@@ -23,8 +24,10 @@ if os.path.isdir(TOOLS_DIR):
             module = importlib.import_module(module_path)
             if hasattr(module, "bp"):
                 app.register_blueprint(module.bp)
-        except ModuleNotFoundError:
-            continue
+        except ModuleNotFoundError as e:
+            print(f"Não foi possível importar {module_path}: {e}")
+        except Exception as ex:
+            print(f"Erro inesperado ao importar {module_path}: {ex}")
 
 
 @app.route("/")
@@ -37,9 +40,6 @@ def serve_file(filename):
     folder = current_app.config["PROCESSED_FOLDER"]
     return send_from_directory(folder, filename, as_attachment=True)
 
-
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
