@@ -9,6 +9,8 @@ from flask import (
 )
 from .pdf_divisor import process_pdf
 import os
+import uuid
+import fitz
 
 bp = Blueprint("pdf_divisor", __name__, url_prefix="/divisorpdf")
 
@@ -18,20 +20,38 @@ def index():
     error = None
     if request.method == "POST":
         pdf = request.files.get("pdf")
+        # 1. Só aceita PDF por extensão
         if not pdf or not pdf.filename.lower().endswith(".pdf"):
             error = "Selecione um arquivo PDF válido."
             return render_template("pdf_divisor/index.html", error=error)
 
         upload_folder = current_app.config["UPLOAD_FOLDER"]
         processed_folder = current_app.config["PROCESSED_FOLDER"]
-        filename = pdf.filename
+        # 2. Gera nome aleatório
+        filename = f"{uuid.uuid4()}.pdf"
         input_path = os.path.join(upload_folder, filename)
         pdf.save(input_path)
 
+        # 3. Tenta abrir com fitz (PyMuPDF) para validar o arquivo
         try:
-            out_filename = os.path.splitext(filename)[0] + "_processed.pdf"
+            with fitz.open(input_path) as doc:
+                pass
+        except Exception as e:
+            # 4. Loga tentativa inválida e remove arquivo perigoso
+            current_app.logger.warning(f"Upload inválido: {request.remote_addr} - {e}")
+            error = "Arquivo PDF inválido ou corrompido."
+            try:
+                os.remove(input_path)
+            except Exception:
+                pass
+            return render_template("pdf_divisor/index.html", error=error)
+
+        try:
+            out_filename = f"{uuid.uuid4()}_processed.pdf"
             output_path = os.path.join(processed_folder, out_filename)
             process_pdf(input_path, output_path)
+            # Loga upload válido
+            current_app.logger.info(f"Upload feito: {request.remote_addr} - {filename}")
             return redirect(url_for("pdf_divisor.result_page", filename=out_filename))
         except Exception as e:
             error = f"Erro ao processar o PDF: {e}"

@@ -1,0 +1,37 @@
+{% extends 'base.html' %} {% block title %}Divisor de PDF{% endblock %} {% block
+content %}
+<div class="main-content">
+  <h1>Image Converter</h1>
+  <form method="post" enctype="multipart/form-data">
+    <label>Select images (multiple files allowed):</label><br />
+    <input type="file" name="images" multiple accept="image/*" /><br /><br />
+    <button type="submit">Upload</button>
+    {{ csrf_token() }}
+  </form>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <ul>
+    {% for category, message in messages %}
+    <li
+      style="color: {% if category == 'success' %}green{% else %}red{% endif %};"
+    >
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% endwith %} {% if images %}
+  <h2>Uploaded Images:</h2>
+  <ul>
+    {% for img in images %}
+    <li>
+      <img
+        src="{{ url_for('static', filename='image_converter/uploads/' ~ img) }}"
+        alt="{{ img }}"
+        width="120"
+      />
+      {{ img }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+</div>
