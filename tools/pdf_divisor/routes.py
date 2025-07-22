@@ -41,7 +41,6 @@ def index():
 
 @bp.route("/result/<filename>")
 def result_page(filename):
-    # 👇 Agora está correto!
     return render_template("pdf_divisor/result.html", filename=filename)
 
 
