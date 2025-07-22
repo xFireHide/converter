@@ -10,6 +10,7 @@ content %}
       download
     >
       📥 Baixar PDF
+    </a>
     <a class="btn" href="{{ url_for('pdf_divisor.index') }}">
       🔄 Processar outro PDF
     </a>
@@ -23,5 +24,4 @@ content %}
     "{{ url_for('pdf_divisor.download_file', filename=filename, _external=True) }}";
 </script>
 <script src="{{ url_for('static', filename='js/result.js') }}"></script>
-
 {% endblock %}
