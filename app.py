@@ -12,7 +12,6 @@ PROCESSED_FOLDER = os.path.join(BASE_DIR, "processed")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
-# Configura antes de importar os blueprints!
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
 
@@ -24,6 +23,7 @@ if os.path.isdir(TOOLS_DIR):
             module = importlib.import_module(module_path)
             if hasattr(module, "bp"):
                 app.register_blueprint(module.bp)
+                print(f"Blueprint registrada: {module.bp.name} ({module_path})")
         except ModuleNotFoundError as e:
             print(f"Não foi possível importar {module_path}: {e}")
         except Exception as ex:
