@@ -12,6 +12,7 @@ PROCESSED_FOLDER = os.path.join(BASE_DIR, "processed")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 os.makedirs(PROCESSED_FOLDER, exist_ok=True)
 
+# Configura antes de importar os blueprints!
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
 
