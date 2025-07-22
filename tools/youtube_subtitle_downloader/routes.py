@@ -1,5 +1,3 @@
-# tools/nova_funcionalidade/routes.py
-
 from flask import (
     Blueprint,
     render_template,
@@ -18,7 +16,11 @@ import uuid
 import zipfile
 from pytube import Playlist
 
-bp = Blueprint("nova_funcionalidade", __name__, url_prefix="/nova_funcionalidade")
+bp = Blueprint(
+    "youtube_subtitle_downloader`",
+    __name__,
+    url_prefix="/youtube_subtitle_downloader`e",
+)
 
 # Configurações de segurança
 MAX_VIDEOS = 50
@@ -46,7 +48,7 @@ def index():
         if not url:
             flash("Por favor, forneça uma URL válida de playlist do YouTube.", "danger")
             return render_template(
-                "nova_funcionalidade/index.html",
+                "youtube_subtitle_downloader/index.html",
                 legendas_baixadas=[],
                 download_link=None,
             )
@@ -61,7 +63,7 @@ def index():
             if not video_urls:
                 flash("Nenhum vídeo encontrado na playlist.", "danger")
                 return render_template(
-                    "nova_funcionalidade/index.html",
+                    "youtube_subtitle_downloader/index.html",
                     legendas_baixadas=[],
                     download_link=None,
                 )
@@ -111,7 +113,7 @@ def index():
                 # Em produção, usar cache, banco ou armazenamento próprio (Redis, DB, etc)
                 request.environ.setdefault("downloads", {})[download_token] = zip_path
                 download_link = url_for(
-                    "nova_funcionalidade.download", token=download_token
+                    "youtube_subtitle_downloader.download", token=download_token
                 )
                 flash(
                     f"Legendas baixadas de {len(legendas_baixadas)}/{len(video_urls)} vídeos.",
@@ -123,7 +125,7 @@ def index():
             flash("Ocorreu um erro inesperado ao processar a playlist.", "danger")
         # Limpeza do diretório temporário seria ideal após o download.
     return render_template(
-        "nova_funcionalidade/index.html",
+        "youtube_subtitle_downloader/index.html",
         legendas_baixadas=legendas_baixadas,
         download_link=download_link,
     )
