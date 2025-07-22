@@ -10,7 +10,6 @@ from flask import (
 import os
 import subprocess
 import tempfile
-import shutil
 import re
 import uuid
 import zipfile
