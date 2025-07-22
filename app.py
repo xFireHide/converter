@@ -45,7 +45,8 @@ app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
 
 # --- Proteções ---
 CSRFProtect(app)
-limiter = Limiter(app, key_func=get_remote_address, default_limits=["50 per hour"])
+limiter = Limiter(key_func=get_remote_address, default_limits=["50 per hour"])
+limiter.init_app(app)
 
 # --- Blueprints dinâmicos ---
 TOOLS_DIR = os.path.join(BASE_DIR, "tools")
