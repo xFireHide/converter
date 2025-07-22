@@ -20,7 +20,7 @@ def index():
         pdf = request.files.get("pdf")
         if not pdf or not pdf.filename.lower().endswith(".pdf"):
             error = "Selecione um arquivo PDF válido."
-            return render_template("pdf_divisor.html", error=error)
+            return render_template("pdf_divisor/index.html", error=error)
 
         upload_folder = current_app.config["UPLOAD_FOLDER"]
         processed_folder = current_app.config["PROCESSED_FOLDER"]
@@ -35,13 +35,14 @@ def index():
             return redirect(url_for("pdf_divisor.result_page", filename=out_filename))
         except Exception as e:
             error = f"Erro ao processar o PDF: {e}"
-            return render_template("pdf_divisor.html", error=error)
-    return render_template("pdf_divisor.html", error=error)
+            return render_template("pdf_divisor/index.html", error=error)
+    return render_template("pdf_divisor/index.html", error=error)
 
 
 @bp.route("/result/<filename>")
 def result_page(filename):
-    return render_template("result.html", filename=filename)
+    # 👇 Agora está correto!
+    return render_template("pdf_divisor/result.html", filename=filename)
 
 
 @bp.route("/download/<filename>")
