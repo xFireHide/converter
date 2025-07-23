@@ -14,8 +14,10 @@ content %}
     URL encurtada:
     <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
   </p>
-  {% endif %} {% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
+  {% if click_count is not none %}
+  <p>Cliques: {{ click_count }}</p>
+  {% endif %} {% endif %} {% with messages =
+  get_flashed_messages(with_categories=true) %} {% if messages %}
   <ul>
     {% for category, message in messages %}
     <li>{{ message }}</li>
