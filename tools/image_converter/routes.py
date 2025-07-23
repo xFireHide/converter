@@ -25,6 +25,8 @@ ALLOWED_EXTENSIONS = {
     "dds",
     "heic",
 }
+# Formatos permitidos para conversão de saída
+OUTPUT_FORMATS = {"png", "jpg", "jpeg", "webp", "gif", "bmp"}
 
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -42,26 +44,56 @@ def validate_image(path):
         return False
 
 
+def convert_image(input_path, target_format):
+    """Converte a imagem para o formato especificado."""
+    with Image.open(input_path) as img:
+        fmt = target_format.lower()
+        if fmt in ("jpg", "jpeg"):
+            img = img.convert("RGB")
+            fmt = "JPEG"
+            ext = "jpg"
+        else:
+            fmt = fmt.upper()
+            ext = target_format.lower()
+        output_filename = f"{uuid.uuid4().hex}.{ext}"
+        output_path = os.path.join(UPLOAD_FOLDER, secure_filename(output_filename))
+        img.save(output_path, fmt)
+    return output_filename
+
+
 @bp.route("/", methods=["GET", "POST"])
 def index():
     images = []
     if request.method == "POST":
         files = request.files.getlist("images")
+        target_format = request.form.get("target_format", "").lower()
+        if target_format not in OUTPUT_FORMATS:
+            flash("Formato de saída inválido.", "danger")
+            return redirect(request.url)
         if not files or files == [None]:
             flash("No files were uploaded.", "danger")
             return redirect(request.url)
         for file in files:
             if file and allowed_file(file.filename):
                 ext = file.filename.rsplit(".", 1)[1].lower()
-                unique_filename = f"{uuid.uuid4().hex}.{ext}"
-                filepath = os.path.join(UPLOAD_FOLDER, secure_filename(unique_filename))
-                file.save(filepath)
-                if validate_image(filepath):
-                    images.append(unique_filename)
+                tmp_name = f"{uuid.uuid4().hex}.{ext}"
+                tmp_path = os.path.join(UPLOAD_FOLDER, secure_filename(tmp_name))
+                file.save(tmp_path)
+                if validate_image(tmp_path):
+                    try:
+                        conv_name = convert_image(tmp_path, target_format)
+                        images.append(conv_name)
+                    except Exception:
+                        flash(f"Erro ao converter {file.filename}.", "danger")
+                    finally:
+                        os.remove(tmp_path)
                 else:
-                    os.remove(filepath)
+                    os.remove(tmp_path)
         if not images:
             flash("No valid images were uploaded.", "danger")
         else:
-            flash(f"{len(images)} image(s) uploaded successfully!", "success")
+            flash(
+                f"{len(images)} image(s) converted to {target_format.upper()} successfully!",
+                "success",
+            )
     return render_template("image_converter/index.html", images=images)
