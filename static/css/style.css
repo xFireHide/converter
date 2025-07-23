@@ -14,6 +14,9 @@
   --primary-color: var(--primary-light);
   --secondary-color: var(--secondary-light);
   --card-bg: var(--card-light);
+  --border-radius: 8px;
+  --input-bg: #f5f7fa;
+  --input-border: #d3dbe3;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,6 +26,8 @@
     --primary-color: var(--primary-dark);
     --secondary-color: var(--secondary-dark);
     --card-bg: var(--card-dark);
+    --input-bg: #23242a;
+    --input-border: #33363b;
   }
 }
 
@@ -37,114 +42,175 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.container {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 20px;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
   min-height: 100vh;
 }
 
+/* Container centralizado, estilo FreeConvert */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 16px;
+  min-height: 100vh;
+}
+
+/* Card principal da ferramenta */
+.converter-card,
 .main-content {
   background-color: var(--card-bg);
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  padding: 32px 24px 24px 24px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 2px 12px 0 rgba(32, 32, 32, 0.1);
   text-align: center;
-  animation: fadeIn 0.6s ease;
+  margin: 40px 0;
+  width: 100%;
+  animation: fadeIn 0.7s;
 }
 
-.sidebar {
-  position: sticky;
-  top: 20px;
-  background: transparent;
-  padding: 0;
-  margin: 0;
+/* Área de drag-and-drop igual FreeConvert */
+.drop-area {
+  border: 2px dashed var(--secondary-color);
+  padding: 40px 24px;
+  border-radius: var(--border-radius);
+  background: var(--input-bg);
+  margin-bottom: 16px;
+  position: relative;
+  transition: border-color 0.2s;
+}
+.drop-area:hover,
+.drop-area.dragover {
+  border-color: var(--primary-color);
 }
 
-.sidebar:empty {
+/* Esconde input file */
+input[type="file"] {
   display: none;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
+/* Botão grande igual FreeConvert */
+.btn,
+.btn.large {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.17rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 18px 40px;
+  margin: 0 0 8px 0;
+  cursor: pointer;
+  box-shadow: 0 2px 8px 0 rgba(32, 32, 32, 0.08);
+  transition: background 0.18s, box-shadow 0.18s;
+}
+.btn:hover,
+.btn.large:hover {
+  background-color: #357ab8;
+  box-shadow: 0 4px 16px 0 rgba(32, 32, 32, 0.14);
 }
 
+/* Dica embaixo do botão */
+.hint {
+  margin-top: 6px;
+  color: var(--secondary-color);
+  font-size: 0.98rem;
+}
+
+/* Botão link "advanced settings" */
+.link {
+  background: none;
+  border: none;
+  color: var(--primary-color);
+  font-weight: 600;
+  font-size: 1.04rem;
+  cursor: pointer;
+  margin: 14px 0 8px 0;
+  text-decoration: underline;
+  transition: color 0.18s;
+}
+.link:hover {
+  color: #357ab8;
+}
+
+/* Card para settings avançadas */
+.card {
+  background: var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: 22px 20px;
+  text-align: left;
+  margin-bottom: 18px;
+  margin-top: 8px;
+  box-shadow: 0 1px 4px 0 rgba(32, 32, 32, 0.07);
+}
+
+/* Esconder card */
+.hidden {
+  display: none !important;
+}
+
+/* Agrupamento de opções */
+.setting-group {
+  margin-bottom: 14px;
+}
+.setting-group label {
+  font-weight: 500;
+  margin-bottom: 4px;
+  display: block;
+}
+.setting-group select,
+.setting-group input {
+  width: 100%;
+  padding: 10px 8px;
+  background: var(--input-bg);
+  border: 1.5px solid var(--input-border);
+  border-radius: 4px;
+  color: var(--text-color);
+  margin-top: 2px;
+}
+
+/* TITULOS e descrições */
+h1 {
+  font-size: 2.25rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
 .description,
 p {
-  margin: 10px 0;
-  font-size: 1.1rem;
+  margin: 10px 0 20px 0;
+  font-size: 1.11rem;
   text-align: center;
 }
 
-form {
+/* NAVBAR - minimalista igual FreeConvert */
+.navbar {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  margin-top: 20px;
-}
-
-input[type="file"] {
-  padding: 10px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
-  width: 100%;
-  max-width: 300px;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-
-input[type="url"] {
-  padding: 10px;
-  border: 1px solid var(--secondary-color);
-  border-radius: 4px;
-  width: 100%;
-  max-width: 300px;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-}
-
-button,
-.btn,
-.button-group a,
-.button-group button {
-  display: inline-block;
-  padding: 14px 24px;
-  background-color: var(--primary-color);
-  color: #fff;
-  text-decoration: none;
-  border: none;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-button:hover,
-.btn:hover,
-.button-group a:hover,
-.button-group button:hover {
-  background-color: #357ab8;
-}
-
-.button-group {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
   gap: 16px;
-  margin: 25px 0;
+  background-color: var(--card-bg);
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  margin: 20px auto 10px auto;
+  max-width: 800px;
+}
+.navbar a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.16s;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.navbar a:hover {
+  color: var(--primary-color);
+  background: rgba(74, 144, 226, 0.08);
 }
 
+/* Progresso, botões extras, etc (mantive seu estilo) */
 #progress-container {
   width: 100%;
   margin: 20px 0;
@@ -157,12 +223,11 @@ button:hover,
   position: relative;
   box-shadow: 0 1px 5px #0001;
 }
-
 #progress-bar {
   height: 100%;
   width: 0%;
   background: linear-gradient(90deg, #4a90e2 70%, #6bcdf6 100%);
-  transition: width 0.3s ease;
+  transition: width 0.3s;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -171,7 +236,6 @@ button:hover,
   font-weight: bold;
   font-size: 1.2em;
 }
-
 #progress-text {
   position: absolute;
   left: 50%;
@@ -181,39 +245,32 @@ button:hover,
   z-index: 2;
 }
 
-.navbar {
-  display: flex;
-  gap: 16px;
-  background-color: var(--card-bg);
-  padding: 12px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  margin: 20px auto;
-  max-width: 1000px;
+/* Responsivo igual FreeConvert */
+@media (max-width: 768px) {
+  .container {
+    padding: 14px 4px;
+    min-width: 0;
+    width: 100%;
+  }
+  .converter-card,
+  .main-content {
+    padding: 16px 6px 14px 6px;
+    margin: 24px 0 14px 0;
+    min-width: 0;
+    width: 100%;
+  }
+  .navbar {
+    padding: 10px 8px;
+    margin: 14px 0 4px 0;
+    max-width: 99vw;
+    font-size: 0.99rem;
+  }
+  .drop-area {
+    padding: 22px 4px;
+  }
 }
 
-.navbar a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.navbar a:hover {
-  color: var(--primary-color);
-}
-
-.hidden {
-  display: none !important;
-}
-
-.skeleton {
-  background: linear-gradient(90deg, #ddd 25%, #eee 50%, #ddd 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.2s ease-in-out infinite;
-  border-radius: 4px;
-}
-
+/* Fade in card */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -222,23 +279,5 @@ button:hover,
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
-  .sidebar {
-    display: none;
   }
 }
