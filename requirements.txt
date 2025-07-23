@@ -7,3 +7,4 @@ Pillow
 pytube
 yt-dlp
 rembg
+onnxruntime

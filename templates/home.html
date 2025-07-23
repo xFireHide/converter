@@ -2,21 +2,27 @@
 content %}
 <div class="main-content">
   <div class="button-group">
+    {% if 'pdf_divisor' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
       >📄 Divisor de PDF</a
     >
+    {% endif %} {% if 'short_curter' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('short_curter.index') }}">
       Encurtador de URL
     </a>
+    {% endif %} {% if 'image_converter' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('image_converter.index') }}">
       🔗 Image Converter
     </a>
+    {% endif %} {% if 'youtube_subtitle_downloader' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('youtube_subtitle_downloader.index') }}">
       🔗 Youtube Subtitle Downloader
     </a>
+    {% endif %} {% if 'background_remover' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('background_remover.index') }}">
       Removedor de Background
     </a>
+    {% endif %}
   </div>
   <div class="ads-banner-top"></div>
   <div class="adsense-bottom"></div>
