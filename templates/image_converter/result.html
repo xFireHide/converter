@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block title %}Imagens Convertidas{% endblock %} {%
+block content %}
+<div class="main-content">
+  <h1>Imagens Convertidas</h1>
+  <ul>
+    {% for img in images %}
+    <li>
+      <a
+        href="{{ url_for('static', filename='image_converter/uploads/' ~ img) }}"
+        target="_blank"
+      >
+        <img
+          src="{{ url_for('static', filename='image_converter/uploads/' ~ img) }}"
+          alt="{{ img }}"
+          width="120"
+        />
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+  <a class="btn" href="{{ url_for('image_converter.index') }}"
+    >Converter outras imagens</a
+  >
+</div>
+{% endblock %}

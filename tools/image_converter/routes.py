@@ -91,9 +91,22 @@ def index():
                     os.remove(tmp_path)
         if not images:
             flash("No valid images were uploaded.", "danger")
-        else:
-            flash(
-                f"{len(images)} image(s) converted to {target_format.upper()} successfully!",
-                "success",
-            )
-    return render_template("image_converter/index.html", images=images)
+            return redirect(request.url)
+        flash(
+            f"{len(images)} image(s) converted to {target_format.upper()} successfully!",
+            "success",
+        )
+        return redirect(
+            url_for("image_converter.result_page", filenames=",".join(images))
+        )
+    return render_template("image_converter/index.html")
+
+
+@bp.route("/result")
+def result_page():
+    filenames = request.args.get("filenames", "")
+    images = [f for f in filenames.split(",") if f]
+    if not images:
+        flash("Nenhuma imagem para exibir.", "danger")
+        return redirect(url_for("image_converter.index"))
+    return render_template("image_converter/result.html", images=images)

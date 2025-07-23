@@ -1,11 +1,6 @@
 {% extends 'base.html' %} {% block title %}Página Inicial{% endblock %} {% block
 content %}
 <div class="main-content">
-  <h1>Bem-vindo!</h1>
-  <p class="description">
-    Este é o site principal. Use o menu para navegar entre as ferramentas
-    disponíveis.
-  </p>
   <div class="button-group">
     <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
       >📄 Divisor de PDF</a
@@ -21,25 +16,6 @@ content %}
     </a>
   </div>
   <div class="ads-banner-top"></div>
-
-  <ul>
-    <li>Conversor de PDF para Imagem</li>
-    <li>Compressão de PDFs</li>
-    <li>Extrator de texto de imagens</li>
-    <li>Gerador de QR Code personalizado</li>
-    <li>🔗 Short Curter (Encurtador de Links)</li>
-  </ul>
-  <h2>📬 Contato</h2>
-  <p>
-    Tem dúvidas ou sugestões? Entre em contato pelo e-mail:
-    <a href="mailto:contato@firetools.com">contato@firetools.com</a>
-  </p>
-
-  <p>
-    <strong
-      >FireTools — ferramentas simples, poderosas e feitas para você.</strong
-    >
-  </p>
   <div class="adsense-bottom"></div>
+  {% endblock %}
 </div>
-{% endblock %}
