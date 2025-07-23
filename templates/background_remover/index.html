@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block title %}Removedor de Background{% endblock %}
+{% block content %}
+<div class="main-content">
+  <h1>Removedor de Background</h1>
+  <form method="post" enctype="multipart/form-data">
+    <label>Selecione uma imagem:</label><br />
+    <input type="file" name="image" accept="image/*" required /><br /><br />
+    <button type="submit">Remover Fundo</button>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  </form>
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <ul>
+    {% for category, message in messages %}
+    <li
+      style="color: {% if category == 'success' %}green{% else %}red{% endif %};"
+    >
+      {{ message }}
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% endwith %} {% if image %}
+  <h2>Resultado:</h2>
+  <img
+    src="{{ url_for('static', filename='background_remover/uploads/' ~ image) }}"
+    alt="Resultado"
+  />
+  <p>
+    <a
+      class="btn"
+      href="{{ url_for('static', filename='background_remover/uploads/' ~ image) }}"
+      download
+    >
+      📥 Baixar Imagem
+    </a>
+  </p>
+  {% endif %}
+</div>
+{% endblock %}
