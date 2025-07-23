@@ -6,3 +6,4 @@ gunicorn
 Pillow
 pytube
 yt-dlp
+rembg
