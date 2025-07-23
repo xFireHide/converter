@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 import os
 import uuid
+from rembg import remove  # ADICIONE ESTA IMPORTAÇÃO
 
 bp = Blueprint("background_remover", __name__, url_prefix="/background_remover")
 
@@ -32,21 +33,15 @@ def validate_image(path):
         return False
 
 
-def remove_background(input_path, tolerance=30):
-    """Remove a cor de fundo predominante (canto superior esquerdo)."""
-    with Image.open(input_path).convert("RGBA") as img:
-        datas = list(img.getdata())
-        bg_color = datas[0][:3]
-        result = []
-        for item in datas:
-            if all(abs(item[i] - bg_color[i]) <= tolerance for i in range(3)):
-                result.append((255, 255, 255, 0))
-            else:
-                result.append(item)
-        img.putdata(result)
-        output_filename = f"{uuid.uuid4().hex}.png"
-        output_path = os.path.join(UPLOAD_FOLDER, secure_filename(output_filename))
-        img.save(output_path, "PNG")
+def remove_background(input_path):
+    """Remove o fundo da imagem usando a biblioteca rembg (IA)."""
+    with open(input_path, "rb") as inp:
+        input_bytes = inp.read()
+        output_bytes = remove(input_bytes)
+    output_filename = f"{uuid.uuid4().hex}.png"
+    output_path = os.path.join(UPLOAD_FOLDER, secure_filename(output_filename))
+    with open(output_path, "wb") as out:
+        out.write(output_bytes)
     return output_filename
 
 
@@ -65,7 +60,8 @@ def index():
                     out_file = remove_background(tmp_path)
                     image = out_file
                     flash("Fundo removido com sucesso!", "success")
-                except Exception:
+                except Exception as e:
+                    print(e)
                     flash("Erro ao processar a imagem.", "danger")
                 finally:
                     os.remove(tmp_path)
