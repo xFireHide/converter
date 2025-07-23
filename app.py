@@ -23,6 +23,12 @@ app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
 
+
+@app.context_processor
+def inject_current_app():
+    return {"current_app": current_app}
+
+
 # Diretórios importantes
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 

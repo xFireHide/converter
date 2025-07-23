@@ -16,7 +16,6 @@ block content %}
     <br /><br />
     <button type="submit">Convert</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %}

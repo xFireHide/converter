@@ -1,37 +1,41 @@
-{% extends 'base.html' %}
-{% block title %}YouTube Subtitle Downloader{% endblock %}
-{% block content %}
+{% extends 'base.html' %} {% block title %}YouTube Subtitle Downloader{%
+endblock %} {% block content %}
 <div class="main-content">
   <h1>Baixar Legendas de uma Playlist do YouTube</h1>
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-            {% for category, message in messages %}
-                <li><strong>{{ category.title() }}:</strong> {{ message }}</li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+  {% with messages = get_flashed_messages(with_categories=true) %} {% if
+  messages %}
+  <ul>
+    {% for category, message in messages %}
+    <li><strong>{{ category.title() }}:</strong> {{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% endwith %}
 
-    <form method="post" autocomplete="off">
-        <label for="playlist_url">Cole o link da playlist do YouTube:</label>
-        <input type="text" id="playlist_url" name="playlist_url" required size="60" pattern="https://.*(list=).*">
-        <button type="submit">Baixar Legendas</button>
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-    </form>
+  <form method="post" autocomplete="off">
+    <label for="playlist_url">Cole o link da playlist do YouTube:</label>
+    <input
+      type="text"
+      id="playlist_url"
+      name="playlist_url"
+      required
+      size="60"
+      pattern="https://.*(list=).*"
+    />
+    <button type="submit">Baixar Legendas</button>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  </form>
 
-    {% if legendas_baixadas %}
-        <h2>Legendas encontradas para:</h2>
-        <ul>
-        {% for url in legendas_baixadas %}
-            <li>{{ url }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-
-    {% if download_link %}
-        <p><a href="{{ download_link }}">Clique aqui para baixar as legendas (.zip)</a></p>
-    {% endif %}  </ul>
+  {% if legendas_baixadas %}
+  <h2>Legendas encontradas para:</h2>
+  <ul>
+    {% for url in legendas_baixadas %}
+    <li>{{ url }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %} {% if download_link %}
+  <p>
+    <a href="{{ download_link }}">Clique aqui para baixar as legendas (.zip)</a>
+  </p>
   {% endif %}
 </div>
 {% endblock %}
