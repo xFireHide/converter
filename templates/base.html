@@ -16,21 +16,21 @@
   </head>
   <body>
     <nav class="navbar">
-      <a href="{{ url_for('home') }}">🏠 Home</a>
+      <a href="{{ url_for('home') }}">Home</a>
       {% if 'pdf_divisor' in current_app.blueprints %}
-      <a href="{{ url_for('pdf_divisor.index') }}">📄 Divisor de PDF</a>
+      <a href="{{ url_for('pdf_divisor.index') }}">Divisor de PDF</a>
       {% endif %} {% if 'short_curter' in current_app.blueprints %}
-      <a href="{{ url_for('short_curter.index') }}">🔗 Short Curter</a>
+      <a href="{{ url_for('short_curter.index') }}">Short Curter</a>
       {% endif %} {% if 'image_converter' in current_app.blueprints %}
-      <a href="{{ url_for('image_converter.index') }}">🔗 Image Converter</a>
+      <a href="{{ url_for('image_converter.index') }}">Image Converter</a>
       {% endif %} {% if 'youtube_subtitle_downloader' in current_app.blueprints
       %}
       <a href="{{ url_for('youtube_subtitle_downloader.index') }}"
-        >🔗 Youtube Subtitle Downloader</a
+        >Youtube Subtitle Downloader</a
       >
       {% endif %} {% if 'background_remover' in current_app.blueprints %}
       <a href="{{ url_for('background_remover.index') }}"
-        >🔗 Removedor de Background</a
+        >Removedor de Background</a
       >
       {% endif %}
       <!-- Outras ferramentas -->
