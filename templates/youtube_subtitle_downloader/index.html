@@ -19,7 +19,7 @@ endblock %} {% block content %}
       name="yt_url"
       required
       size="60"
-      pattern="https://.*"
+      pattern="https?://.*"
     />
     <button type="submit">Baixar Legendas</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
