@@ -61,10 +61,6 @@ class PDFProcessor:
 
 
 def process_pdf(input_path, output_path=None):
-    """
-    Processa o PDF de input_path e retorna o caminho do arquivo processado.
-    Se output_path não for especificado, salva em input_path_processed.pdf.
-    """
     if output_path is None:
         base, _ = os.path.splitext(input_path)
         output_path = f"{base}_processed.pdf"

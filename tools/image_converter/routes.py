@@ -8,7 +8,7 @@ bp = Blueprint("image_converter", __name__, url_prefix="/image_converter")
 
 UPLOAD_FOLDER = "static/image_converter/uploads"
 
-# Formatos permitidos para conversão de saída
+
 OUTPUT_FORMATS = {"png", "jpg", "jpeg", "webp", "gif", "bmp"}
 
 

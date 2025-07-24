@@ -40,7 +40,6 @@ def validate_image(path):
 
 
 def convert_image(input_path, target_format):
-    """Converte a imagem para o formato especificado."""
     with Image.open(input_path) as img:
         fmt = target_format.lower()
         if fmt in ("jpg", "jpeg"):

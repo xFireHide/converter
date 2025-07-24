@@ -24,7 +24,6 @@ def validate_image(path: str) -> bool:
 
 
 def remove_background(input_path: str) -> str:
-    """Remove o fundo da imagem usando a biblioteca rembg (IA)."""
     with open(input_path, "rb") as inp:
         input_bytes = inp.read()
         output_bytes = remove(input_bytes)

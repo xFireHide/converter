@@ -37,14 +37,12 @@ def shorten_url(original_url):
     conn = get_db()
     cursor = conn.cursor()
 
-    # Verifica se a URL já existe e retorna o mesmo code
     cursor.execute("SELECT code FROM urls WHERE original_url = ?", (original_url,))
     result = cursor.fetchone()
     if result:
         conn.close()
         return result[0]
 
-    # Gera um code único
     while True:
         code = generate_code()
         cursor.execute("SELECT id FROM urls WHERE code = ?", (code,))
