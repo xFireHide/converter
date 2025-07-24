@@ -1,4 +1,3 @@
-# tools/yt_video_downloader/routes.py
 from flask import (
     Blueprint,
     render_template,
@@ -24,7 +23,7 @@ def index():
         url = request.form.get("url")
         if not url:
             flash("Por favor, insira o link do vídeo ou playlist.")
-            return render_template("yt_video_downloader.html")
+            return render_template("yt_video_downloader/index.html")
 
         try:
             # Cria pasta única para cada download
@@ -34,7 +33,7 @@ def index():
             downloaded_files = handle_download(url, folder_path)
             if not downloaded_files:
                 flash("Nenhum vídeo foi baixado.")
-                return render_template("yt_video_downloader.html")
+                return render_template("yt_video_downloader/index.html")
 
             # Exibe os links para download
             download_links = [
@@ -42,12 +41,13 @@ def index():
                 for f in downloaded_files
             ]
             return render_template(
-                "yt_video_downloader.html", download_links=download_links
+                "yt_video_downloader/index.html",
+                download_links=download_links,
             )
         except Exception as e:
             flash(f"Ocorreu um erro: {e}")
-            return render_template("yt_video_downloader.html")
-    return render_template("yt_video_downloader.html")
+            return render_template("yt_video_downloader/index.html")
+    return render_template("yt_video_downloader/index.html")
 
 
 @bp.route("/download/<folder>/<filename>")

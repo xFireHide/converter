@@ -65,7 +65,7 @@ def index():
                 video_urls = [url]
             if not video_urls:
                 flash("Nenhum vídeo encontrado.", "danger")
-                return render_template(
+                   return render_template(
                     "youtube_subtitle_downloader/index.html",
                     legendas_baixadas=[],
                     download_link=None,
@@ -90,7 +90,12 @@ def index():
                         stdout=subprocess.DEVNULL,  # Não expõe saída
                         stderr=subprocess.DEVNULL,
                     )
-@@ -99,43 +103,43 @@ def index():
+                    legendas_baixadas.append(vurl)
+                except Exception:
+                    flash(
+                        f"Falha ao baixar legenda do vídeo {idx + 1}.",
+                        "warning",
+                    )
             # Compacta as legendas para download
             legendas_files = [
                 f
@@ -116,21 +121,4 @@ def index():
             else:
                 flash("Nenhuma legenda em português encontrada nos vídeos.", "warning")
         except Exception:
-            flash("Ocorreu um erro inesperado ao processar o link.", "danger")
-        # Limpeza do diretório temporário seria ideal após o download.
-    return render_template(
-        "youtube_subtitle_downloader/index.html",
-        legendas_baixadas=legendas_baixadas,
-        download_link=download_link,
-    )
-
-
-@bp.route("/download/<token>")
-def download(token):
-    downloads = request.environ.get("downloads", {})
-    zip_path = downloads.get(token)
-    if zip_path and os.path.exists(zip_path):
-        # O nome do arquivo baixado será 'legendas.zip'
-        return send_file(zip_path, as_attachment=True, download_name="legendas.zip")
-    flash("Arquivo de download expirado ou inválido.", "danger")
-    return redirect(url_for(".index"))
+            
