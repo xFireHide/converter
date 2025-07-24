@@ -2,9 +2,21 @@
 block content %}
 <div class="main-content">
   <h1>Image Converter</h1>
-  <form method="post" enctype="multipart/form-data">
-    <label>Select images (multiple files allowed):</label><br />
-    <input type="file" name="images" multiple accept="image/*" /><br /><br />
+  <form id="upload-form" method="post" enctype="multipart/form-data">
+    <div class="drop-area">
+      <h2>Arraste e solte as imagens aqui</h2>
+      <p>Ou clique no botão abaixo</p>
+      <input
+        type="file"
+        id="fileElem"
+        name="images"
+        accept="image/*"
+        multiple
+      />
+      <button class="btn" type="button">Selecionar Arquivos</button>
+      <div class="file-list"></div>
+    </div>
+    <br />
     <label for="target_format">Convert to:</label>
     <select name="target_format" id="target_format" required>
       <option value="png">PNG</option>
@@ -43,6 +55,14 @@ block content %}
     {% endfor %}
   </ul>
   {% endif %}
-  <script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+   <div id="progress-container" class="hidden">
+    <div id="progress-bar">
+      <span id="progress-text">0%</span>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
 </div>
 {% endblock %}

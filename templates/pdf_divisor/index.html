@@ -12,14 +12,12 @@ content %}
     method="POST"
     enctype="multipart/form-data"
   >
-    <div class="drop-area" id="drop-area">
-      <h2>Arraste e solte os arquivos aqui</h2>
+    <div class="drop-area">
+      <h2>Arraste e solte o PDF aqui</h2>
       <p>Ou clique no botão abaixo</p>
-      <input type="file" id="fileElem" multiple />
-      <button class="btn" onclick="fileElem.click()">
-        Selecionar Arquivos
-      </button>
-      <div class="file-list" id="fileList"></div>
+
+      <button class="btn" type="button">Selecionar Arquivo</button>
+      <div class="file-list"></div>
     </div>
 
     <input
