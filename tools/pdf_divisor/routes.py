@@ -11,11 +11,14 @@ from .pdf_divisor import process_pdf
 import os
 import uuid
 import fitz
+from app import limiter
+
 
 bp = Blueprint("pdf_divisor", __name__, url_prefix="/divisorpdf")
 
 
 @bp.route("/", methods=["GET", "POST"])
+@limiter.limit("100 per hour")
 def index():
     error = None
     if request.method == "POST":
