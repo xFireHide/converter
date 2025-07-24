@@ -7,7 +7,7 @@ from flask import (
     current_app,
     send_from_directory,
 )
-from .pdf_divisor import process_pdf
+from .service import process_pdf
 import os
 import uuid
 import fitz
