@@ -20,8 +20,20 @@ endblock %} {% block content %}
       required
       size="60"
       pattern="https?://.*"
+      value="{{ yt_url }}"
     />
+    {% if languages %}
+    <p>Selecione o idioma:</p>
+    {% for lang in languages %}
+    <label
+      ><input type="radio" name="lang" value="{{ lang }}" required /> {{ lang
+      }}</label
+    ><br />
+    {% endfor %}
     <button type="submit">Baixar Legendas</button>
+    {% else %}
+    <button type="submit">Buscar Idiomas</button>
+    {% endif %}
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
 
