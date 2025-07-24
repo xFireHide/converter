@@ -10,7 +10,12 @@ from flask import (
 import os
 import uuid
 
-from .service import sanitize_url, process_url
+from .service import (
+    sanitize_url,
+    process_url,
+    get_video_urls,
+    get_available_languages,
+)
 
 bp = Blueprint(
     "youtube_subtitle_downloader",
@@ -23,9 +28,12 @@ bp = Blueprint(
 def index():
     legendas_baixadas = []
     download_link = None
+    languages = []
+    yt_url = ""
 
     if request.method == "POST":
         yt_url = request.form.get("yt_url", "")
+        selected_lang = request.form.get("lang")
         url = sanitize_url(yt_url)
         if not url:
             flash("Por favor, forneça uma URL válida do YouTube.", "danger")
@@ -33,9 +41,24 @@ def index():
                 "youtube_subtitle_downloader/index.html",
                 legendas_baixadas=[],
                 download_link=None,
+                languages=[],
+                yt_url=yt_url,
             )
 
-        legendas_baixadas, zip_path, tmp_dir = process_url(url)
+        video_urls = get_video_urls(url)
+        if not selected_lang:
+            languages = get_available_languages(video_urls)
+            if not languages:
+                flash("Nenhuma legenda disponível nos vídeos.", "warning")
+            return render_template(
+                "youtube_subtitle_downloader/index.html",
+                legendas_baixadas=[],
+                download_link=None,
+                languages=languages,
+                yt_url=yt_url,
+            )
+
+        legendas_baixadas, zip_path, tmp_dir = process_url(url, selected_lang)
         try:
             if zip_path:
                 download_token = str(uuid.uuid4())
@@ -48,7 +71,7 @@ def index():
                     "success",
                 )
             else:
-                flash("Nenhuma legenda em português encontrada nos vídeos.", "warning")
+                flash("Nenhuma legenda encontrada no idioma selecionado.", "warning")
         finally:
             pass
 
@@ -56,6 +79,8 @@ def index():
         "youtube_subtitle_downloader/index.html",
         legendas_baixadas=legendas_baixadas,
         download_link=download_link,
+        languages=languages,
+        yt_url=yt_url,
     )
 
 

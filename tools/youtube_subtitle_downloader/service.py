@@ -3,7 +3,8 @@ import subprocess
 import uuid
 import tempfile
 import zipfile
-from typing import List, Tuple
+import json
+from typing import List, Tuple, Set
 from pytube import Playlist
 
 MAX_VIDEOS = 50
@@ -24,8 +25,27 @@ def get_video_urls(url: str) -> List[str]:
     return [url]
 
 
+def get_available_languages(video_urls: List[str]) -> List[str]:
+    """Retorna a lista unificada de idiomas de legenda disponíveis."""
+    languages: Set[str] = set()
+    for vurl in video_urls:
+        try:
+            result = subprocess.run(
+                ["yt-dlp", "-j", "--skip-download", vurl],
+                check=True,
+                timeout=60,
+                capture_output=True,
+                text=True,
+            )
+            data = json.loads(result.stdout)
+            languages.update(data.get("subtitles", {}).keys())
+        except Exception:
+            pass
+    return sorted(languages)
+
+
 def download_subtitles(
-    video_urls: List[str], tmp_dir: str
+    video_urls: List[str], tmp_dir: str, lang: str
 ) -> Tuple[List[str], str | None]:
     legendas_baixadas = []
     for idx, vurl in enumerate(video_urls):
@@ -35,7 +55,7 @@ def download_subtitles(
                     "yt-dlp",
                     "--write-auto-sub",
                     "--sub-lang",
-                    "pt",
+                    lang,
                     "--skip-download",
                     "--output",
                     os.path.join(tmp_dir, "%(title)s.%(ext)s"),
@@ -61,10 +81,10 @@ def download_subtitles(
     return legendas_baixadas, zip_path
 
 
-def process_url(url: str) -> Tuple[List[str], str | None, str]:
+def process_url(url: str, lang: str) -> Tuple[List[str], str | None, str]:
     tmp_dir = tempfile.mkdtemp(prefix="yt_legendas_")
     video_urls = get_video_urls(url)
     if not video_urls:
         return [], None, tmp_dir
-    legendas_baixadas, zip_path = download_subtitles(video_urls, tmp_dir)
+    legendas_baixadas, zip_path = download_subtitles(video_urls, tmp_dir, lang)
     return legendas_baixadas, zip_path, tmp_dir
