@@ -1,48 +1,16 @@
 from flask import Blueprint, render_template, request, flash
 from werkzeug.utils import secure_filename
-from PIL import Image
 import os
 import uuid
-from rembg import remove  # ADICIONE ESTA IMPORTAÇÃO
+
+from .service import (
+    UPLOAD_FOLDER,
+    allowed_file,
+    validate_image,
+    remove_background,
+)
 
 bp = Blueprint("background_remover", __name__, url_prefix="/background_remover")
-
-UPLOAD_FOLDER = "static/background_remover/uploads"
-ALLOWED_EXTENSIONS = {
-    "png",
-    "jpg",
-    "jpeg",
-    "gif",
-    "webp",
-    "bmp",
-}
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
-
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
-def validate_image(path):
-    try:
-        with Image.open(path) as img:
-            img.verify()
-        return True
-    except Exception:
-        return False
-
-
-def remove_background(input_path):
-    """Remove o fundo da imagem usando a biblioteca rembg (IA)."""
-    with open(input_path, "rb") as inp:
-        input_bytes = inp.read()
-        output_bytes = remove(input_bytes)
-    output_filename = f"{uuid.uuid4().hex}.png"
-    output_path = os.path.join(UPLOAD_FOLDER, secure_filename(output_filename))
-    with open(output_path, "wb") as out:
-        out.write(output_bytes)
-    return output_filename
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -68,6 +36,3 @@ def index():
             else:
                 os.remove(tmp_path)
                 flash("Arquivo de imagem inválido.", "danger")
-        else:
-            flash("Nenhum arquivo enviado ou extensão não suportada.", "danger")
-    return render_template("background_remover/index.html", image=image)
