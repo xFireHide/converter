@@ -213,6 +213,42 @@ button:hover,
   animation: skeleton-loading 1.2s ease-in-out infinite;
   border-radius: 4px;
 }
+.dropdown {
+  position: relative;
+}
+
+.dropdown > span {
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: calc(100% + 4px);
+  background-color: var(--card-bg);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  padding: 8px 12px;
+  z-index: 10;
+}
+
+.dropdown-content a {
+  display: block;
+  color: var(--text-color);
+  text-decoration: none;
+  padding: 4px 0;
+}
+
+.dropdown-content a:hover {
+  color: var(--primary-color);
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
 
 @keyframes fadeIn {
   from {
