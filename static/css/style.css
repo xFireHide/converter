@@ -239,6 +239,38 @@ button:hover,
   display: block;
 }
 
+.drop-area {
+  border: 2px dashed #4fc3f7;
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  width: 400px;
+  background-color: #2c2c3c;
+  transition: border-color 0.3s;
+}
+
+.drop-area.hover {
+  border-color: #00e676;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.btn {
+  background: #4fc3f7;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+.file-list {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+}
 .hidden {
   display: none !important;
 }

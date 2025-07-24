@@ -12,6 +12,16 @@ content %}
     method="POST"
     enctype="multipart/form-data"
   >
+    <div class="drop-area" id="drop-area">
+      <h2>Arraste e solte os arquivos aqui</h2>
+      <p>Ou clique no botão abaixo</p>
+      <input type="file" id="fileElem" multiple />
+      <button class="btn" onclick="fileElem.click()">
+        Selecionar Arquivos
+      </button>
+      <div class="file-list" id="fileList"></div>
+    </div>
+
     <input
       type="file"
       name="pdf"
@@ -32,4 +42,5 @@ content %}
 </div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
 {% endblock %}
