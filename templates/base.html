@@ -28,6 +28,10 @@
       <a href="{{ url_for('youtube_subtitle_downloader.index') }}"
         >Youtube Subtitle Downloader</a
       >
+      {% endif %} {% if 'yt_video_downloader' in current_app.blueprints %}
+      <a href="{{ url_for('yt_video_downloader.index') }}"
+        >YT Video Downloader</a
+      >
       {% endif %} {% if 'background_remover' in current_app.blueprints %}
       <a href="{{ url_for('background_remover.index') }}"
         >Removedor de Background</a

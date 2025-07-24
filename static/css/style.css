@@ -270,7 +270,14 @@ input[type="file"] {
   margin-top: 20px;
   text-align: left;
   font-size: 14px;
+  max-width: 100%;
 }
+
+.file-list p {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  margin: 4px 0;
+
 .hidden {
   display: none !important;
 }
