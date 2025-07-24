@@ -23,15 +23,16 @@ bp = Blueprint(
 
 # Configurações de segurança
 MAX_VIDEOS = 50
-ALLOWED_YT_PLAYLIST = re.compile(
-    r"^https:\/\/(www\.)?(youtube\.com|youtu\.be)\/.*(list=.+)$"
+# Aceita qualquer URL do YouTube para vídeo ou playlist
+ALLOWED_YT_URL = re.compile(
+    r"^https?:\/\/(www\.)?(youtube\.com|youtu\.be)\/.*$"
 )
 
 
 def sanitize_url(url):
-    """Remove espaços e controla o input para só aceitar playlist do YouTube."""
+    """Limpa espaços e verifica se a URL parece ser do YouTube."""
     url = url.strip()
-    if not ALLOWED_YT_PLAYLIST.match(url):
+    if not ALLOWED_YT_URL.match(url):
         return None
     return url
 
@@ -42,10 +43,10 @@ def index():
     download_link = None
 
     if request.method == "POST":
-        playlist_url = request.form.get("playlist_url", "")
-        url = sanitize_url(playlist_url)
+        yt_url = request.form.get("yt_url", "")
+        url = sanitize_url(yt_url)
         if not url:
-            flash("Por favor, forneça uma URL válida de playlist do YouTube.", "danger")
+            flash("Por favor, forneça uma URL válida do YouTube.", "danger")
             return render_template(
                 "youtube_subtitle_downloader/index.html",
                 legendas_baixadas=[],
@@ -57,10 +58,13 @@ def index():
         zip_path = os.path.join(tmp_dir, "legendas.zip")
 
         try:
-            playlist = Playlist(url)
-            video_urls = playlist.video_urls[:MAX_VIDEOS]  # Limita quantidade de vídeos
+            if "list=" in url:
+                playlist = Playlist(url)
+                video_urls = playlist.video_urls[:MAX_VIDEOS]
+            else:
+                video_urls = [url]
             if not video_urls:
-                flash("Nenhum vídeo encontrado na playlist.", "danger")
+                flash("Nenhum vídeo encontrado.", "danger")
                 return render_template(
                     "youtube_subtitle_downloader/index.html",
                     legendas_baixadas=[],
@@ -86,16 +90,7 @@ def index():
                         stdout=subprocess.DEVNULL,  # Não expõe saída
                         stderr=subprocess.DEVNULL,
                     )
-                    legendas_baixadas.append(vurl)
-                except subprocess.TimeoutExpired:
-                    flash(
-                        f"Tempo esgotado ao processar um vídeo. Tente novamente.",
-                        "warning",
-                    )
-                    break
-                except Exception:
-                    continue  # Pula vídeo com erro
-
+@@ -99,43 +103,43 @@ def index():
             # Compacta as legendas para download
             legendas_files = [
                 f
@@ -121,7 +116,7 @@ def index():
             else:
                 flash("Nenhuma legenda em português encontrada nos vídeos.", "warning")
         except Exception:
-            flash("Ocorreu um erro inesperado ao processar a playlist.", "danger")
+            flash("Ocorreu um erro inesperado ao processar o link.", "danger")
         # Limpeza do diretório temporário seria ideal após o download.
     return render_template(
         "youtube_subtitle_downloader/index.html",

@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block title %}YouTube Subtitle Downloader{%
 endblock %} {% block content %}
 <div class="main-content">
-  <h1>Baixar Legendas de uma Playlist do YouTube</h1>
+  <h1>Baixar Legendas do YouTube</h1>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %}
   <ul>
@@ -12,14 +12,14 @@ endblock %} {% block content %}
   {% endif %} {% endwith %}
 
   <form method="post" autocomplete="off">
-    <label for="playlist_url">Cole o link da playlist do YouTube:</label>
+    <label for="yt_url">Cole o link do vídeo ou playlist do YouTube:</label>
     <input
       type="text"
-      id="playlist_url"
-      name="playlist_url"
+      id="yt_url"
+      name="yt_url"
       required
       size="60"
-      pattern="https://.*(list=).*"
+      pattern="https://.*"
     />
     <button type="submit">Baixar Legendas</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
