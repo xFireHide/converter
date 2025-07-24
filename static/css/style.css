@@ -202,17 +202,6 @@ button:hover,
 .navbar a:hover {
   color: var(--primary-color);
 }
-
-.hidden {
-  display: none !important;
-}
-
-.skeleton {
-  background: linear-gradient(90deg, #ddd 25%, #eee 50%, #ddd 75%);
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.2s ease-in-out infinite;
-  border-radius: 4px;
-}
 .dropdown {
   position: relative;
 }
@@ -248,6 +237,17 @@ button:hover,
 
 .dropdown:hover .dropdown-content {
   display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #ddd 25%, #eee 50%, #ddd 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.2s ease-in-out infinite;
+  border-radius: 4px;
 }
 
 @keyframes fadeIn {
