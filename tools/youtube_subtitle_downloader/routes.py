@@ -15,6 +15,7 @@ from .service import (
     process_url,
     get_video_urls,
     get_available_languages,
+    cleanup_tmp_dir,
 )
 
 bp = Blueprint(
@@ -22,6 +23,9 @@ bp = Blueprint(
     __name__,
     url_prefix="/youtube_subtitle_downloader",
 )
+
+# Armazena tokens de download temporariamente
+DOWNLOADS: dict[str, tuple[str, str]] = {}
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -59,21 +63,19 @@ def index():
             )
 
         legendas_baixadas, zip_path, tmp_dir = process_url(url, selected_lang)
-        try:
-            if zip_path:
-                download_token = str(uuid.uuid4())
-                request.environ.setdefault("downloads", {})[download_token] = zip_path
-                download_link = url_for(
-                    "youtube_subtitle_downloader.download", token=download_token
-                )
-                flash(
-                    f"Legendas baixadas de {len(legendas_baixadas)}/{len(legendas_baixadas)} vídeos.",
-                    "success",
-                )
-            else:
-                flash("Nenhuma legenda encontrada no idioma selecionado.", "warning")
-        finally:
-            pass
+        if zip_path:
+            download_token = str(uuid.uuid4())
+            DOWNLOADS[download_token] = (zip_path, tmp_dir)
+            download_link = url_for(
+                "youtube_subtitle_downloader.download", token=download_token
+            )
+            flash(
+                f"Legendas baixadas de {len(legendas_baixadas)}/{len(video_urls)} vídeos.",
+                "success",
+            )
+        else:
+            cleanup_tmp_dir(tmp_dir)
+            flash("Nenhuma legenda encontrada no idioma selecionado.", "warning")
 
     return render_template(
         "youtube_subtitle_downloader/index.html",
@@ -86,9 +88,12 @@ def index():
 
 @bp.route("/download/<token>")
 def download(token):
-    downloads = request.environ.get("downloads", {})
-    zip_path = downloads.get(token)
-    if zip_path and os.path.exists(zip_path):
-        return send_file(zip_path, as_attachment=True, download_name="legendas.zip")
+    data = DOWNLOADS.pop(token, None)
+    if data:
+        zip_path, tmp_dir = data
+        if os.path.exists(zip_path):
+            resp = send_file(zip_path, as_attachment=True, download_name="legendas.zip")
+            cleanup_tmp_dir(tmp_dir)
+            return resp
     flash("Arquivo de download expirado ou inválido.", "danger")
     return redirect(url_for("youtube_subtitle_downloader.index"))

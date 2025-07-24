@@ -1,11 +1,11 @@
 import os
 import subprocess
-import uuid
 import tempfile
 import zipfile
 import json
+import shutil
 from typing import List, Tuple, Set
-from pytube import Playlist
+
 
 MAX_VIDEOS = 50
 
@@ -19,9 +19,30 @@ def sanitize_url(url: str) -> str | None:
 
 
 def get_video_urls(url: str) -> List[str]:
+    """Retorna as URLs dos vídeos, limitando para playlists grandes."""
     if "list=" in url:
-        playlist = Playlist(url)
-        return playlist.video_urls[:MAX_VIDEOS]
+        try:
+            result = subprocess.run(
+                [
+                    "yt-dlp",
+                    "--flat-playlist",
+                    "--playlist-end",
+                    str(MAX_VIDEOS),
+                    "-J",
+                    url,
+                ],
+                check=True,
+                timeout=60,
+                capture_output=True,
+                text=True,
+            )
+            data = json.loads(result.stdout)
+            return [
+                f"https://www.youtube.com/watch?v={entry['id']}"
+                for entry in data.get("entries", [])
+            ]
+        except Exception:
+            return []
     return [url]
 
 
@@ -47,15 +68,7 @@ def get_available_languages(video_urls: List[str]) -> List[str]:
 def download_subtitles(
     video_urls: List[str], tmp_dir: str, lang: str
 ) -> Tuple[List[str], str | None]:
-    legendas_baixadas = []
-    for idx, vurl in enumerate(video_urls):
-        try:
-            subprocess.run(
-                [
-                    "yt-dlp",
-                    "--write-auto-sub",
-                    "--sub-lang",
-                    lang,
+@@ -59,32 +80,40 @@ def download_subtitles(
                     "--skip-download",
                     "--output",
                     os.path.join(tmp_dir, "%(title)s.%(ext)s"),
@@ -79,6 +92,14 @@ def download_subtitles(
             for filename in legendas_files:
                 zipf.write(os.path.join(tmp_dir, filename), arcname=filename)
     return legendas_baixadas, zip_path
+
+
+def cleanup_tmp_dir(path: str) -> None:
+    """Remove o diretório temporário criado."""
+    try:
+        shutil.rmtree(path)
+    except OSError:
+        pass
 
 
 def process_url(url: str, lang: str) -> Tuple[List[str], str | None, str]:
