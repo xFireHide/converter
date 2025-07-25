@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import uuid
 import tempfile
@@ -88,3 +89,11 @@ def process_url(url: str, lang: str) -> Tuple[List[str], str | None, str]:
         return [], None, tmp_dir
     legendas_baixadas, zip_path = download_subtitles(video_urls, tmp_dir, lang)
     return legendas_baixadas, zip_path, tmp_dir
+
+
+def cleanup_tmp_dir(path: str) -> None:
+    """Remove o diretório temporário utilizado para downloads."""
+    try:
+        shutil.rmtree(path, ignore_errors=True)
+    except Exception:
+        pass
