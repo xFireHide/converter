@@ -1,7 +1,8 @@
 import os
 import uuid
+import io
 from werkzeug.utils import secure_filename
-from PIL import Image
+from PIL import Image, ImageFilter
 from rembg import remove, new_session
 
 UPLOAD_FOLDER = "static/background_remover/uploads"
@@ -28,7 +29,7 @@ def remove_background(input_path: str) -> str:
     with open(input_path, "rb") as inp:
         input_bytes = inp.read()
 
-    # use the more general IS-Net model and enable alpha matting for better results
+    # Use the more general IS-Net model with alpha matting to reduce artifacts
     session = new_session(model_name="isnet-general-use")
     output_bytes = remove(
         input_bytes,
@@ -36,10 +37,16 @@ def remove_background(input_path: str) -> str:
         alpha_matting=True,
         alpha_matting_foreground_threshold=240,
         alpha_matting_background_threshold=10,
-        alpha_matting_erode_size=10,
+        alpha_matting_erode_size=5,
     )
+
+    # refine the mask to avoid losing important details
+    image = Image.open(io.BytesIO(output_bytes)).convert("RGBA")
+    mask = image.split()[-1]
+    mask = mask.filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+    image.putalpha(mask)
+
     output_filename = f"{uuid.uuid4().hex}.png"
     output_path = os.path.join(UPLOAD_FOLDER, secure_filename(output_filename))
-    with open(output_path, "wb") as out:
-        out.write(output_bytes)
+    image.save(output_path)
     return output_filename
