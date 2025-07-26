@@ -18,6 +18,7 @@ from flask_limiter.util import get_remote_address
 # --- Flask App e Configs ---
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
+export PORT=4666
 app.config["MAX_CONTENT_LENGTH"] = 8 * 1024 * 1024  # 8 MB limite upload
 app.config["SESSION_COOKIE_SECURE"] = True
 app.config["SESSION_COOKIE_HTTPONLY"] = True
