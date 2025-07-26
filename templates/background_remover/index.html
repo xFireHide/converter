@@ -2,9 +2,14 @@
 content %}
 <div class="main-content">
   <h1>Removedor de Background</h1>
-  <form method="post" enctype="multipart/form-data">
-    <label>Selecione uma imagem:</label><br />
-    <input type="file" name="image" accept="image/*" required /><br /><br />
+  <form id="upload-form" method="post" enctype="multipart/form-data">
+    <div class="drop-area">
+      <h2>Arraste e solte a imagem aqui</h2>
+      <p>Ou clique no botão abaixo</p>
+      <input type="file" name="image" accept="image/*" required />
+      <button class="btn" type="button">Selecionar Imagem</button>
+      <div class="file-list"></div>
+    </div>
     <button type="submit">Remover Fundo</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
@@ -36,4 +41,6 @@ content %}
   </p>
   {% endif %}
 </div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
 {% endblock %}
