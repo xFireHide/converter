@@ -14,6 +14,7 @@ from flask import (
 from flask_wtf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
 # --- Flask App e Configs ---
 app = Flask(__name__)
@@ -39,57 +40,7 @@ logging.basicConfig(
     filename=os.path.join(LOGS_DIR, "security.log"),
     level=logging.WARNING,
     format="%(asctime)s %(levelname)s %(message)s",
-)
-
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "uploads")
-PROCESSED_FOLDER = os.path.join(BASE_DIR, "processed")
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(PROCESSED_FOLDER, exist_ok=True)
-
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-app.config["PROCESSED_FOLDER"] = PROCESSED_FOLDER
-
-# --- Proteções ---
-CSRFProtect(app)
-limiter = Limiter(key_func=get_remote_address, default_limits=["50 per hour"])
-limiter.init_app(app)
-
-# --- Blueprints dinâmicos ---
-TOOLS_DIR = os.path.join(BASE_DIR, "tools")
-if os.path.isdir(TOOLS_DIR):
-    for finder, name, ispkg in pkgutil.iter_modules([TOOLS_DIR]):
-        module_path = f"tools.{name}.routes"
-        try:
-            module = importlib.import_module(module_path)
-            if hasattr(module, "bp"):
-                app.register_blueprint(module.bp)
-                print(f"Blueprint registrada: {module.bp.name} ({module_path})")
-        except ModuleNotFoundError as e:
-            print(f"Não foi possível importar {module_path}: {e}")
-        except Exception as ex:
-            print(f"Erro inesperado ao importar {module_path}: {ex}")
-
-
-# --- Headers extras para segurança ---
-@app.after_request
-def set_secure_headers(response):
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["X-Frame-Options"] = "DENY"
-    response.headers["X-XSS-Protection"] = "1; mode=block"
-    response.headers["Strict-Transport-Security"] = (
-        "max-age=63072000; includeSubDomains"
-    )
-    response.headers["Cache-Control"] = "no-store"
-    return response
-
-
-@app.route("/", methods=["GET"])
-def home():
-    return render_template("home.html")
-
-
-# Download seguro
-@app.route("/download/file/<filename>")
+@@ -93,62 +94,50 @@ def home():
 def serve_file(filename):
     # Só permite arquivos processados, bloqueia traversal
     folder = current_app.config["PROCESSED_FOLDER"]
@@ -115,19 +66,7 @@ def favicon():
 def file_too_large(e):
     return "Arquivo muito grande! O limite é 8MB.", 413
 
-from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
-
-
-@app.errorhandler(Exception)
-def handle_exception(e):
-    """Central error handler that preserves status codes and logs events."""
-    if isinstance(e, RequestEntityTooLarge):
-
-
 # Loga uploads inválidos e erros
-from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
-
-
 @app.errorhandler(Exception)
 def handle_exception(e):
     """Central error handler that preserves status codes and logs events."""
