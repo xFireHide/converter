@@ -17,7 +17,7 @@ FireTools is a collection of small utilities built with Flask. The application e
 ## Environment Variables
 
 - `SECRET_KEY` – secret key used by Flask for sessions and CSRF protection. If not provided the application generates a random key on startup.
-- `PORT` – port for `python app.py` to listen on. Defaults to `5000`.
+- `PORT` – port for `python app.py` to listen on. Defaults to `4666`.
 
 Set these in your environment before running the application as needed.
 
@@ -29,4 +29,4 @@ After installing the dependencies and setting optional variables, start the appl
 python app.py
 ```
 
-Then open your browser to `http://localhost:PORT` (or `http://localhost:5000` if you didn't set `PORT`).
+Then open your browser to `http://localhost:PORT` (or `http://localhost:4666` if you didn't set `PORT`).
