@@ -83,7 +83,6 @@ def set_secure_headers(response):
     return response
 
 
-# Página Inicial
 @app.route("/", methods=["GET"])
 def home():
     return render_template("home.html")
@@ -100,10 +99,29 @@ def serve_file(filename):
     return send_from_directory(folder, filename, as_attachment=True)
 
 
+# Favicon to avoid 404 logs
+@app.route("/favicon.ico")
+def favicon():
+    """Serve the application favicon."""
+    return send_from_directory(
+        os.path.join(app.root_path, "static"),
+        "favicon.ico",
+        mimetype="image/vnd.microsoft.icon",
+    )
+
+
 # Limita uploads por IP (opcional)
 @app.errorhandler(413)
 def file_too_large(e):
     return "Arquivo muito grande! O limite é 8MB.", 413
+
+from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    """Central error handler that preserves status codes and logs events."""
+    if isinstance(e, RequestEntityTooLarge):
 
 
 # Loga uploads inválidos e erros
@@ -120,9 +138,14 @@ def handle_exception(e):
         return e.description, e.code
 
     if isinstance(e, HTTPException):
+        logging.error(
+            f"Erro: {e} | IP={request.remote_addr}, Agent={request.user_agent}"
+        )
         return e.description, e.code
 
-    logging.error(f"Erro: {e} | IP={request.remote_addr}, Agent={request.user_agent}")
+    logging.error(
+        f"Erro: {e} | IP={request.remote_addr}, Agent={request.user_agent}"
+    )
     return str(e), 500
 
 

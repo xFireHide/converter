@@ -24,7 +24,7 @@ def index():
     if request.method == "POST":
         url = request.form.get("url")
         if not url:
-            flash("Por favor, insira o link do vídeo ou playlist.")
+            flash("Por favor, insira o link do vídeo ou playlist.", "danger")
             return render_template("yt_video_downloader/index.html")
 
         try:
