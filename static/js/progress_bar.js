@@ -11,38 +11,38 @@ document.addEventListener("DOMContentLoaded", function () {
     form.classList.add("hidden");
     progressContainer.classList.remove("hidden");
 
-    // Começa a animar já!
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 8;
-      if (progress >= 95) progress = 95; // Fica em 95% até resposta
-      progressBar.style.width = progress + "%";
-      progressText.textContent = Math.floor(progress) + "%";
-    }, 200);
+    const xhr = new XMLHttpRequest();
+    xhr.open(form.method || "POST", form.action);
+    xhr.withCredentials = true;
 
-    const formData = new FormData(form);
-    fetch(form.action, {
-      method: "POST",
-      body: formData,
-      credentials: "same-origin",
-    })
-      .then((response) => {
-        clearInterval(interval);
-        progressBar.style.width = "100%";
-        progressText.textContent = "100%";
+    xhr.upload.addEventListener("progress", function (e) {
+      if (e.lengthComputable) {
+        const percent = (e.loaded / e.total) * 100;
+        progressBar.style.width = percent + "%";
+        progressText.textContent = Math.floor(percent) + "%";
+      }
+    });
+
+    xhr.addEventListener("load", function () {
+      progressBar.style.width = "100%";
+      progressText.textContent = "100%";
+      if (xhr.status >= 200 && xhr.status < 400) {
         setTimeout(() => {
-          if (response.redirected) {
-            window.location.href = response.url;
-          } else {
-            location.reload();
-          }
-        }, 400);
-      })
-      .catch(() => {
-        clearInterval(interval);
+          window.location.href = xhr.responseURL;
+        }, 300);
+      } else {
         alert("Erro ao enviar o arquivo.");
         form.classList.remove("hidden");
         progressContainer.classList.add("hidden");
-      });
+      }
+    });
+
+    xhr.addEventListener("error", function () {
+      alert("Erro ao enviar o arquivo.");
+      form.classList.remove("hidden");
+      progressContainer.classList.add("hidden");
+    });
+
+    xhr.send(new FormData(form));
   });
 });

@@ -14,6 +14,10 @@ content %}
     <a class="btn" href="{{ url_for('image_converter.index') }}">
       🔗 Image Converter
     </a>
+    {% endif %} {% if 'video_converter' in current_app.blueprints %}
+    <a class="btn" href="{{ url_for('video_converter.index') }}">
+      🔗 Video Converter
+    </a>
     {% endif %} {% if 'youtube_subtitle_downloader' in current_app.blueprints %}
     <a class="btn" href="{{ url_for('youtube_subtitle_downloader.index') }}">
       🔗 Youtube Subtitle Downloader

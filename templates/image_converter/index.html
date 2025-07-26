@@ -29,6 +29,11 @@ block content %}
     <button type="submit">Convert</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
+  <div id="progress-container" class="hidden">
+    <div id="progress-bar">
+      <span id="progress-text">0%</span>
+    </div>
+  </div>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %}
   <ul>
@@ -55,14 +60,8 @@ block content %}
     {% endfor %}
   </ul>
   {% endif %}
-   <div id="progress-container" class="hidden">
-    <div id="progress-bar">
-      <span id="progress-text">0%</span>
-    </div>
-  </div>
 </div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
-</div>
 {% endblock %}

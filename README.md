@@ -1,6 +1,6 @@
 # FireTools
 
-FireTools is a collection of small utilities built with Flask. The application exposes a set of tools such as PDF splitting, URL shortening, image conversion and several YouTube helpers. The tools are loaded dynamically as Flask blueprints from the `tools/` directory.
+FireTools is a collection of small utilities built with Flask. The application exposes a set of tools such as PDF splitting, URL shortening, image and video conversion, and several YouTube helpers. The tools are loaded dynamically as Flask blueprints from the `tools/` directory.
 
 ## Setup
 
@@ -26,7 +26,5 @@ Set these in your environment before running the application as needed.
 After installing the dependencies and setting optional variables, start the application with:
 
 ```bash
-python app.py
-```
 
-Then open your browser to `http://localhost:PORT` (or `http://localhost:4666` if you didn't set `PORT`).
+```
