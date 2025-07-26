@@ -48,11 +48,12 @@ logging.basicConfig(
 
 # --- Proteções ---
 CSRFProtect(app)
+
 limiter = Limiter(
-    app,
     key_func=get_remote_address,
     default_limits=["50 per hour"],
 )
+limiter.init_app(app)
 
 # --- Carregamento dinâmico dos Blueprints ---
 TOOLS_DIR = os.path.join(BASE_DIR, "tools")
