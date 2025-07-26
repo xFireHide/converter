@@ -36,3 +36,5 @@ def index():
             else:
                 os.remove(tmp_path)
                 flash("Arquivo de imagem inválido.", "danger")
+
+    return render_template("background_remover/index.html", image=image)

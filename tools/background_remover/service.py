@@ -32,3 +32,4 @@ def remove_background(input_path: str) -> str:
     with open(output_path, "wb") as out:
         out.write(output_bytes)
     return output_filename
+    return render_template("background_remover/index.html", image=image)
