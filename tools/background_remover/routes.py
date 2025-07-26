@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
 import uuid
@@ -15,7 +15,6 @@ bp = Blueprint("background_remover", __name__, url_prefix="/background_remover")
 
 @bp.route("/", methods=["GET", "POST"])
 def index():
-    image = None
     if request.method == "POST":
         file = request.files.get("image")
         if file and allowed_file(file.filename):
@@ -26,8 +25,10 @@ def index():
             if validate_image(tmp_path):
                 try:
                     out_file = remove_background(tmp_path)
-                    image = out_file
                     flash("Fundo removido com sucesso!", "success")
+                    return redirect(
+                        url_for("background_remover.result_page", filename=out_file)
+                    )
                 except Exception as e:
                     print(e)
                     flash("Erro ao processar a imagem.", "danger")
@@ -37,4 +38,9 @@ def index():
                 os.remove(tmp_path)
                 flash("Arquivo de imagem inválido.", "danger")
 
-    return render_template("background_remover/index.html", image=image)
+    return render_template("background_remover/index.html")
+
+
+@bp.route("/result/<filename>")
+def result_page(filename):
+    return render_template("background_remover/result.html", filename=filename)

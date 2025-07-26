@@ -24,22 +24,7 @@ content %}
     </li>
     {% endfor %}
   </ul>
-  {% endif %} {% endwith %} {% if image %}
-  <h2>Resultado:</h2>
-  <img
-    src="{{ url_for('static', filename='background_remover/uploads/' ~ image) }}"
-    alt="Resultado"
-  />
-  <p>
-    <a
-      class="btn"
-      href="{{ url_for('static', filename='background_remover/uploads/' ~ image) }}"
-      download
-    >
-      📥 Baixar Imagem
-    </a>
-  </p>
-  {% endif %}
+  {% endif %} {% endwith %}
 </div>
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
