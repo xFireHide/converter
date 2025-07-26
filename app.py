@@ -107,11 +107,17 @@ def file_too_large(e):
 
 
 # Loga uploads inválidos e erros
+from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
+
+
 @app.errorhandler(Exception)
 def handle_exception(e):
-    import werkzeug.exceptions
+    """Central error handler that preserves HTTP status codes."""
+    if isinstance(e, HTTPException):
+        # Return the original HTTP error code and message
+        return e.description, e.code
 
-    if isinstance(e, (werkzeug.exceptions.RequestEntityTooLarge,)):
+    if isinstance(e, RequestEntityTooLarge):
         logging.warning(
             f"Tentativa de upload acima do limite: IP={request.remote_addr}, Agent={request.user_agent}"
         )
