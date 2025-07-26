@@ -2,7 +2,13 @@ from pytube import YouTube, Playlist
 import os
 
 
+def sanitize_url(url: str) -> str:
+    """Strip whitespace and return sanitized URL."""
+    return url.strip()
+
+
 def download_video(url, output_dir):
+    url = sanitize_url(url)
     yt = YouTube(url)
     stream = yt.streams.filter(
         progressive=True, file_extension="mp4"
@@ -13,6 +19,7 @@ def download_video(url, output_dir):
 
 
 def download_playlist(url, output_dir):
+    url = sanitize_url(url)
     pl = Playlist(url)
     downloaded_files = []
     for video_url in pl.video_urls:
@@ -25,6 +32,7 @@ def download_playlist(url, output_dir):
 
 
 def handle_download(url, output_dir):
+    url = sanitize_url(url)
     # Decide se é vídeo ou playlist
     if "playlist" in url:
         return download_playlist(url, output_dir)

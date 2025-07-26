@@ -40,6 +40,7 @@ def get_available_languages(video_urls: List[str]) -> List[str]:
             )
             data = json.loads(result.stdout)
             languages.update(data.get("subtitles", {}).keys())
+            languages.update(data.get("automatic_captions", {}).keys())
         except Exception:
             pass
     return sorted(languages)
