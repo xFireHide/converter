@@ -112,19 +112,17 @@ from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    """Central error handler that preserves HTTP status codes."""
-    if isinstance(e, HTTPException):
-        # Return the original HTTP error code and message
-        return e.description, e.code
-
+    """Central error handler that preserves status codes and logs events."""
     if isinstance(e, RequestEntityTooLarge):
         logging.warning(
             f"Tentativa de upload acima do limite: IP={request.remote_addr}, Agent={request.user_agent}"
         )
-    else:
-        logging.error(
-            f"Erro: {e} | IP={request.remote_addr}, Agent={request.user_agent}"
-        )
+        return e.description, e.code
+
+    if isinstance(e, HTTPException):
+        return e.description, e.code
+
+    logging.error(f"Erro: {e} | IP={request.remote_addr}, Agent={request.user_agent}")
     return str(e), 500
 
 

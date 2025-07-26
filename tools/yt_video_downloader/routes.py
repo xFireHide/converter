@@ -7,8 +7,10 @@ from flask import (
     redirect,
     url_for,
 )
+import logging
 import os
 import uuid
+from urllib.error import HTTPError
 
 from .service import handle_download
 
@@ -32,7 +34,7 @@ def index():
             os.makedirs(folder_path, exist_ok=True)
             downloaded_files = handle_download(url, folder_path)
             if not downloaded_files:
-                flash("Nenhum vídeo foi baixado.")
+                flash("Nenhum vídeo foi baixado.", "warning")
                 return render_template("yt_video_downloader/index.html")
 
             # Exibe os links para download
@@ -44,8 +46,19 @@ def index():
                 "yt_video_downloader/index.html",
                 download_links=download_links,
             )
+        except HTTPError as e:
+            logging.error(f"Erro HTTP ao baixar {url}: {e}")
+            flash(
+                "Não foi possível baixar o vídeo. Verifique o link e tente novamente.",
+                "danger",
+            )
+            return render_template("yt_video_downloader/index.html")
         except Exception as e:
-            flash(f"Ocorreu um erro: {e}")
+            logging.error(f"Erro inesperado ao baixar {url}: {e}")
+            flash(
+                "Ocorreu um erro ao processar sua solicitação.",
+                "danger",
+            )
             return render_template("yt_video_downloader/index.html")
     return render_template("yt_video_downloader/index.html")
 
