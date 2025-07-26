@@ -1,10 +1,36 @@
 from pytube import YouTube, Playlist
+from urllib.parse import urlparse, parse_qs
 import os
 
 
 def sanitize_url(url: str) -> str:
-    """Strip whitespace and return sanitized URL."""
-    return url.strip()
+    """Return a canonical YouTube URL."""
+    url = url.strip()
+
+    if not url:
+        return url
+
+    # Ensure the URL includes a scheme
+    if not url.startswith(("http://", "https://")):
+        url = "https://" + url
+
+    parsed = urlparse(url)
+
+    # Transform youtu.be links to youtube.com/watch
+    if parsed.netloc.endswith("youtu.be"):
+        video_id = parsed.path.lstrip("/")
+        url = f"https://www.youtube.com/watch?v={video_id}"
+        return url
+
+    # Convert shorts links to standard watch links
+    if "/shorts/" in parsed.path:
+        parts = parsed.path.split("/shorts/")
+        if len(parts) > 1 and parts[1]:
+            video_id = parts[1].split("/")[0]
+            url = f"https://www.youtube.com/watch?v={video_id}"
+            return url
+
+    return url
 
 
 def download_video(url, output_dir):
