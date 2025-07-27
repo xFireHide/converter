@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initProgress() {
   const form = document.getElementById("upload-form");
   const progressContainer = document.getElementById("progress-container");
   const progressBar = document.getElementById("progress-bar");
@@ -48,4 +48,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     xhr.send(new FormData(form));
   });
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initProgress);
+} else {
+  initProgress();
+}
