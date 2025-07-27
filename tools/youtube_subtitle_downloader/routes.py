@@ -1,3 +1,4 @@
+from flask import (
     Blueprint,
     render_template,
     request,
@@ -72,7 +73,9 @@ def index():
                 f"Legendas baixadas de {len(legendas_baixadas)}/{len(video_urls)} vídeos.",
                 "success",
             )
-            return redirect(url_for("youtube_subtitle_downloader.result_page", token=download_token))
+            return redirect(
+                url_for("youtube_subtitle_downloader.result_page", token=download_token)
+            )
         else:
             cleanup_tmp_dir(tmp_dir)
             flash("Nenhuma legenda encontrada no idioma selecionado.", "warning")
