@@ -11,15 +11,21 @@ function initProgress() {
     progressText,
   });
 
-  if (!form || !progressContainer || !progressBar || !progressText) {
+  if (!progressContainer || !progressBar || !progressText) {
     console.warn(
       "Progress elements missing. Skipping progress bar initialization.",
       {
-        form,
         progressContainer,
         progressBar,
         progressText,
       }
+    );
+    return;
+  }
+
+  if (!form) {
+    console.warn(
+      "Upload form not found. Skipping progress bar initialization."
     );
     return;
   }
