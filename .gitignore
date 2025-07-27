@@ -55,3 +55,4 @@ coverage.xml
 logs/security.log
 logs/security.log
 logs/security.log
+/logs

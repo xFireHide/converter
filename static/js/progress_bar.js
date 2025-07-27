@@ -4,7 +4,7 @@ function initProgress() {
   const progressBar = document.getElementById("progress-bar");
   const progressText = document.getElementById("progress-text");
 
-  if (!form) return;
+  if (!form || !progressContainer || !progressBar || !progressText) return;
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -30,10 +30,7 @@ function initProgress() {
       }
     });
 
-    xhr.addEventListener("load", function () {
-      progressBar.style.width = "100%";
-      progressText.textContent = "100%";
-
+@@ -37,25 +37,29 @@ function initProgress() {
       if (xhr.status >= 200 && xhr.status < 400) {
         setTimeout(() => {
           window.location.href = xhr.responseURL;
@@ -59,3 +56,7 @@ function initProgress() {
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initProgress);
+
+} else {
+  initProgress();
+}
