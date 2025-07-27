@@ -99,7 +99,8 @@ def file_too_large(e):
     logging.warning(
         f"Upload excedeu limite: IP={request.remote_addr}, User-Agent={request.user_agent}"
     )
-    return "Arquivo muito grande! O limite é 8MB.", 413
+    limit_mb = app.config.get("MAX_CONTENT_LENGTH", 0) // (1024 * 1024)
+    return f"Arquivo muito grande! O limite é {limit_mb}MB.", 413
 
 
 @app.errorhandler(HTTPException)
