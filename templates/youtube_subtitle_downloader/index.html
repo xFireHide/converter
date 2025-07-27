@@ -19,7 +19,7 @@ endblock %} {% block content %}
       name="yt_url"
       required
       size="60"
-      pattern="(https?://)?.*"
+      pattern="https?://.*"
       value="{{ yt_url }}"
     />
     {% if languages %}
@@ -42,7 +42,19 @@ endblock %} {% block content %}
     {% endif %}
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
-
-  {% if legendas_baixadas %}
-  <h2>Legendas encontradas para:</h2>
 </div>
+{% endblock %} {% block scripts %}
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#language").select2({
+      placeholder: "Escolha o idioma da legenda",
+    });
+  });
+</script>
+{% endblock %}
