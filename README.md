@@ -15,6 +15,8 @@ FireTools is a collection of small utilities built with Flask. The application e
    ```
 
 The `video_converter` tool relies on FFmpeg via the `imageio-ffmpeg` package.
+It can convert videos to formats like MP4, AVI, MKV, MOV, FLV, WMV, WEBM,
+MPEG, 3GP and OGG.
 All required libraries are listed in `requirements.txt`, so ensure dependencies
 are installed before running the application.
 

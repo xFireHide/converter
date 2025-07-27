@@ -16,6 +16,12 @@ block content %}
       <option value="avi">AVI</option>
       <option value="mkv">MKV</option>
       <option value="mov">MOV</option>
+      <option value="flv">FLV</option>
+      <option value="wmv">WMV</option>
+      <option value="webm">WEBM</option>
+      <option value="mpeg">MPEG</option>
+      <option value="3gp">3GP</option>
+      <option value="ogg">OGG</option>
     </select>
     <button type="submit">Converter</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
@@ -41,4 +47,3 @@ block content %}
 {% endblock %} {% block scripts %}
 <script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
 <script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
-{% endblock %}
