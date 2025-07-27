@@ -23,6 +23,8 @@
       <a href="{{ url_for('short_curter.index') }}">Short Curter</a>
       {% endif %} {% if 'image_converter' in current_app.blueprints %}
       <a href="{{ url_for('image_converter.index') }}">Image Converter</a>
+      {% endif %} {% if 'audio_converter' in current_app.blueprints %}
+      <a href="{{ url_for('audio_converter.index') }}">Audio Converter</a>
       {% endif %} {% if 'video_converter' in current_app.blueprints %}
       <a href="{{ url_for('video_converter.index') }}">Video Converter</a>
       {% endif %} {% if 'youtube_subtitle_downloader' in current_app.blueprints

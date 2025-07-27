@@ -1,0 +1,23 @@
+{% extends 'base.html' %} {% block title %}Áudio Convertido{% endblock %} {%
+block content %}
+<div class="main-content">
+  <h1>Áudio Convertido</h1>
+  <audio controls>
+    <source
+      src="{{ url_for('static', filename='audio_converter/converted/' ~ filename) }}"
+    />
+    Seu navegador não suporta o elemento de áudio.
+  </audio>
+  <div class="button-group">
+    <a
+      class="btn"
+      href="{{ url_for('static', filename='audio_converter/converted/' ~ filename) }}"
+      download
+      >📥 Baixar Áudio</a
+    >
+    <a class="btn" href="{{ url_for('audio_converter.index') }}"
+      >🔄 Converter outro áudio</a
+    >
+  </div>
+</div>
+{% endblock %}
