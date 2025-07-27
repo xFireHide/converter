@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
+function initDropAreas() {
   document.querySelectorAll(".drop-area").forEach((dropArea) => {
     const fileElem = dropArea.querySelector("input[type='file']");
     const fileList = dropArea.querySelector(".file-list");
@@ -45,7 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
       handleFiles(fileElem.files, fileElem, fileList);
     });
   });
-});
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initDropAreas);
+} else {
+  initDropAreas();
+}
 
 function handleFiles(files, fileInput, fileList) {
   const accept = fileInput.getAttribute("accept") || "";
@@ -71,10 +77,3 @@ function fileAccepted(file, allowed) {
   return allowed.some((type) => {
     if (type === "image/*") {
       return file.type.startsWith("image/");
-    }
-    if (type.startsWith(".")) {
-      return file.name.toLowerCase().endsWith(type.toLowerCase());
-    }
-    return file.type === type;
-  });
-}
