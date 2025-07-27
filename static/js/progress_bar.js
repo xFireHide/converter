@@ -8,12 +8,18 @@ function initProgress() {
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+
     form.classList.add("hidden");
     progressContainer.classList.remove("hidden");
     progressContainer.classList.add("active");
+    progressBar.style.width = "0%";
+    progressText.textContent = "0%";
+
+    const action = form.getAttribute("action") || window.location.href;
+    const method = form.getAttribute("method") || "POST";
 
     const xhr = new XMLHttpRequest();
-    xhr.open(form.method || "POST", form.action);
+    xhr.open(method, action);
     xhr.withCredentials = true;
 
     xhr.upload.addEventListener("progress", function (e) {
@@ -27,6 +33,7 @@ function initProgress() {
     xhr.addEventListener("load", function () {
       progressBar.style.width = "100%";
       progressText.textContent = "100%";
+
       if (xhr.status >= 200 && xhr.status < 400) {
         setTimeout(() => {
           window.location.href = xhr.responseURL;
@@ -52,6 +59,3 @@ function initProgress() {
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initProgress);
-} else {
-  initProgress();
-}

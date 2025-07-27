@@ -72,6 +72,8 @@ function handleFiles(files, fileInput, fileList) {
   if (dt) {
     fileInput.files = dt.files;
   }
+  // allow re-selecting the same file
+  fileInput.value = "";
 }
 
 function fileAccepted(file, allowed) {
