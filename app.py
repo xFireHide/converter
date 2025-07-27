@@ -20,7 +20,8 @@ from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 app.config.update(
-    MAX_CONTENT_LENGTH=8 * 1024 * 1024,  # Limite de upload (8 MB)
+    # Limite de upload aumentado para suportar arquivos de vídeo e áudio maiores
+    MAX_CONTENT_LENGTH=200 * 1024 * 1024,  # 200 MB
     SESSION_COOKIE_SECURE=True,
     SESSION_COOKIE_HTTPONLY=True,
     SESSION_COOKIE_SAMESITE="Lax",
@@ -45,7 +46,6 @@ logging.basicConfig(
     level=logging.WARNING,
     format="%(asctime)s %(levelname)s %(message)s",
 )
-
 # --- Proteções ---
 CSRFProtect(app)
 

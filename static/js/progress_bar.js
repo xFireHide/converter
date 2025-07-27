@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     event.preventDefault();
     form.classList.add("hidden");
     progressContainer.classList.remove("hidden");
+    progressContainer.classList.add("active");
 
     const xhr = new XMLHttpRequest();
     xhr.open(form.method || "POST", form.action);
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Erro ao enviar o arquivo.");
         form.classList.remove("hidden");
         progressContainer.classList.add("hidden");
+        progressContainer.classList.remove("active");
       }
     });
 
@@ -41,6 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Erro ao enviar o arquivo.");
       form.classList.remove("hidden");
       progressContainer.classList.add("hidden");
+      progressContainer.classList.remove("active");
     });
 
     xhr.send(new FormData(form));

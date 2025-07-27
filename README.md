@@ -20,6 +20,10 @@ MPEG, 3GP and OGG.
 All required libraries are listed in `requirements.txt`, so ensure dependencies
 are installed before running the application.
 
+The default maximum upload size was increased to **200&nbsp;MB** so that video
+and audio conversions work with larger files. Adjust `MAX_CONTENT_LENGTH` in
+`app.py` if you need a different limit.
+
 ## Environment Variables
 
 - `SECRET_KEY` – secret key used by Flask for sessions and CSRF protection. If not provided the application generates a random key on startup.

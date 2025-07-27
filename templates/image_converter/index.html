@@ -29,11 +29,6 @@ block content %}
     <button type="submit">Convert</button>
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
   </form>
-  <div id="progress-container" class="hidden">
-    <div id="progress-bar">
-      <span id="progress-text">0%</span>
-    </div>
-  </div>
   {% with messages = get_flashed_messages(with_categories=true) %} {% if
   messages %}
   <ul>
@@ -45,7 +40,13 @@ block content %}
     </li>
     {% endfor %}
   </ul>
-  {% endif %} {% endwith %} {% if images %}
+  {% endif %} {% endwith %}
+  <div id="progress-container" class="hidden">
+    <div id="progress-bar">
+      <span id="progress-text">0%</span>
+    </div>
+  </div>
+  {% if images %}
   <h2>Converted Images:</h2>
   <ul>
     {% for img in images %}
