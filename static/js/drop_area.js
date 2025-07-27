@@ -59,17 +59,19 @@ function handleFiles(files, fileInput, fileList) {
     .split(",")
     .map((t) => t.trim())
     .filter(Boolean);
-  const dt = new DataTransfer();
+  const dt = typeof DataTransfer === "undefined" ? null : new DataTransfer();
   fileList.innerHTML = "";
   Array.from(files).forEach((file) => {
     if (fileAccepted(file, allowed)) {
-      dt.items.add(file);
+      if (dt) dt.items.add(file);
       fileList.innerHTML += `<p>📄 ${file.name} (${(file.size / 1024).toFixed(
         2
       )} KB)</p>`;
     }
   });
-  fileInput.files = dt.files;
+  if (dt) {
+    fileInput.files = dt.files;
+  }
 }
 
 function fileAccepted(file, allowed) {
@@ -77,3 +79,10 @@ function fileAccepted(file, allowed) {
   return allowed.some((type) => {
     if (type === "image/*") {
       return file.type.startsWith("image/");
+    }
+    if (type.startsWith(".")) {
+      return file.name.toLowerCase().endsWith(type.toLowerCase());
+    }
+    return file.type === type;
+  });
+}
