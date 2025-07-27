@@ -14,9 +14,9 @@ FireTools is a collection of small utilities built with Flask. The application e
    pip install -r requirements.txt
    ```
 
-The `video_converter` tool requires the `moviepy` library. It is listed in
-`requirements.txt`, so ensure all dependencies are installed before running the
-application.
+The `video_converter` tool relies on FFmpeg via the `imageio-ffmpeg` package.
+All required libraries are listed in `requirements.txt`, so ensure dependencies
+are installed before running the application.
 
 ## Environment Variables
 

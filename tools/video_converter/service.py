@@ -1,6 +1,7 @@
 import os
+import subprocess
 import uuid
-from moviepy.editor import VideoFileClip
+from imageio_ffmpeg import get_ffmpeg_exe
 
 UPLOAD_FOLDER = "static/video_converter/uploads"
 CONVERTED_FOLDER = "static/video_converter/converted"
@@ -36,7 +37,18 @@ def convert_video(input_path, output_format):
     output_filename = f"{uuid.uuid4()}.{output_format}"
     output_path = os.path.join(CONVERTED_FOLDER, output_filename)
 
-    clip = VideoFileClip(input_path)
-    clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
+    ffmpeg_exe = get_ffmpeg_exe()
+    cmd = [
+        ffmpeg_exe,
+        "-y",
+        "-i",
+        input_path,
+        "-c:v",
+        "libx264",
+        "-c:a",
+        "aac",
+        output_path,
+    ]
+    subprocess.run(cmd, check=True)
 
     return output_filename

@@ -8,4 +8,4 @@ pytube
 yt-dlp
 rembg
 onnxruntime
-moviepy
+imageio-ffmpeg
