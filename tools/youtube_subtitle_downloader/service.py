@@ -14,7 +14,11 @@ MAX_VIDEOS = 50
 def sanitize_url(url: str) -> str | None:
     """Limpa espaços e verifica se a URL parece ser do YouTube."""
     url = url.strip()
-    if not url.startswith("http") or "youtube" not in url:
+    if not url:
+        return None
+    if not url.startswith("http"):
+        url = "https://" + url
+    if "youtube" not in url:
         return None
     return url
 
@@ -40,10 +44,6 @@ def get_available_languages(video_urls: List[str]) -> List[str]:
             )
             data = json.loads(result.stdout)
             languages.update(data.get("subtitles", {}).keys())
-            languages.update(data.get("automatic_captions", {}).keys())
-        except Exception:
-            pass
-    return sorted(languages)
 
 
 def download_subtitles(

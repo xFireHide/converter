@@ -1,6 +1,7 @@
 import os
+import subprocess
 import uuid
-from pydub import AudioSegment
+from imageio_ffmpeg import get_ffmpeg_exe
 
 UPLOAD_FOLDER = "static/audio_converter/uploads"
 CONVERTED_FOLDER = "static/audio_converter/converted"
@@ -22,8 +23,19 @@ def save_audio(file):
 
 
 def convert_audio(input_path, output_format):
-    audio = AudioSegment.from_file(input_path)
+    """Convert audio to the specified format using FFmpeg."""
     output_filename = f"{uuid.uuid4()}.{output_format}"
     output_path = os.path.join(CONVERTED_FOLDER, output_filename)
-    audio.export(output_path, format=output_format)
+
+    ffmpeg_exe = get_ffmpeg_exe()
+    cmd = [
+        ffmpeg_exe,
+        "-y",
+        "-i",
+        input_path,
+        "-vn",
+        output_path,
+    ]
+    subprocess.run(cmd, check=True)
+
     return output_filename

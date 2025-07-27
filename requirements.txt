@@ -9,4 +9,3 @@ yt-dlp
 rembg
 onnxruntime
 imageio-ffmpeg
-pydub
