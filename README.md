@@ -14,6 +14,10 @@ FireTools is a collection of small utilities built with Flask. The application e
    pip install -r requirements.txt
    ```
 
+The `video_converter` tool requires the `moviepy` library. It is listed in
+`requirements.txt`, so ensure all dependencies are installed before running the
+application.
+
 ## Environment Variables
 
 - `SECRET_KEY` – secret key used by Flask for sessions and CSRF protection. If not provided the application generates a random key on startup.
@@ -26,5 +30,5 @@ Set these in your environment before running the application as needed.
 After installing the dependencies and setting optional variables, start the application with:
 
 ```bash
-
+python app.py
 ```
