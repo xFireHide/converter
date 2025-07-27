@@ -1,10 +1,26 @@
 from flask import Blueprint, render_template, request, redirect, flash, url_for
-from .service import (
-    shorten_url,
-    get_original_url,
-    get_click_count,
-    init_db,
-)
+
+# Support running this file directly by adjusting the import path
+if __package__ is None or __package__ == "":
+    import os
+    import sys
+
+    sys.path.append(
+        os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+    )
+    from tools.short_curter.service import (
+        shorten_url,
+        get_original_url,
+        get_click_count,
+        init_db,
+    )
+else:
+    from .service import (
+        shorten_url,
+        get_original_url,
+        get_click_count,
+        init_db,
+    )
 
 
 bp = Blueprint("short_curter", __name__, url_prefix="/short_curter")
@@ -29,12 +45,3 @@ def index():
         "short_curter/index.html", short_url=short_url, click_count=click_count
     )
     return render_template("short_curter/index.html", short_url=short_url)
-
-
-@bp.route("/<code>")
-def redirect_short(code):
-    url = get_original_url(code)
-    if url:
-        return redirect(url)
-    flash("URL não encontrada ou expirada.", "error")
-    return redirect(url_for("short_curter.index"))
