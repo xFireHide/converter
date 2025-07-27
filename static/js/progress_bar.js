@@ -11,10 +11,15 @@ function initProgress() {
     progressText,
   });
 
-  if (!form) return;
-  if (!progressContainer || !progressBar || !progressText) {
+  if (!form || !progressContainer || !progressBar || !progressText) {
     console.warn(
-      "Progress elements missing. Skipping progress bar initialization."
+      "Progress elements missing. Skipping progress bar initialization.",
+      {
+        form,
+        progressContainer,
+        progressBar,
+        progressText,
+      }
     );
     return;
   }
