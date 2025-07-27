@@ -4,8 +4,18 @@ function initProgress() {
   const progressBar = document.getElementById("progress-bar");
   const progressText = document.getElementById("progress-text");
 
+  console.debug("initProgress: elements", {
+    form,
+    progressContainer,
+    progressBar,
+    progressText,
+  });
+
   if (!form) return;
   if (!progressContainer || !progressBar || !progressText) {
+    console.warn(
+      "Progress elements missing. Skipping progress bar initialization."
+    );
     return;
   }
 
@@ -30,10 +40,14 @@ function initProgress() {
         const percent = (e.loaded / e.total) * 100;
         progressBar.style.width = percent + "%";
         progressText.textContent = Math.floor(percent) + "%";
+        console.debug("upload progress", percent);
       }
     });
 
-@@ -37,25 +40,29 @@ function initProgress() {
+    xhr.addEventListener("load", function () {
+      progressBar.style.width = "100%";
+      progressText.textContent = "100%";
+
       if (xhr.status >= 200 && xhr.status < 400) {
         setTimeout(() => {
           window.location.href = xhr.responseURL;
@@ -59,7 +73,6 @@ function initProgress() {
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initProgress);
-
 } else {
   initProgress();
 }
