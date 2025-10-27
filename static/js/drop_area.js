@@ -9,6 +9,7 @@ function initDropAreas() {
     if (button) {
       button.addEventListener("click", (e) => {
         e.preventDefault();
+        fileElem.value = "";
         fileElem.click();
       });
     }
@@ -54,37 +55,56 @@ if (document.readyState === "loading") {
 }
 
 function handleFiles(files, fileInput, fileList) {
-  const accept = fileInput.getAttribute("accept") || "";
+  const accept = (fileInput.getAttribute("accept") || "").toLowerCase();
   const allowed = accept
     .split(",")
     .map((t) => t.trim())
     .filter(Boolean);
+
   const dt = typeof DataTransfer === "undefined" ? null : new DataTransfer();
+  const accepted = [];
+  const rejected = [];
+
   fileList.innerHTML = "";
+
   Array.from(files).forEach((file) => {
     if (fileAccepted(file, allowed)) {
+      accepted.push(file);
       if (dt) dt.items.add(file);
-      fileList.innerHTML += `<p>📄 ${file.name} (${(file.size / 1024).toFixed(
-        2
-      )} KB)</p>`;
+      fileList.innerHTML += `<p>📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>`;
+    } else {
+      rejected.push(file.name);
     }
   });
+
   if (dt) {
     fileInput.files = dt.files;
+  } else if (rejected.length) {
+    // Fallback: limpa a seleção caso o navegador não suporte DataTransfer
+    fileInput.value = "";
   }
-  // allow re-selecting the same file
-  fileInput.value = "";
+
+  if (!accepted.length) {
+    fileList.innerHTML = "<p class=\"file-warning\">Nenhum arquivo compatível selecionado.</p>";
+  } else if (rejected.length) {
+    fileList.innerHTML += `<p class="file-warning">Arquivos ignorados: ${rejected.join(", ")}</p>`;
+  }
 }
 
 function fileAccepted(file, allowed) {
   if (!allowed.length) return true;
+  const fileType = (file.type || "").toLowerCase();
+  const fileName = (file.name || "").toLowerCase();
+
   return allowed.some((type) => {
-    if (type === "image/*") {
-      return file.type.startsWith("image/");
+    const rule = type.toLowerCase();
+    if (rule.endsWith("/*")) {
+      const base = rule.slice(0, rule.indexOf("/"));
+      return fileType.startsWith(`${base}/`);
     }
-    if (type.startsWith(".")) {
-      return file.name.toLowerCase().endsWith(type.toLowerCase());
+    if (rule.startsWith(".")) {
+      return fileName.endsWith(rule);
     }
-    return file.type === type;
+    return fileType === rule;
   });
 }

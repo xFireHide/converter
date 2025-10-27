@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% from 'components/upload_area.html' import upload_area %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Converter PDF online - FireTools',
+    'description': 'Transforme seu PDF em imagens PNG, JPG, WEBP ou em um documento DOCX editável em poucos segundos.',
+    'keywords': 'converter pdf, pdf para imagem, pdf para docx'
+  } %}
+{% endblock %}
+
+{% block title %}Converter PDF - FireTools{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title" data-i18n="pdfconvert.form.title">Converta PDF para DOCX ou Imagem</h2>
+    </div>
+
+    <form id="upload-form" action="{{ url_for('pdf_converter.convert') }}" method="post" enctype="multipart/form-data">
+      {{ upload_area(
+        icon='🖨️',
+        title='Arraste seu PDF aqui',
+        subtitle='ou clique para selecionar um arquivo',
+        file_types='PDF',
+        size_hint='Até 200MB',
+        input_name='pdf',
+        accept='application/pdf',
+        input_id='pdf-to-image-input',
+        drop_id='pdf-to-image-drop',
+        button_id='pdf-to-image-btn',
+        button_label='Selecionar Arquivo',
+        title_key='upload.pdf.title',
+        subtitle_key='upload.pdf.subtitle',
+        file_types_key='upload.pdf.types',
+        size_hint_key='upload.pdf.size',
+        button_key='upload.button.single'
+      ) }}
+
+      <div class="form-group stacked">
+        <label for="target_format" class="form-label" data-i18n="pdfconvert.form.format">Formato de saída</label>
+        {% set selected_format = requested_format if requested_format is defined and requested_format else 'docx' %}
+        <select name="target_format" id="target_format" class="form-control">
+          <option value="docx" data-i18n="pdfconvert.form.option.docx" {% if selected_format == 'docx' %}selected{% endif %}>DOCX (Word)</option>
+          <option value="png" data-i18n="pdfconvert.form.option.png" {% if selected_format == 'png' %}selected{% endif %}>PNG</option>
+          <option value="jpg" data-i18n="pdfconvert.form.option.jpg" {% if selected_format == 'jpg' %}selected{% endif %}>JPG</option>
+          <option value="webp" data-i18n="pdfconvert.form.option.webp" {% if selected_format == 'webp' %}selected{% endif %}>WEBP</option>
+        </select>
+      </div>
+
+      <div class="button-group button-group--stretch">
+        <button type="submit" class="btn btn-success btn-action" data-i18n="pdfconvert.form.submit">Converter PDF</button>
+      </div>
+
+      <p
+        class="helper-text"
+        data-i18n-template="form.cleanup.notice"
+        data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}"
+        data-i18n-arg-limit="{{ global_max_upload_mb }}"
+      >
+        Arquivos enviados são removidos automaticamente após
+        {{ (global_file_retention_seconds // 3600) or 1 }} hora(s). Limite máximo padrão: {{ global_max_upload_mb }} MB.
+      </p>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+
+    <div id="progress-container" class="progress-container">
+      <div class="progress-header">
+        <h3 data-i18n="progress.pdfconvert.title">Convertendo seu PDF...</h3>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-message" data-i18n="progress.pdfconvert.message">Aguarde enquanto geramos os arquivos solicitados.</p>
+    </div>
+  </section>
+
+  <section class="hero-section">
+    <span class="hero-icon">🗂️</span>
+    <h1 data-i18n="pdfconvert.hero.title">Converter PDF online</h1>
+    <p class="hero-description" data-i18n="pdfconvert.hero.description">
+      Gere documentos DOCX editáveis ou exporte cada página como imagem PNG, JPG ou WEBP com qualidade otimizada.
+    </p>
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">📝</span>
+      <h3 data-i18n="pdfconvert.features.editable.title">DOCX editável</h3>
+      <p data-i18n="pdfconvert.features.editable.desc">Exporte o PDF inteiro como um documento Word pronto para revisão e ajustes.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🖼️</span>
+      <h3 data-i18n="pdfconvert.features.pages.title">Imagens por página</h3>
+      <p data-i18n="pdfconvert.features.pages.desc">Cada página do PDF pode virar uma imagem separada, ideal para slides ou redes sociais.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔁</span>
+      <h3 data-i18n="pdfconvert.features.formats.title">Formatos flexíveis</h3>
+      <p data-i18n="pdfconvert.features.formats.desc">Escolha DOCX para edição ou PNG, JPG e WEBP para compartilhar rapidamente.</p>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
+{% endblock %}

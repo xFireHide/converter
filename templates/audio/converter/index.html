@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+{% from 'components/upload_area.html' import upload_area %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Conversor de Áudio Online - FireTools',
+    'description': 'Transforme arquivos de áudio entre MP3, WAV, FLAC, AAC e outros formatos com configurações otimizadas e exclusão automática.',
+    'keywords': 'converter áudio online, mp3 para wav, flac, aac'
+  } %}
+{% endblock %}
+{% block title %}{{ meta.title if meta and meta.title else 'Conversor de Áudio - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Converta arquivos de áudio entre MP3, WAV, AAC, FLAC e outros formatos em segundos.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter audio, mp3 para wav, wav para mp3' }}{% endblock %}
+{% block content %}
+<div class="main-content tool-layout">
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Envie seu áudio</h2>
+    </div>
+    <form
+      id="upload-form"
+      method="post"
+      action="{{ url_for('audio_converter.convert') }}"
+      enctype="multipart/form-data"
+    >
+      {{ upload_area(
+        icon='🎵',
+        title='Arraste o áudio aqui',
+        subtitle='ou clique para selecionar um arquivo',
+        file_types='Formatos: ' ~ allowed_extensions,
+        size_hint='Até ' ~ max_file_size_mb ~ 'MB',
+        input_name='audio',
+        accept='audio/*',
+        input_id='audio-input',
+        button_label='Selecionar Arquivo',
+        title_key='upload.audio.title',
+        subtitle_key='upload.audio.subtitle',
+        file_types_key='upload.audio.types',
+        size_hint_key='upload.audio.size',
+        button_key='upload.button.single'
+      ) }}
+
+      <div class="form-group stacked">
+        <label for="output_format">Converter para:</label>
+        <select name="output_format" id="output_format" required>
+          {% for group_label, options in output_format_groups %}
+          <optgroup label="{{ group_label }}">
+            {% for value, label in options %}
+            <option value="{{ value }}" {% if requested_to and requested_to.lower() == value.lower() %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+      </div>
+
+      <p
+        class="helper-text"
+        data-i18n-template="form.cleanup.notice"
+        data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}"
+        data-i18n-arg-limit="{{ global_max_upload_mb }}"
+      >
+        Arquivos enviados são removidos automaticamente após
+        {{ (global_file_retention_seconds // 3600) or 1 }} hora(s). Limite máximo padrão: {{ global_max_upload_mb }} MB.
+      </p>
+
+      <div class="button-group button-group--stretch">
+        <button type="submit" class="btn btn-success btn-action">Converter Áudio</button>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+
+    <div id="progress-container" class="progress-container">
+      <div class="progress-header">
+        <h3 data-i18n="progress.audio.title">Convertendo áudio...</h3>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-message" data-i18n="progress.audio.message">Aguarde enquanto convertemos seu arquivo de áudio.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="alert-list">
+      {% for category, message in messages %}
+      <li class="alert alert-{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </section>
+
+  <section class="hero-section">
+    <span class="hero-icon">🎧</span>
+    <h1 data-i18n="audio.hero.title">Conversor de Áudio</h1>
+    <p class="hero-description" data-i18n="audio.hero.description">
+      Transforme seus arquivos de áudio em formatos compatíveis com qualquer plataforma, mantendo a qualidade original.
+    </p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567603') }}
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🎶</span>
+      <h3 data-i18n="audio.features.formats.title">Vários formatos</h3>
+      <p data-i18n="audio.features.formats.desc">Converta entre MP3, AAC, FLAC, OGG, WMA, AC3, CAF e muito mais.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚙️</span>
+      <h3 data-i18n="audio.features.quality.title">Qualidade controlada</h3>
+      <p data-i18n="audio.features.quality.desc">Preservamos a taxa de bits ideal para streaming, download ou uso profissional.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🤫</span>
+      <h3 data-i18n="audio.features.safe.title">Processamento seguro</h3>
+      <p data-i18n="audio.features.safe.desc">Os arquivos são apagados após o processamento e nunca são compartilhados.</p>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
+{% endblock %}

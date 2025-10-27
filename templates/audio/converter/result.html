@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Áudio convertido - FireTools',
+    'description': 'Seu arquivo de áudio convertido está pronto para download em formatos populares como MP3, WAV e FLAC.',
+    'keywords': 'download áudio convertido, conversor de áudio firetools'
+  } %}
+{% endblock %}
+{% block title %}Áudio Convertido{% endblock %}
+{% block content %}
+<div class="main-content result-layout">
+  <section class="result-hero">
+    <span class="result-icon">🎵</span>
+    <h1>Áudio convertido com sucesso!</h1>
+    <p>Seu arquivo está pronto para download seguro logo abaixo.</p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567201') }}
+  </section>
+
+  <section class="result-downloads">
+    <div class="download-card">
+      <h2 class="download-title">Arquivo Disponível</h2>
+      <p class="download-subtitle">
+        Faça o download do áudio convertido. Disponível por até 1 hora.
+      </p>
+      <ul class="download-list">
+        <li class="download-item">
+          <span class="download-index">1.</span>
+          <span class="download-name">{{ filename }}</span>
+          <a
+            class="btn btn-outline btn-sm"
+            href="{{ url_for('static', filename='audio/converter/converted/' ~ filename) }}"
+            download
+          >
+            ⬇️ Baixar
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567202') }}
+  </section>
+
+  <div class="button-group button-group--center button-group--auto">
+    <a class="btn btn-action" href="{{ url_for('audio_converter_index') }}">
+      🔄 Converter outro áudio
+    </a>
+  </div>
+</div>
+{% endblock %}

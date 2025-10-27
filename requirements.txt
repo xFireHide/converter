@@ -1,11 +1,9 @@
 Flask
-Flask-WTF
 Flask-Limiter
 PyMuPDF
 gunicorn
 Pillow
-pytube
-yt-dlp
+pdf2docx
 rembg
 onnxruntime
 imageio-ffmpeg

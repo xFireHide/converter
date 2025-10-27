@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Política de Privacidade - FireTools{% endblock %}
+
+{% block content %}
+<div class="main-content legal-page">
+  <h1>Política de Privacidade</h1>
+  <p>Última atualização: 01 de novembro de 2025</p>
+
+  <section>
+    <h2>1. Introdução</h2>
+    <p>
+      A FireTools valoriza a privacidade dos usuários e está comprometida em proteger as informações coletadas
+      durante o uso das nossas ferramentas online. Esta Política de Privacidade descreve como tratamos dados pessoais,
+      quais informações são coletadas e quais direitos você possui.
+    </p>
+  </section>
+
+  <section>
+    <h2>2. Dados coletados</h2>
+    <ul>
+      <li><strong>Cookies essenciais:</strong> utilizados para manter sessões, preferências e proteção contra ataques (CSRF).</li>
+      <li><strong>Cookies de anúncios:</strong> o Google AdSense pode definir cookies próprios e de terceiros para personalizar anúncios.</li>
+      <li><strong>Dados de navegação:</strong> endereço IP, agente do usuário e páginas acessadas são registrados em logs para auditoria e segurança.</li>
+      <li><strong>Arquivos enviados:</strong> os arquivos carregados para processamento ficam armazenados temporariamente por até {{ (global_file_retention_seconds // 3600) or 1 }} hora(s).</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>3. Uso das informações</h2>
+    <p>Utilizamos as informações coletadas para:</p>
+    <ul>
+      <li>Executar e melhorar as ferramentas de conversão e processamento;</li>
+      <li>Garantir a segurança da aplicação e evitar abuso;</li>
+      <li>Exibir publicidade e medir desempenho dos anúncios (Google AdSense);</li>
+      <li>Cumprir obrigações legais e responder a solicitações de autoridades competentes.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>4. Compartilhamento com terceiros</h2>
+    <p>
+      Não compartilhamos dados pessoais com terceiros, exceto:
+    </p>
+    <ul>
+      <li>Com o Google, para veiculação de anúncios através do AdSense;</li>
+      <li>Quando exigido por lei ou ordem judicial;</li>
+      <li>Com provedores de infraestrutura utilizados para hospedar o serviço.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>5. Retenção e exclusão</h2>
+    <p>
+      Arquivos enviados são removidos automaticamente após o processamento e, no máximo, em {{ (global_file_retention_seconds // 3600) or 1 }} hora(s).
+      Registros de acessos e logs de segurança são mantidos pelo período necessário para auditoria e cumprimento de obrigações legais.
+    </p>
+  </section>
+
+  <section>
+    <h2>6. Direitos do usuário</h2>
+    <p>Nos termos da LGPD/GDPR você pode:</p>
+    <ul>
+      <li>Solicitar informações sobre os dados tratados;</li>
+      <li>Corrigir ou atualizar dados pessoais;</li>
+      <li>Solicitar a exclusão de registros, quando aplicável;</li>
+      <li>Revogar o consentimento para uso de cookies opcionais.</li>
+    </ul>
+    <p>
+      Para exercer seus direitos, entre em contato pelo e-mail <a href="mailto:privacidade@firetools.app">privacidade@firetools.app</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>7. Segurança</h2>
+    <p>
+      Empregamos medidas técnicas e administrativas para proteger os dados coletados, incluindo criptografia de conexão (HTTPS),
+      monitoramento de acessos e exclusão periódica de arquivos provisórios.
+    </p>
+  </section>
+
+  <section>
+    <h2>8. Atualizações desta política</h2>
+    <p>
+      Podemos atualizar esta Política de Privacidade periodicamente. Recomendamos consultar esta página com frequência para
+      verificar eventuais alterações. A data da última atualização é informada no início do documento.
+    </p>
+  </section>
+
+  <section>
+    <h2>9. Contato</h2>
+    <p>
+      Dúvidas sobre esta política podem ser encaminhadas para <a href="mailto:suporte@firetools.app">suporte@firetools.app</a>.
+    </p>
+  </section>
+</div>
+{% endblock %}

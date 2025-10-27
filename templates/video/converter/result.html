@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Vídeo convertido - FireTools',
+    'description': 'Baixe o arquivo de vídeo convertido em MP4, AVI ou outros formatos otimizados para streaming.',
+    'keywords': 'download vídeo convertido, conversor de vídeo firetools'
+  } %}
+{% endblock %}
+{% block title %}Vídeo Convertido{% endblock %}
+{% block content %}
+<div class="main-content result-layout">
+  <section class="result-hero">
+    <span class="result-icon">🎬</span>
+    <h1>Vídeo convertido com sucesso!</h1>
+    <p>Baixe o arquivo convertido usando o link disponível abaixo.</p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567301') }}
+  </section>
+
+  <section class="result-downloads">
+    <div class="download-card">
+      <h2 class="download-title">Arquivo Disponível</h2>
+      <p class="download-subtitle">
+        Salve o vídeo convertido. Permanecerá disponível por até 1 hora.
+      </p>
+      <ul class="download-list">
+        <li class="download-item">
+          <span class="download-index">1.</span>
+          <span class="download-name">{{ filename }}</span>
+          <a
+            class="btn btn-outline btn-sm"
+            href="{{ url_for('static', filename='video/converter/converted/' ~ filename) }}"
+            download
+          >
+            ⬇️ Baixar
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567302') }}
+  </section>
+
+  <div class="button-group button-group--center button-group--auto">
+    <a class="btn btn-action" href="{{ url_for('video_converter_index') }}">
+      🔄 Converter outro vídeo
+    </a>
+  </div>
+</div>
+{% endblock %}

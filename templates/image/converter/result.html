@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Imagens convertidas - FireTools',
+    'description': 'Download das imagens convertidas com preservação de qualidade. Compatível com JPG, PNG, WEBP, GIF e outros formatos.',
+    'keywords': 'download imagens convertidas, conversor de imagem firetools'
+  } %}
+{% endblock %}
+{% block title %}Imagens Convertidas{% endblock %}
+{% block content %}
+<div class="main-content result-layout">
+  <section class="result-hero">
+    <span class="result-icon">🖼️</span>
+    <h1>Imagens Convertidas com Sucesso!</h1>
+    <p>Faça o download das conversões ou inicie um novo processamento.</p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567101') }}
+  </section>
+
+  <section class="result-downloads">
+    <div class="download-card">
+      <h2 class="download-title">Arquivos Disponíveis</h2>
+      <p class="download-subtitle">
+        Clique em cada item para baixar o arquivo convertido.
+      </p>
+
+      <ul class="download-list">
+        {% for img in images %}
+        <li class="download-item">
+          <span class="download-index">{{ loop.index }}.</span>
+          <span class="download-name">{{ img }}</span>
+          <a
+            class="btn btn-outline btn-sm"
+            href="{{ url_for('static', filename='image/converter/uploads/' ~ img) }}"
+            download
+          >
+            ⬇️ Baixar
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567102') }}
+  </section>
+
+  <div class="button-group button-group--center button-group--auto">
+    <a class="btn btn-primary btn-action" href="{{ url_for('image_converter_index') }}">
+      🔄 Converter outras imagens
+    </a>
+  </div>
+</div>
+{% endblock %}

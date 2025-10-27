@@ -1,0 +1,14 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+.env
+venv
+.venv
+logs
+uploads
+processed
+firebase-hosting-public
+firebase-debug.log

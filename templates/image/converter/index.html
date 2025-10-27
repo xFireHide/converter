@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% from 'components/upload_area.html' import upload_area %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Conversor de Imagem Online - FireTools',
+    'description': 'Converta imagens para JPG, PNG, WEBP, GIF e formatos avançados em lote. Mantemos transparência e removemos arquivos após 1 hora.',
+    'keywords': 'converter imagem online, jpg para png, webp, conversor gratuito'
+  } %}
+{% endblock %}
+
+{% block title %}{{ meta.title if meta and meta.title else 'Conversor de Imagem - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Converta imagens gratuitamente entre JPG, PNG, WEBP e outros formatos.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter imagem, jpg para png, png para jpg' }}{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <!-- Upload Section -->
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Faça Upload das Suas Imagens</h2>
+    </div>
+    
+    <form
+      id="upload-form"
+      method="post"
+      action="{{ url_for('image_converter.convert') }}"
+      enctype="multipart/form-data"
+    >
+      {{ upload_area(
+        icon='🖼️',
+        title='Arraste suas imagens aqui',
+        subtitle='ou clique para selecionar arquivos',
+        file_types='JPG, PNG, WEBP, GIF',
+        size_hint='Até ' ~ max_file_size_mb ~ 'MB',
+        input_name='images',
+        accept='image/*',
+        input_id='fileElem',
+        drop_id='drop-area',
+        button_id='select-files-btn',
+        button_label='Selecionar Arquivos',
+        multiple=True,
+        title_key='upload.image.title',
+        subtitle_key='upload.image.subtitle',
+        file_types_key='upload.image.types',
+        size_hint_key='upload.image.size',
+        button_key='upload.button.multiple'
+      ) }}
+
+      <div class="form-group">
+        <label for="target_format" class="form-label">Converter para:</label>
+        <select name="target_format" id="target_format" class="form-control" required>
+          {% for group_label, options in output_format_groups %}
+          <optgroup label="{{ group_label }}">
+            {% for value, label in options %}
+            <option value="{{ value }}" {% if requested_to and requested_to.lower() == value.lower() %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </optgroup>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="button-group button-group--stretch">
+        <button type="submit" class="btn btn-success btn-action">
+          Converter Imagens
+        </button>
+      </div>
+      
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+
+    <!-- Progress Section -->
+    <div id="progress-container" class="progress-container">
+      <div class="progress-header">
+        <h3 data-i18n="progress.image.title">Convertendo Imagens...</h3>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-message" data-i18n="progress.image.message">Aguarde enquanto convertemos suas imagens</p>
+    </div>
+
+    <!-- Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <section class="card">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+      </section>
+      {% endif %}
+    {% endwith %}
+  </section>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <span class="hero-icon">🖼️</span>
+    <h1 data-i18n="image.hero.title">Conversor de Imagem</h1>
+    <p class="hero-description" data-i18n="image.hero.description">
+      Converta suas imagens entre formatos populares e avançados com preservação de qualidade e suporte a transparência.
+    </p>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3 data-i18n="image.features.batch.title">Lotes Rápidos</h3>
+      <p data-i18n="image.features.batch.desc">Envie vários arquivos de uma vez e receba todas as versões convertidas em segundos</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎯</span>
+      <h3 data-i18n="image.features.formats.title">Formatos Flexíveis</h3>
+      <p data-i18n="image.features.formats.desc">De JPG a AVIF, escolha o formato ideal para web, impressão ou dispositivos móveis</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <h3 data-i18n="image.features.privacy.title">Privacidade Garantida</h3>
+      <p data-i18n="image.features.privacy.desc">Os arquivos são removidos automaticamente após 1 hora para manter seus dados seguros</p>
+    </div>
+  </section>
+
+  <!-- Converted Images -->
+  {% if images %}
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Imagens Convertidas</h2>
+    </div>
+    <div class="features-grid">
+      {% for img in images %}
+      <div class="feature-card">
+        <img
+          src="{{ url_for('static', filename='image/converter/uploads/' ~ img) }}"
+          alt="Imagem convertida {{ loop.index }}"
+          style="width: 100%; max-width: 200px; height: auto; border-radius: var(--radius-md);"
+        />
+        <h3>{{ img }}</h3>
+        <a href="{{ url_for('static', filename='image/converter/uploads/' ~ img) }}" 
+           download="{{ img }}" 
+           class="btn btn-primary btn-sm">
+          Baixar
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
+{% endblock %}

@@ -1,38 +1,125 @@
-{% extends 'base.html' %} {% block title %}Página Inicial{% endblock %} {% block
-content %}
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'FireTools - Ferramentas Online para PDF, Imagem, Áudio, Vídeo e URL',
+    'description': 'Coleção gratuita de ferramentas online para dividir PDFs, remover fundo de imagens, converter formatos de mídia e encurtar links com relatórios de cliques.',
+    'keywords': 'firetools, conversor pdf, remover fundo, converter vídeo, conversor áudio, encurtador de url'
+  } %}
+{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "FireTools",
+    "url": "{{ request.url_root.rstrip('/') }}",
+    "description": "Ferramentas online gratuitas para PDF, imagem, áudio, vídeo e encurtamento de links.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "BRL"
+    }
+  }
+  </script>
+{% endblock %}
+
+{% block content %}
 <div class="main-content">
-  <div class="button-group">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <span class="hero-icon">🔥</span>
+    <h1 class="navbar-brand" data-i18n="home.hero.title">FireTools</h1>
+    <p class="hero-description" data-i18n="home.hero.description">
+      Sua coleção de ferramentas online gratuitas para conversão de arquivos,
+      processamento de documentos e muito mais. Rápido, seguro e fácil de usar.
+    </p>
+  </section>
+
+  <!-- Features Grid -->
+  <section class="features-grid">
     {% if 'pdf_divisor' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('pdf_divisor.index') }}"
-      >📄 Divisor de PDF</a
-    >
-    {% endif %} {% if 'short_curter' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('short_curter.index') }}">
-      Encurtador de URL
-    </a>
-    {% endif %} {% if 'image_converter' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('image_converter.index') }}">
-      🔗 Image Converter
-    </a>
-    {% endif %} {% if 'video_converter' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('video_converter.index') }}">
-      🔗 Video Converter
-    </a>
-    {% endif %} {% if 'youtube_subtitle_downloader' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('youtube_subtitle_downloader.index') }}">
-      🔗 Youtube Subtitle Downloader
-    </a>
-    {% endif %} {% if 'yt_video_downloader' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('yt_video_downloader.index') }}">
-      🔗 YT Video Downloader
-    </a>
-    {% endif %} {% if 'background_remover' in current_app.blueprints %}
-    <a class="btn" href="{{ url_for('background_remover.index') }}">
-      Beta Removedor de Background
-    </a>
+    <div class="feature-card">
+      <span class="feature-icon">📄</span>
+      <h3 data-i18n="home.feature.pdf.title">Divisor de PDF</h3>
+      <p data-i18n="home.feature.pdf.desc">Divida seus PDFs em páginas individuais de forma rápida e segura.</p>
+      <a href="{{ url_for('pdf_divisor_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.pdf.cta">
+        Usar Ferramenta
+      </a>
+    </div>
     {% endif %}
-  </div>
-  <div class="ads-banner-top"></div>
-  <div class="adsense-bottom"></div>
-  {% endblock %}
+
+    {% if 'pdf_converter' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🖼️</span>
+      <h3 data-i18n="home.feature.pdfimg.title">PDF para Imagens</h3>
+      <p data-i18n="home.feature.pdfimg.desc">Transforme seu PDF em um DOCX editável ou gere imagens PNG, JPG e WEBP em segundos.</p>
+      <a href="{{ url_for('pdf_to_image_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.pdfimg.cta">
+        Converter PDF
+      </a>
+    </div>
+    {% endif %}
+
+    {% if 'url_shortener' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🔗</span>
+      <h3 data-i18n="home.feature.url.title">Encurtador de URL</h3>
+      <p data-i18n="home.feature.url.desc">Crie links curtos e personalizados para suas URLs longas.</p>
+      <a href="{{ url_for('url_shortener_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.url.cta">
+        Encurtar URL
+      </a>
+    </div>
+    {% endif %}
+
+    {% if 'image_converter' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🖼️</span>
+      <h3 data-i18n="home.feature.image.title">Conversor de Imagem</h3>
+      <p data-i18n="home.feature.image.desc">Converta imagens entre diferentes formatos com alta qualidade.</p>
+      <a href="{{ url_for('image_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.image.cta">
+        Converter Imagem
+      </a>
+    </div>
+    {% endif %}
+
+    {% if 'video_converter' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🎥</span>
+      <h3 data-i18n="home.feature.video.title">Conversor de Vídeo</h3>
+      <p data-i18n="home.feature.video.desc">Converta vídeos para MP4, AVI, MKV e outros formatos.</p>
+      <a href="{{ url_for('video_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.video.cta">
+        Converter Vídeo
+      </a>
+    </div>
+    {% endif %}
+
+    {% if 'audio_converter' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🎵</span>
+      <h3 data-i18n="home.feature.audio.title">Conversor de Áudio</h3>
+      <p data-i18n="home.feature.audio.desc">Converta arquivos de áudio entre MP3, WAV, FLAC e outros formatos.</p>
+      <a href="{{ url_for('audio_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.audio.cta">
+        Converter Áudio
+      </a>
+    </div>
+    {% endif %}
+
+
+    {% if 'background_remover' in current_app.blueprints %}
+    <div class="feature-card">
+      <span class="feature-icon">🎨</span>
+      <h3 data-i18n="home.feature.background.title">Removedor de Background</h3>
+      <p data-i18n="home.feature.background.desc">Remova o fundo de suas imagens automaticamente usando IA.</p>
+      <a href="{{ url_for('background_remover_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.background.cta">
+        Remover Fundo
+      </a>
+    </div>
+    {% endif %}
+  </section>
+
 </div>
+{% endblock %}

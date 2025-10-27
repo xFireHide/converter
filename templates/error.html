@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Erro{% endblock %}
+{% block content %}
+<div class="main-content">
+  <h1>Ocorreu um erro</h1>
+  <p>Desculpe, algo inesperado aconteceu ao processar sua solicitação.</p>
+  {% if error %}
+  <pre style="white-space: pre-wrap; word-break: break-word; background:#f7f7f7; padding: 12px; border-radius: 6px;">{{ error }}</pre>
+  {% endif %}
+  <div class="button-group button-group--center button-group--auto">
+    <a class="btn" href="{{ url_for('home') }}">Voltar para a página inicial</a>
+  </div>
+</div>
+{% endblock %}

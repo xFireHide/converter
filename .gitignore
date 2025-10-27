@@ -52,7 +52,25 @@ coverage.xml
 
 # macOS
 .DS_Store
-logs/security.log
-logs/security.log
-logs/security.log
-/logs
+logs/**
+!logs/**/.gitkeep
+processed/**
+!processed/**/.gitkeep
+uploads/**
+!uploads/**/.gitkeep
+venv/
+static/audio/converter/uploads/**
+!static/audio/converter/uploads/**/.gitkeep
+static/audio/converter/converted/**
+!static/audio/converter/converted/**/.gitkeep
+static/video/converter/uploads/**
+!static/video/converter/uploads/**/.gitkeep
+static/video/converter/converted/**
+!static/video/converter/converted/**/.gitkeep
+static/image/converter/uploads/**
+!static/image/converter/uploads/**/.gitkeep
+static/image/background_remover/uploads/**
+!static/image/background_remover/uploads/**/.gitkeep
+static/doc/pdf/converter/converted/**
+!static/doc/pdf/converter/converted/**/.gitkeep
+short_curter.db

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+{% from 'components/upload_area.html' import upload_area %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Divisor de PDF Gratuito - FireTools',
+    'description': 'Divida páginas de PDF em quadrantes menores ou páginas separadas gratuitamente. Arquivos são processados com segurança e removidos automaticamente.',
+    'keywords': 'divisor de pdf online, dividir pdf em quadrantes, ferramentas pdf gratuitas'
+  } %}
+{% endblock %}
+
+{% block title %}{{ meta.title if meta and meta.title else 'Divisor de PDF - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Divida páginas de PDF em quadrantes menores de forma rápida e segura.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'dividir pdf, pdf quadrantes' }}{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <!-- Upload Section -->
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Faça Upload do Seu PDF</h2>
+    </div>
+    
+    {% if error %}
+    <div class="alert alert-danger">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form
+      id="upload-form"
+      action="{{ url_for('pdf_divisor.divide') }}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {{ upload_area(
+        icon='📁',
+        title='Arraste seu PDF aqui',
+        subtitle='ou clique para selecionar um arquivo',
+        file_types='PDF',
+        size_hint='Até 200MB',
+        input_name='pdf',
+        accept='application/pdf',
+        input_id='pdf-input',
+        drop_id='drop-area',
+        button_id='select-file-btn',
+        button_label='Selecionar Arquivo',
+        title_key='upload.pdf.title',
+        subtitle_key='upload.pdf.subtitle',
+        file_types_key='upload.pdf.types',
+        size_hint_key='upload.pdf.size',
+        button_key='upload.button.single'
+      ) }}
+
+      <div class="button-group button-group--stretch">
+        <button type="submit" class="btn btn-success btn-action">
+          Processar PDF
+        </button>
+      </div>
+      <p
+        class="helper-text"
+        data-i18n-template="form.cleanup.notice"
+        data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}"
+        data-i18n-arg-limit="{{ global_max_upload_mb }}"
+      >
+        Arquivos enviados são removidos automaticamente após
+        {{ (global_file_retention_seconds // 3600) or 1 }} hora(s). Limite máximo padrão: {{ global_max_upload_mb }} MB.
+      </p>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+
+    <!-- Progress Section -->
+    <div id="progress-container" class="progress-container">
+      <div class="progress-header">
+        <h3 data-i18n="progress.pdf.title">Processando PDF...</h3>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-message" data-i18n="progress.pdf.message">Aguarde enquanto dividimos seu PDF em quadrantes</p>
+    </div>
+  </section>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <span class="hero-icon">📄</span>
+    <h1 data-i18n="pdf.hero.title">Divisor de PDF</h1>
+    <p class="hero-description" data-i18n="pdf.hero.description">
+      Transforme cada página do seu PDF em quatro quadrantes automaticamente.
+      Perfeito para documentos que precisam ser divididos em seções menores.
+    </p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567601') }}
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <h3 data-i18n="pdf.features.fast.title">Processamento Rápido</h3>
+      <p data-i18n="pdf.features.fast.desc">Divisão automática e instantânea dos seus PDFs</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎯</span>
+      <h3 data-i18n="pdf.features.accurate.title">Precisão Garantida</h3>
+      <p data-i18n="pdf.features.accurate.desc">Algoritmo inteligente que detecta conteúdo em cada quadrante</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔒</span>
+      <h3 data-i18n="pdf.features.safe.title">Seguro e Privado</h3>
+      <p data-i18n="pdf.features.safe.desc">Seus arquivos são processados localmente e removidos automaticamente</p>
+    </div>
+  </section>
+
+  <!-- How it works Section -->
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title text-center">Como Funciona</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">1</span>
+        <h3 data-i18n="pdf.steps.1.title">Selecione seu PDF</h3>
+        <p data-i18n="pdf.steps.1.desc">Escolha o arquivo PDF que deseja dividir. Suportamos arquivos até 200MB.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">2</span>
+        <h3 data-i18n="pdf.steps.2.title">Processamento Automático</h3>
+        <p data-i18n="pdf.steps.2.desc">Nosso algoritmo analisa cada página e divide em 4 quadrantes automaticamente.</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">3</span>
+        <h3 data-i18n="pdf.steps.3.title">Download Instantâneo</h3>
+        <p data-i18n="pdf.steps.3.desc">Baixe o PDF processado com todas as páginas divididas em alta qualidade.</p>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
+{% endblock %}

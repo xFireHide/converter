@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% from 'components/ad_unit.html' import ad_unit %}
+{% from 'components/upload_area.html' import upload_area %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Remover Fundo de Imagem com IA - FireTools',
+    'description': 'Faça upload de imagens JPG ou PNG e remova o fundo automaticamente mantendo detalhes finos. Resultado disponível para download em PNG transparente.',
+    'keywords': 'remover fundo de imagem, background remover, recorte automático'
+  } %}
+{% endblock %}
+
+{% block title %}{{ meta.title if meta and meta.title else 'Removedor de Background - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Remova o fundo de imagens automaticamente com IA e mantenha a transparência perfeita.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'remover fundo, background remover, recortar imagem' }}{% endblock %}
+
+{% block content %}
+<div class="main-content tool-layout">
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Envie sua imagem</h2>
+    </div>
+    <form
+      id="upload-form"
+      method="post"
+      action="{{ url_for('background_remover.remove') }}"
+      enctype="multipart/form-data"
+    >
+      {{ upload_area(
+        icon='✨',
+        title='Arraste a imagem aqui',
+        subtitle='ou clique para selecionar um arquivo',
+        file_types='Formatos: ' ~ allowed_extensions,
+        size_hint='Até ' ~ max_file_size_mb ~ 'MB',
+        input_name='image',
+        accept='image/*',
+        input_id='background-input',
+        button_label='Selecionar Imagem',
+        title_key='upload.background.title',
+        subtitle_key='upload.background.subtitle',
+        file_types_key='upload.background.types',
+        size_hint_key='upload.background.size',
+        button_key='upload.button.single'
+      ) }}
+
+      <p
+        class="helper-text"
+        data-i18n-template="form.cleanup.notice"
+        data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}"
+        data-i18n-arg-limit="{{ global_max_upload_mb }}"
+      >
+        Arquivos enviados são removidos automaticamente após
+        {{ (global_file_retention_seconds // 3600) or 1 }} hora(s). Limite máximo padrão: {{ global_max_upload_mb }} MB.
+      </p>
+
+      <div class="button-group button-group--stretch">
+        <button type="submit" class="btn btn-success btn-action">Remover Fundo</button>
+      </div>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    </form>
+
+    <div id="progress-container" class="progress-container">
+      <div class="progress-header">
+        <h3 data-i18n="progress.background.title">Processando imagem...</h3>
+        <span id="progress-text">0%</span>
+      </div>
+      <div class="progress-bar" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-message" data-i18n="progress.background.message">Aguarde enquanto removemos o fundo da sua imagem.</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="alert-list">
+      {% for category, message in messages %}
+      <li class="alert alert-{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </section>
+
+  <section class="hero-section">
+    <span class="hero-icon">🪄</span>
+    <h1 data-i18n="background.hero.title">Removedor de Background</h1>
+    <p class="hero-description" data-i18n="background.hero.description">
+      Elimine o fundo das suas imagens automaticamente, mantendo detalhes e transparência perfeita para uso profissional.
+    </p>
+  </section>
+
+  <section class="ads-slot" aria-label="Publicidade">
+    {{ ad_unit('1234567605') }}
+  </section>
+
+  <section class="features-grid">
+    <div class="feature-card">
+      <span class="feature-icon">🤖</span>
+      <h3>IA avançada</h3>
+      <p>Modelo treinado para preservar cabelos, bordas finas e objetos complexos.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🏞️</span>
+      <h3>Qualidade 4K</h3>
+      <p>Suporte a imagens de alta resolução com preservação de cores e transparência.</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🔐</span>
+      <h3>Privacidade</h3>
+      <p>Seus uploads são excluídos automaticamente após o processamento.</p>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/progress_bar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drop_area.js') }}"></script>
+{% endblock %}
