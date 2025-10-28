@@ -133,6 +133,9 @@ if TOOLS_DIR.is_dir():
 
 url_shortener_init_db()
 
+# Log successful startup
+logging.info("FireTools application initialized successfully")
+logging.info("All blueprints loaded and registered")
 
 # --- Rotas principais ---
 def _generate_csrf_token() -> str:
@@ -607,4 +610,5 @@ if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
     debug_env = os.environ.get("DEBUG", "").lower()
     debug = debug_env in ("1", "true", "yes", "on")
+    print(f"Starting Flask app on port {port}, debug={debug}")
     app.run(host="0.0.0.0", port=port, debug=debug)
