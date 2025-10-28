@@ -6,8 +6,16 @@ from typing import Dict, List, Tuple
 
 from core.settings import settings
 from core.storage import RetentionPolicy, cleanup_retention_policies, ensure_directory
-from imageio_ffmpeg import get_ffmpeg_exe
 from werkzeug.utils import secure_filename
+
+# Optional import for imageio_ffmpeg
+try:
+    from imageio_ffmpeg import get_ffmpeg_exe
+    FFMPEG_AVAILABLE = True
+except ImportError:
+    FFMPEG_AVAILABLE = False
+    def get_ffmpeg_exe():
+        return "ffmpeg"  # Fallback to system ffmpeg
 
 UPLOAD_FOLDER = ensure_directory(settings.base_dir / "static" / "video" / "converter" / "uploads")
 CONVERTED_FOLDER = ensure_directory(settings.base_dir / "static" / "video" / "converter" / "converted")
