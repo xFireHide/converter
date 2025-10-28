@@ -581,7 +581,7 @@ def cleanup_command():
 
 # Execução
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 4666))
+    port = int(os.environ.get("PORT", 8080))
     debug_env = os.environ.get("DEBUG", "").lower()
     debug = debug_env in ("1", "true", "yes", "on")
     app.run(host="0.0.0.0", port=port, debug=debug)
