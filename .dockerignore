@@ -67,5 +67,4 @@ README.md
 *.md
 
 # Docker
-Dockerfile
 .dockerignore
