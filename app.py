@@ -28,10 +28,16 @@ from tools.audio.converter.service import (
     MAX_FILE_SIZE_MB as AUDIO_MAX_FILE_SIZE_MB,
     OUTPUT_FORMAT_GROUPS as AUDIO_OUTPUT_FORMAT_GROUPS,
 )
-from tools.image.background_remover.service import (
-    ALLOWED_EXTENSIONS as BACKGROUND_ALLOWED_EXTENSIONS,
-    MAX_FILE_SIZE_MB as BACKGROUND_MAX_FILE_SIZE_MB,
-)
+# Lazy import for background remover to speed up cold start
+try:
+    from tools.image.background_remover.service import (
+        ALLOWED_EXTENSIONS as BACKGROUND_ALLOWED_EXTENSIONS,
+        MAX_FILE_SIZE_MB as BACKGROUND_MAX_FILE_SIZE_MB,
+    )
+except ImportError:
+    # Fallback if rembg is not available
+    BACKGROUND_ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+    BACKGROUND_MAX_FILE_SIZE_MB = 20
 from tools.image.converter.service import (
     MAX_FILE_SIZE_MB as IMAGE_MAX_FILE_SIZE_MB,
     OUTPUT_FORMAT_GROUPS as IMAGE_OUTPUT_FORMAT_GROUPS,
@@ -140,6 +146,12 @@ def _remember_short_code(code: str) -> None:
         history.remove(code)
     history.insert(0, code)
     session["shortener_codes"] = history[:20]
+
+
+@app.route("/health")
+def health_check():
+    """Health check endpoint for Cloud Run"""
+    return jsonify({"status": "healthy", "service": "firetools"})
 
 
 @app.route("/")

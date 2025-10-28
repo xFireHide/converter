@@ -1,14 +1,71 @@
+# Git
+.git
+.gitignore
+
+# Python
 __pycache__
 *.pyc
 *.pyo
 *.pyd
-*.db
-*.sqlite3
-.env
-venv
-.venv
-logs
-uploads
-processed
-firebase-hosting-public
-firebase-debug.log
+.Python
+env
+pip-log.txt
+pip-delete-this-directory.txt
+.tox
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+.git
+.mypy_cache
+.pytest_cache
+.hypothesis
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project specific
+logs/
+uploads/
+processed/
+static/yt_downloads/
+static/audio_converter/uploads/
+static/audio_converter/converted/
+static/video_converter/uploads/
+static/video_converter/converted/
+static/image_converter/uploads/
+static/image_converter/converted/
+static/background_remover/uploads/
+static/image/background_remover/uploads/
+cookies.txt
+short_curter.db
+test.pdf
+
+# Documentation
+README.md
+*.md
+
+# Docker
+Dockerfile
+.dockerignore
