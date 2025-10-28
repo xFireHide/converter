@@ -581,6 +581,7 @@ def cleanup_command():
 
 # Execução
 if __name__ == "__main__":
+    # Prefer running via gunicorn in Cloud Run; this block is for local dev
     port = int(os.environ.get("PORT", 8080))
     debug_env = os.environ.get("DEBUG", "").lower()
     debug = debug_env in ("1", "true", "yes", "on")
