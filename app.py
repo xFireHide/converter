@@ -136,6 +136,7 @@ url_shortener_init_db()
 # Log successful startup
 logging.info("FireTools application initialized successfully")
 logging.info("All blueprints loaded and registered")
+logging.info("Optional imports handled gracefully")
 
 # --- Rotas principais ---
 def _generate_csrf_token() -> str:
