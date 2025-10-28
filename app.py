@@ -62,7 +62,8 @@ from tools.url.shortener.service import (
 
 # --- Configuração do App ---
 app = Flask(__name__)
-app.config['DEBUG'] = True
+# Only enable debug in development
+app.config['DEBUG'] = os.environ.get("DEBUG", "false").lower() in ("true", "1", "yes")
 app.secret_key = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
 
 app.config.update(
@@ -91,10 +92,13 @@ VIDEO_CONVERTER_OUTPUTS = (settings.base_dir / "static" / "video" / "converter" 
 BACKGROUND_REMOVER_OUTPUTS = (settings.base_dir / "static" / "image" / "background_remover" / "uploads").resolve()
 
 # Configuração dos Logs
+# Use stderr for Cloud Run compatibility
 logging.basicConfig(
-    filename=str(LOGS_DIR / "security.log"),
     level=logging.WARNING,
     format="%(asctime)s %(levelname)s %(message)s",
+    handlers=[
+        logging.StreamHandler(),  # Use stderr/stdout instead of file
+    ]
 )
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)

@@ -9,3 +9,5 @@ rembg==2.0.60
 onnxruntime==1.20.1
 numpy==1.26.4
 scipy==1.11.4
+click==8.1.7
+imageio-ffmpeg==0.5.1

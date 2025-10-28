@@ -23,8 +23,11 @@ RUN pip install --no-cache-dir -U pip && \
 # Copy source
 COPY . .
 
+# Create necessary directories
+RUN mkdir -p /app/logs /app/uploads /app/processed /app/static/image/converter/uploads /app/static/audio/converter/converted /app/static/video/converter/converted /app/static/image/background_remover/uploads
+
 # Non-root user
-RUN useradd -m appuser
+RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8080
