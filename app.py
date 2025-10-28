@@ -154,6 +154,12 @@ def health_check():
     return jsonify({"status": "healthy", "service": "firetools"})
 
 
+@app.route("/ads.txt")
+def ads_txt():
+    """Serve ads.txt for Google AdSense verification"""
+    return send_from_directory(".", "ads.txt", mimetype="text/plain")
+
+
 @app.route("/")
 def home():
     meta = {
