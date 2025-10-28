@@ -404,7 +404,7 @@ a:hover {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   min-width: 200px;
-  opacity: 0;
+    opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
@@ -416,10 +416,10 @@ a:hover {
 
 .nav-dropdown:hover .dropdown-menu,
 .nav-dropdown.is-open .dropdown-menu {
-  opacity: 1;
+    opacity: 1;
   visibility: visible;
-  transform: translateY(0);
-}
+    transform: translateY(0);
+  }
 
 .dropdown-link {
   display: block;
@@ -1099,8 +1099,8 @@ a:hover {
   .feature-card {
     padding: var(--spacing-lg);
   }
-}
-
+  }
+  
 /* Print Styles */
 @media print {
   .navbar,

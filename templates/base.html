@@ -97,7 +97,7 @@
               <span class="dropdown-icon" aria-hidden="true">▾</span>
             </button>
             <ul class="dropdown-menu">
-              {% if 'pdf_divisor' in current_app.blueprints %}
+      {% if 'pdf_divisor' in current_app.blueprints %}
               <li>
                 <a
                   class="dropdown-link {{ 'is-active' if pdf_divisor_active else '' }}"
@@ -234,7 +234,7 @@
               </li>
             </ul>
           </li>
-          {% endif %}
+      {% endif %}
           <li class="nav-item nav-lang">
             <button id="language-toggle" class="language-toggle" type="button" aria-label="Toggle language">EN</button>
           </li>
@@ -251,7 +251,7 @@
       </aside>
       
       <!-- Conteúdo Principal -->
-      <main class="container">{% block content %}{% endblock %}</main>
+    <main class="container">{% block content %}{% endblock %}</main>
       
       <!-- Anúncio Lateral Direito -->
       <aside class="sidebar sidebar-right">
