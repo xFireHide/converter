@@ -19,10 +19,31 @@ WORKDIR /app
 # Install dependencies separately to leverage Docker layer cache
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -U pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    echo "=== Installed packages ===" && \
+    pip list | grep -E "(imageio|moviepy|click)" && \
+    echo "=== Testing imports ===" && \
+    python -c "import imageio_ffmpeg; print('imageio_ffmpeg import successful')" && \
+    python -c "import click; print('click import successful')"
 
 # Copy source
 COPY . .
+
+# Test app import
+RUN echo "=== Testing app import ===" && \
+    python -c "
+import sys
+sys.path.append('.')
+try:
+    from app import app
+    print('App import successful')
+    print('App name:', app.name)
+except Exception as e:
+    print('Error importing app:', e)
+    import traceback
+    traceback.print_exc()
+    exit(1)
+"
 
 # Create necessary directories
 RUN mkdir -p /app/logs /app/uploads /app/processed /app/static/image/converter/uploads /app/static/audio/converter/converted /app/static/video/converter/converted /app/static/image/background_remover/uploads
