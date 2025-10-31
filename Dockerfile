@@ -29,21 +29,9 @@ RUN pip install --no-cache-dir -U pip && \
 # Copy source
 COPY . .
 
-# Test app import
+# Test app import (will fail build if import fails)
 RUN echo "=== Testing app import ===" && \
-    python -c "
-import sys
-sys.path.append('.')
-try:
-    from app import app
-    print('App import successful')
-    print('App name:', app.name)
-except Exception as e:
-    print('Error importing app:', e)
-    import traceback
-    traceback.print_exc()
-    exit(1)
-"
+    python -c "import sys; sys.path.append('.'); from app import app; print('App import successful'); print('App name:', app.name)" || (echo "=== App import FAILED ===" && exit 1)
 
 # Create necessary directories
 RUN mkdir -p /app/logs /app/uploads /app/processed /app/static/image/converter/uploads /app/static/audio/converter/converted /app/static/video/converter/converted /app/static/image/background_remover/uploads
