@@ -59,8 +59,7 @@
     {% set background_active = endpoint.startswith('background_remover') %}
     {% set image_group_active = image_converter_active or background_active %}
     {% set audio_active = endpoint.startswith('audio_converter') %}
-    {% set video_downloader_active = endpoint.startswith('video_downloader') %}
-    {% set video_active = endpoint.startswith('video_converter') or video_downloader_active %}
+    {% set video_active = endpoint.startswith('video_converter') %}
     {% set url_active = endpoint.startswith('url_shortener') %}
 
     <nav class="navbar" role="navigation" aria-label="Principal">
@@ -213,17 +212,6 @@
                   Conversor
                 </a>
               </li>
-              {% if 'video_downloader' in current_app.blueprints %}
-              <li>
-                <a
-                  class="dropdown-link {{ 'is-active' if video_downloader_active else '' }}"
-                  href="{{ url_for('video_downloader_index') }}"
-                  data-i18n="nav.video.downloader"
-                >
-                  Downloader
-                </a>
-              </li>
-              {% endif %}
             </ul>
           </li>
           {% endif %}

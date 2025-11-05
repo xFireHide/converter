@@ -273,21 +273,6 @@ def video_converter_result(filename: str):
     return render_template("video/converter/result.html", filename=safe_name)
 
 
-@app.route("/video_downloader/result/<path:filename>")
-def video_downloader_result(filename: str):
-    safe_name = os.path.basename(filename)
-    if safe_name != filename:
-        abort(404)
-
-    downloads_dir = (settings.base_dir / "static" / "video" / "downloader" / "downloads").resolve()
-    file_path = (downloads_dir / safe_name).resolve()
-    if file_path.parent != downloads_dir or not file_path.exists():
-        abort(404)
-
-    title = request.args.get("title", "")
-    return render_template("video/downloader/result.html", filename=safe_name, title=title)
-
-
 @app.route("/audio_converter/result/<path:filename>")
 def audio_converter_result(filename: str):
     safe_name = os.path.basename(filename)
@@ -430,16 +415,6 @@ def video_converter_index():
         requested_to=requested_to,
         allowed_extensions=", ".join(sorted(VIDEO_ALLOWED_INPUT_EXTENSIONS)),
     )
-
-
-@app.route("/video_downloader/")
-def video_downloader_index():
-    meta = {
-        "title": "Baixar vídeos do YouTube - FireTools",
-        "description": "Faça download de vídeos do YouTube em MP4 ou extraia o áudio em MP3 com segurança.",
-        "keywords": "baixar youtube, download youtube mp4, download youtube mp3",
-    }
-    return render_template("video/downloader/index.html", meta=meta)
 
 
 @app.route("/audio_converter/")
