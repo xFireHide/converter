@@ -5,23 +5,37 @@ const I18N_FILES = {
 
 let currentLang = 'pt';
 let translations = {};
+let originalTexts = new Map(); // Armazena textos originais em português
+
+function storeOriginalTexts() {
+  // Armazena os textos originais de todos os elementos com data-i18n
+  document.querySelectorAll('[data-i18n], [data-i18n-template]').forEach((el) => {
+    const key = el.getAttribute('data-i18n') || el.getAttribute('data-i18n-template');
+    if (key && !originalTexts.has(key)) {
+      originalTexts.set(key, el.textContent.trim());
+    }
+  });
+}
 
 function applyTranslations() {
   document.documentElement.lang = currentLang;
-  document
-    .querySelectorAll('[data-i18n]')
-    .forEach((el) => {
-      const key = el.getAttribute('data-i18n');
-      const value = translations[key];
-      if (value) el.textContent = value;
-    });
-
+  
+  // Process templates first (they might contain nested i18n)
   document
     .querySelectorAll('[data-i18n-template]')
     .forEach((el) => {
       const key = el.getAttribute('data-i18n-template');
-      const template = translations[key];
-      if (!template) return;
+      let text;
+      if (currentLang === 'pt') {
+        // Restaura texto original em português
+        text = originalTexts.get(key);
+        if (!text) return;
+      } else {
+        const template = translations[key];
+        if (!template) return;
+        text = template;
+      }
+      
       const args = {};
       Array.from(el.attributes)
         .filter((attr) => attr.name.startsWith('data-i18n-arg-'))
@@ -29,11 +43,40 @@ function applyTranslations() {
           const argName = attr.name.replace('data-i18n-arg-', '');
           args[argName] = attr.value;
         });
-      let text = template;
+      
       Object.entries(args).forEach(([name, value]) => {
         text = text.replace(new RegExp(`{${name}}`, 'g'), value);
       });
       el.textContent = text;
+    });
+  
+  // Then process regular i18n (but skip elements that are children of already translated elements)
+  const processed = new Set();
+  document
+    .querySelectorAll('[data-i18n]')
+    .forEach((el) => {
+      // Skip if parent was already processed
+      let parent = el.parentElement;
+      while (parent) {
+        if (processed.has(parent)) {
+          return;
+        }
+        parent = parent.parentElement;
+      }
+      
+      const key = el.getAttribute('data-i18n');
+      let value;
+      if (currentLang === 'pt') {
+        // Restaura texto original em português
+        value = originalTexts.get(key);
+      } else {
+        value = translations[key];
+      }
+      
+      if (value) {
+        el.textContent = value;
+        processed.add(el);
+      }
     });
 }
 
@@ -61,6 +104,9 @@ async function setLanguage(lang) {
 }
 
 function initI18n() {
+  // Primeiro, armazena os textos originais em português
+  storeOriginalTexts();
+  
   const saved = localStorage.getItem('firetools-lang');
   const initial = saved || 'pt';
   if (initial !== 'pt') {

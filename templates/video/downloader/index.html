@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+  {% set meta = {
+    'title': 'Baixar vídeos do YouTube - FireTools',
+    'description': 'Baixe vídeos do YouTube em MP4 ou extraia o áudio em MP3 com o FireTools.',
+    'keywords': 'baixar youtube mp4, baixar youtube mp3, youtube downloader'
+  } %}
+{% endblock %}
+{% block layout_options %}
+  {{ super() }}
+  {% set layout.show_sidebars = false %}
+{% endblock %}
+
+{% block content %}
+<div class="main-content">
+  <section class="hero-section">
+    <span class="hero-icon"></span>
+    <h1 data-i18n="video.downloader.hero.title">Baixe vídeos do YouTube</h1>
+    <p class="hero-description" data-i18n="video.downloader.hero.description">
+      Informe a URL de um vídeo do YouTube e escolha se deseja baixar em MP4 ou apenas o áudio em MP3.
+    </p>
+  </section>
+
+  <section class="card" aria-labelledby="youtube-downloader-form">
+    <div class="card-header">
+      <h2 class="card-title" id="youtube-downloader-form" data-i18n="video.downloader.form.title">Faça o download agora</h2>
+    </div>
+    <div class="card-body">
+      <form id="downloader-form" class="form" novalidate>
+        <div class="form-group">
+          <label for="video-url" class="form-label" data-i18n="video.downloader.form.url">URL do vídeo</label>
+          <input
+            id="video-url"
+            name="url"
+            type="url"
+            inputmode="url"
+            class="form-control"
+            placeholder="https://www.youtube.com/watch?v=..."
+            required
+            autocomplete="off"
+          />
+          <p class="helper-text" data-i18n-template="video.downloader.form.helper" data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}">
+            Aceitamos links do youtube.com e youtu.be. O download fica disponível por {{ (global_file_retention_seconds // 3600) or 1 }} hora(s).
+          </p>
+        </div>
+
+        <fieldset class="form-group">
+          <legend class="form-label" data-i18n="video.downloader.form.format">Formato desejado</legend>
+          <div class="radio-group">
+            <label class="radio-option">
+              <input type="radio" name="format" value="mp4" checked>
+              <span data-i18n="video.downloader.form.option.mp4">Vídeo MP4 (HD quando disponível)</span>
+            </label>
+            <label class="radio-option">
+              <input type="radio" name="format" value="mp3">
+              <span data-i18n="video.downloader.form.option.mp3">Áudio MP3 (192 kbps)</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="button-group button-group--stretch">
+          <button type="submit" class="btn btn-success btn-action" data-i18n="video.downloader.form.submit">Baixar</button>
+        </div>
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+      </form>
+
+      <div id="downloader-feedback" class="alert" role="alert" hidden></div>
+      <div id="downloader-result" class="result-card" hidden>
+        <h3 class="result-card-title" data-i18n="video.downloader.result.ready">Download pronto!</h3>
+        <p id="result-title"></p>
+        <div class="button-group button-group--auto">
+          <a id="result-download" class="btn btn-primary" href="#" download>
+            <span data-i18n="video.downloader.result.download">Baixar arquivo</span>
+          </a>
+          <a id="result-page" class="btn btn-outline" href="#">
+            <span data-i18n="video.downloader.result.open">Ver página de download</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title" data-i18n="video.downloader.tips.title">Dicas para melhores resultados</h2>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li data-i18n="video.downloader.tips.1">Utilize links públicos (não listados ou privados não são suportados).</li>
+        <li data-i18n="video.downloader.tips.2">Para obter MP4 em alta qualidade, prefira vídeos com 1080p ou superior disponíveis.</li>
+        <li data-i18n="video.downloader.tips.3">Se desejar apenas o áudio para podcasts ou resumos, selecione MP3 para baixar mais rápido.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/video_downloader.js') }}" defer></script>
+{% endblock %}
+

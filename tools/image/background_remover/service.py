@@ -15,10 +15,10 @@ from PIL import (
 )
 try:
     import numpy as np
-    from scipy.ndimage import binary_closing, binary_dilation
+    from scipy.ndimage import binary_closing, binary_dilation, gaussian_filter
 except Exception:  # pragma: no cover - dependências opcionais
     np = None
-    binary_dilation = binary_closing = None
+    binary_dilation = binary_closing = gaussian_filter = None
 from rembg import remove, new_session
 from werkzeug.utils import secure_filename
 
@@ -48,6 +48,19 @@ def _get_session(model_name: str = "isnet-general-use"):
         session = new_session(model_name=model_name)
         _SESSIONS[model_name] = session
     return session
+
+
+def _get_best_model(image: Image.Image) -> str:
+    """Tenta determinar o melhor modelo baseado nas características da imagem."""
+    width, height = image.size
+    aspect_ratio = width / height if height > 0 else 1.0
+    
+    # Para imagens pequenas ou com aspecto muito diferente, usar modelo mais preciso
+    if width * height < 500_000:
+        return "u2net"
+    if aspect_ratio > 2.5 or aspect_ratio < 0.4:
+        return "silueta"
+    return "isnet-general-use"
 
 
 def cleanup_old_files(retention_seconds: int = FILE_RETENTION_SECONDS) -> None:
@@ -94,12 +107,24 @@ def _mask_coverage(mask: Image.Image) -> float:
 
 
 def _refine_mask(mask: Image.Image) -> Image.Image:
-    refined = mask.filter(ImageFilter.MaxFilter(size=7))
+    """Refina a máscara com múltiplas passadas para bordas mais suaves."""
+    # Primeira passada: suavização básica
+    refined = mask.filter(ImageFilter.MedianFilter(size=3))
+    refined = refined.filter(ImageFilter.GaussianBlur(radius=1.2))
+    
+    # Segunda passada: fechamento de buracos pequenos
+    refined = refined.filter(ImageFilter.MaxFilter(size=5))
     refined = refined.filter(ImageFilter.MinFilter(size=3))
-    refined = refined.filter(ImageFilter.MedianFilter(size=3))
-    refined = refined.filter(ImageFilter.GaussianBlur(radius=1.4))
-    refined = ImageOps.autocontrast(refined)
-    refined = refined.point(lambda p: 0 if p < 4 else p)
+    
+    # Terceira passada: suavização final
+    refined = refined.filter(ImageFilter.MedianFilter(size=5))
+    refined = refined.filter(ImageFilter.GaussianBlur(radius=1.8))
+    
+    # Melhorar contraste sem perder detalhes
+    refined = ImageOps.autocontrast(refined, cutoff=1.0)
+    
+    # Threshold mais suave para preservar bordas semi-transparentes
+    refined = refined.point(lambda p: 0 if p < 8 else min(255, int(p * 1.02)))
     return refined
 
 
@@ -124,18 +149,30 @@ def _expand_mask(mask: Image.Image, steps: int = 3) -> Image.Image:
     return expanded
 
 
-def _heal_mask(mask: Image.Image, radius: int = 5, iterations: int = 1) -> Image.Image:
-    if np is None or binary_dilation is None:
+def _heal_mask(mask: Image.Image, radius: int = 5, iterations: int = 2) -> Image.Image:
+    """Melhora a máscara preenchendo buracos e suavizando bordas."""
+    if np is None or binary_dilation is None or binary_closing is None:
         return mask
     arr = np.array(mask, dtype=np.uint8)
-    bool_mask = arr > 0
+    bool_mask = arr > 10  # Threshold mais baixo para capturar mais detalhes
     if not bool_mask.any():
         return mask
 
+    # Estrutura circular para melhor suavização
     structure = np.ones((radius, radius), dtype=bool)
+    
+    # Dilatação para preencher buracos pequenos
     dilated = binary_dilation(bool_mask, structure=structure, iterations=iterations)
+    
+    # Fechamento morfológico para suavizar contornos
     closed = binary_closing(dilated, structure=structure, iterations=iterations)
-    healed = np.where(closed, 255, arr)
+    
+    # Preserva valores originais onde havia informação
+    healed = np.where(closed, np.maximum(arr, 200), arr)
+    
+    # Suavização adicional nas bordas
+    healed = np.where((arr > 50) & (arr < 200), healed, arr)
+    
     return Image.fromarray(healed.astype(np.uint8), mode="L")
 
 
@@ -177,28 +214,44 @@ def remove_background(input_path: str | Path) -> str:
     image = Image.open(io.BytesIO(input_bytes)).convert("RGBA")
     image = ImageOps.exif_transpose(image)
 
+    # Determinar melhor modelo inicial
+    initial_model = _get_best_model(image)
+    
     attempt_configs = [
+        # Configuração principal com isnet-general-use (melhor qualidade geral)
+        {
+            "model": "isnet-general-use",
+            "alpha_matting": True,
+            "alpha_matting_foreground_threshold": 240,
+            "alpha_matting_background_threshold": 10,
+            "alpha_matting_erode_size": 2,
+            "alpha_matting_foreground_erode_steps": 10,
+            "alpha_matting_background_erode_steps": 10,
+        },
+        # Configuração alternativa mais agressiva
         {
             "model": "isnet-general-use",
             "alpha_matting": True,
             "alpha_matting_foreground_threshold": 250,
             "alpha_matting_background_threshold": 5,
             "alpha_matting_erode_size": 1,
+            "alpha_matting_foreground_erode_steps": 10,
+            "alpha_matting_background_erode_steps": 10,
         },
+        # U2Net para objetos/humanos
         {
-            "model": "isnet-general-use",
+            "model": "u2net",
             "alpha_matting": True,
             "alpha_matting_foreground_threshold": 240,
-            "alpha_matting_background_threshold": 15,
-            "alpha_matting_erode_size": 0,
+            "alpha_matting_background_threshold": 10,
+            "alpha_matting_erode_size": 2,
         },
+        # Silueta para objetos mais simples
         {
-            "model": "isnet-general-use",
-            "alpha_matting": True,
-            "alpha_matting_foreground_threshold": 230,
-            "alpha_matting_background_threshold": 25,
-            "alpha_matting_erode_size": 0,
+            "model": "silueta",
+            "alpha_matting": False,
         },
+        # Fallback para isnet-anime
         {
             "model": "isnet-anime",
             "alpha_matting": False,
@@ -210,7 +263,12 @@ def remove_background(input_path: str | Path) -> str:
     for config in attempt_configs:
         config = config.copy()
         model = config.pop("model", "isnet-general-use")
-        session = _get_session(model)
+        try:
+            session = _get_session(model)
+        except Exception:
+            # Modelo não disponível, tentar próximo
+            continue
+        
         try:
             mask_bytes = remove(
                 input_bytes,
@@ -254,15 +312,45 @@ def remove_background(input_path: str | Path) -> str:
 
     combined_mask = ImageChops.lighter(merged_with_halo, expanded_mask)
     combined_mask = ImageChops.lighter(combined_mask, safety_mask)
-    combined_mask = combined_mask.filter(ImageFilter.MedianFilter(size=3))
-    combined_mask = combined_mask.point(lambda p: 0 if p < 2 else min(255, p))
-    combined_mask = _heal_mask(combined_mask, radius=5, iterations=1)
-
+    
+    # Pós-processamento mais agressivo para bordas suaves
+    combined_mask = combined_mask.filter(ImageFilter.MedianFilter(size=5))
+    combined_mask = combined_mask.filter(ImageFilter.GaussianBlur(radius=1.5))
+    
+    # Threshold mais inteligente que preserva bordas semi-transparentes
+    combined_mask = combined_mask.point(lambda p: 0 if p < 5 else min(255, int(p * 1.01)))
+    
+    # Healing melhorado
+    combined_mask = _heal_mask(combined_mask, radius=7, iterations=2)
+    
+    # Suavização final das bordas
+    combined_mask = combined_mask.filter(ImageFilter.GaussianBlur(radius=0.8))
+    combined_mask = ImageOps.autocontrast(combined_mask, cutoff=0.5)
+    
+    # Verificação final de cobertura
     final_coverage = _mask_coverage(combined_mask)
     if final_coverage > 0.985:
+        # Se a máscara cobre quase tudo, usar versão mais refinada
         combined_mask = refined_mask
+    elif final_coverage < 0.05:
+        # Se cobre muito pouco, usar versão expandida
+        combined_mask = expanded_mask
 
+    # Aplicar máscara com suavização nas bordas
     image.putalpha(combined_mask)
+    
+    # Pós-processamento final da imagem para melhorar bordas
+    # Converter para array numpy para processamento mais preciso
+    if np is not None:
+        img_array = np.array(image)
+        alpha = img_array[:, :, 3]
+        
+        # Suavizar bordas da alpha com convolução
+        if gaussian_filter is not None:
+            alpha_smooth = gaussian_filter(alpha.astype(float), sigma=1.2)
+            img_array[:, :, 3] = alpha_smooth.astype(np.uint8)
+        
+        image = Image.fromarray(img_array, mode='RGBA')
 
     output_filename = secure_filename(f"{uuid.uuid4().hex}.png")
     output_path = (UPLOAD_FOLDER / output_filename).resolve()

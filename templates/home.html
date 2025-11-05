@@ -32,8 +32,7 @@
 <div class="main-content">
   <!-- Hero Section -->
   <section class="hero-section">
-    <span class="hero-icon">🔥</span>
-    <h1 class="navbar-brand" data-i18n="home.hero.title">FireTools</h1>
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="FireTools" class="hero-icon" />
     <p class="hero-description" data-i18n="home.hero.description">
       Sua coleção de ferramentas online gratuitas para conversão de arquivos,
       processamento de documentos e muito mais. Rápido, seguro e fácil de usar.
@@ -44,7 +43,7 @@
   <section class="features-grid">
     {% if 'pdf_divisor' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">📄</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.pdf.title">Divisor de PDF</h3>
       <p data-i18n="home.feature.pdf.desc">Divida seus PDFs em páginas individuais de forma rápida e segura.</p>
       <a href="{{ url_for('pdf_divisor_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.pdf.cta">
@@ -55,7 +54,7 @@
 
     {% if 'pdf_converter' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🖼️</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.pdfimg.title">PDF para Imagens</h3>
       <p data-i18n="home.feature.pdfimg.desc">Transforme seu PDF em um DOCX editável ou gere imagens PNG, JPG e WEBP em segundos.</p>
       <a href="{{ url_for('pdf_to_image_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.pdfimg.cta">
@@ -66,7 +65,7 @@
 
     {% if 'url_shortener' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🔗</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.url.title">Encurtador de URL</h3>
       <p data-i18n="home.feature.url.desc">Crie links curtos e personalizados para suas URLs longas.</p>
       <a href="{{ url_for('url_shortener_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.url.cta">
@@ -77,7 +76,7 @@
 
     {% if 'image_converter' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🖼️</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.image.title">Conversor de Imagem</h3>
       <p data-i18n="home.feature.image.desc">Converta imagens entre diferentes formatos com alta qualidade.</p>
       <a href="{{ url_for('image_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.image.cta">
@@ -88,7 +87,7 @@
 
     {% if 'video_converter' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🎥</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.video.title">Conversor de Vídeo</h3>
       <p data-i18n="home.feature.video.desc">Converta vídeos para MP4, AVI, MKV e outros formatos.</p>
       <a href="{{ url_for('video_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.video.cta">
@@ -99,7 +98,7 @@
 
     {% if 'audio_converter' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🎵</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.audio.title">Conversor de Áudio</h3>
       <p data-i18n="home.feature.audio.desc">Converta arquivos de áudio entre MP3, WAV, FLAC e outros formatos.</p>
       <a href="{{ url_for('audio_converter_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.audio.cta">
@@ -111,7 +110,7 @@
 
     {% if 'background_remover' in current_app.blueprints %}
     <div class="feature-card">
-      <span class="feature-icon">🎨</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="home.feature.background.title">Removedor de Background</h3>
       <p data-i18n="home.feature.background.desc">Remova o fundo de suas imagens automaticamente usando IA.</p>
       <a href="{{ url_for('background_remover_index') }}" class="btn btn-primary btn-action" data-i18n="home.feature.background.cta">
@@ -119,6 +118,77 @@
       </a>
     </div>
     {% endif %}
+  </section>
+
+  <!-- About Section -->
+  <section class="card" aria-labelledby="about-firetools">
+    <div class="card-header">
+      <h2 class="card-title" id="about-firetools" data-i18n="home.about.title">Por que escolher o FireTools?</h2>
+    </div>
+    <div class="card-body">
+      <p data-i18n="home.about.content">
+        O FireTools reúne um conjunto de utilitários que usamos diariamente em projetos reais.
+        Cada ferramenta passa por testes automatizados e segue boas práticas de segurança para
+        garantir que seus arquivos sejam processados com confiabilidade.
+      </p>
+      <ul>
+        <li data-i18n="home.about.item1">Interface direta e responsiva, otimizada para desktop e dispositivos móveis.</li>
+        <li data-i18n="home.about.item2">Processamentos executados em servidores escaláveis com monitoramento 24/7.</li>
+        <li data-i18n="home.about.item3">Arquivos temporários excluídos automaticamente após o período de retenção configurado.</li>
+        <li data-i18n="home.about.item4">Relatórios transparentes sobre formatos suportados, limites de tamanho e tempos médios.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Use cases Section -->
+  <section class="card" aria-labelledby="cases-firetools">
+    <div class="card-header">
+      <h2 class="card-title" id="cases-firetools" data-i18n="home.cases.title">Casos de uso que resolvemos</h2>
+    </div>
+    <div class="card-body">
+      <p data-i18n="home.cases.content">
+        Nossas ferramentas foram pensadas para equipes de marketing, departamentos jurídicos, designers
+        e criadores de conteúdo que precisam ganhar tempo com tarefas repetitivas.
+      </p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon"></span>
+          <h3 data-i18n="home.cases.doc.title">Documentação corporativa</h3>
+          <p data-i18n="home.cases.doc.desc">Divida contratos extensos em anexos menores ou transforme PDFs em Word para acelerar revisões.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"></span>
+          <h3 data-i18n="home.cases.design.title">Design e ecommerce</h3>
+          <p data-i18n="home.cases.design.desc">Remova fundos automaticamente para criar catálogos e converta imagens para os formatos exigidos por marketplaces.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon"></span>
+          <h3 data-i18n="home.cases.marketing.title">Campanhas digitais</h3>
+          <p data-i18n="home.cases.marketing.desc">Use o encurtador de URL com relatórios de cliques e adapte vídeos ou áudios para diferentes plataformas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="card" aria-labelledby="faq-firetools">
+    <div class="card-header">
+      <h2 class="card-title" id="faq-firetools" data-i18n="home.faq.title">Perguntas frequentes</h2>
+    </div>
+    <div class="card-body">
+      <details open>
+        <summary data-i18n="home.faq.q1">Vocês guardam meus arquivos?</summary>
+        <p data-i18n-template="home.faq.a1" data-i18n-arg-hours="{{ (global_file_retention_seconds // 3600) or 1 }}">Não. Os arquivos são removidos automaticamente após {{ (global_file_retention_seconds // 3600) or 1 }} hora(s) e não utilizamos seus dados para treinar modelos.</p>
+      </details>
+      <details>
+        <summary data-i18n="home.faq.q2">As ferramentas são realmente gratuitas?</summary>
+        <p data-i18n="home.faq.a2">Sim. Mantemos o serviço através de anúncios e assinaturas corporativas opcionais, sem limitar funcionalidades essenciais.</p>
+      </details>
+      <details>
+        <summary data-i18n="home.faq.q3">Posso usar os recursos no meu time?</summary>
+        <p data-i18n="home.faq.a3">Claro. Muitas equipes integram o FireTools ao fluxo de trabalho compartilhando relatórios de conversão e links encurtados.</p>
+      </details>
+    </div>
   </section>
 
 </div>

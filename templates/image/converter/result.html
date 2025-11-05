@@ -8,11 +8,15 @@
     'keywords': 'download imagens convertidas, conversor de imagem firetools'
   } %}
 {% endblock %}
+{% block layout_options %}
+  {{ super() }}
+  {% set layout.show_sidebars = false %}
+{% endblock %}
 {% block title %}Imagens Convertidas{% endblock %}
 {% block content %}
 <div class="main-content result-layout">
   <section class="result-hero">
-    <span class="result-icon">🖼️</span>
+    <span class="result-icon"></span>
     <h1>Imagens Convertidas com Sucesso!</h1>
     <p>Faça o download das conversões ou inicie um novo processamento.</p>
   </section>
@@ -38,7 +42,7 @@
             href="{{ url_for('static', filename='image/converter/uploads/' ~ img) }}"
             download
           >
-            ⬇️ Baixar
+            Baixar
           </a>
         </li>
         {% endfor %}
@@ -52,8 +56,36 @@
 
   <div class="button-group button-group--center button-group--auto">
     <a class="btn btn-primary btn-action" href="{{ url_for('image_converter_index') }}">
-      🔄 Converter outras imagens
+      Converter outras imagens
     </a>
   </div>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Como aproveitar as conversões</h2>
+    </div>
+    <div class="card-body">
+      <p>Aproveite para aplicar as imagens em diferentes canais sem perder qualidade:</p>
+      <ul>
+        <li>Use formatos leves (WEBP/AVIF) em páginas web para acelerar o carregamento.</li>
+        <li>Prefira PNG quando precisar de transparência em banners ou mockups.</li>
+        <li>Otimize os nomes de arquivo com descrições que ajudam em SEO e busca interna.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Práticas recomendadas</h2>
+    </div>
+    <div class="card-body">
+      <p>Garanta consistência visual nas suas campanhas com estes cuidados:</p>
+      <ul>
+        <li>Mantenha uma cópia original em alta resolução para futuras edições.</li>
+        <li>Padronize dimensões antes de publicar em marketplaces ou redes sociais.</li>
+        <li>Crie um guia interno com formatos ideais para cada canal de comunicação.</li>
+      </ul>
+    </div>
+  </section>
 </div>
 {% endblock %}

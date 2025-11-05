@@ -85,7 +85,7 @@
 
   <!-- Hero Section -->
   <section class="hero-section">
-    <span class="hero-icon">📄</span>
+    <span class="hero-icon"></span>
     <h1 data-i18n="pdf.hero.title">Divisor de PDF</h1>
     <p class="hero-description" data-i18n="pdf.hero.description">
       Transforme cada página do seu PDF em quatro quadrantes automaticamente.
@@ -100,17 +100,17 @@
   <!-- Features Section -->
   <section class="features-grid">
     <div class="feature-card">
-      <span class="feature-icon">⚡</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="pdf.features.fast.title">Processamento Rápido</h3>
       <p data-i18n="pdf.features.fast.desc">Divisão automática e instantânea dos seus PDFs</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🎯</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="pdf.features.accurate.title">Precisão Garantida</h3>
       <p data-i18n="pdf.features.accurate.desc">Algoritmo inteligente que detecta conteúdo em cada quadrante</p>
     </div>
     <div class="feature-card">
-      <span class="feature-icon">🔒</span>
+      <span class="feature-icon"></span>
       <h3 data-i18n="pdf.features.safe.title">Seguro e Privado</h3>
       <p data-i18n="pdf.features.safe.desc">Seus arquivos são processados localmente e removidos automaticamente</p>
     </div>
@@ -137,6 +137,53 @@
         <h3 data-i18n="pdf.steps.3.title">Download Instantâneo</h3>
         <p data-i18n="pdf.steps.3.desc">Baixe o PDF processado com todas as páginas divididas em alta qualidade.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- Extra Content -->
+  <section class="card" aria-labelledby="pdf-divisor-guides">
+    <div class="card-header">
+      <h2 class="card-title" id="pdf-divisor-guides">Guia completo do divisor de PDF</h2>
+    </div>
+    <div class="card-body">
+      <p>
+        O divisor de PDF do FireTools foi pensado para equipes que precisam separar laudos, boletos ou
+        formulários extensos em seções menores sem perder qualidade. O processo preserva o layout original
+        e gera arquivos otimizados para impressão ou assinatura digital.
+      </p>
+      <h3>Boas práticas antes do upload</h3>
+      <ul>
+        <li>Garanta que o PDF esteja legível e sem senha. Documentos protegidos por senha não podem ser divididos.</li>
+        <li>Prefira arquivos com até {{ global_max_upload_mb }} MB para um processamento mais rápido.</li>
+        <li>Verifique se o texto está em alta resolução. Isso evita borrões ao dividir gráficos ou tabelas.</li>
+      </ul>
+
+      <h3>Após o processamento</h3>
+      <ul>
+        <li>Baixe o pacote final e revise cada página para confirmar a divisão correta.</li>
+        <li>Use ferramentas de assinatura eletrônica ou compartilhe com sua equipe diretamente do seu gerenciador de arquivos.</li>
+        <li>Exclua o download quando terminar. Seus arquivos ficam disponíveis apenas pelo tempo necessário para você obtê-los.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="pdf-divisor-faq">
+    <div class="card-header">
+      <h2 class="card-title" id="pdf-divisor-faq">Perguntas frequentes</h2>
+    </div>
+    <div class="card-body">
+      <details open>
+        <summary>O que acontece com arquivos confidenciais?</summary>
+        <p>Os documentos são mantidos em servidores criptografados e excluídos automaticamente após {{ (global_file_retention_seconds // 3600) or 1 }} hora(s). Não utilizamos os dados para nenhum outro fim.</p>
+      </details>
+      <details>
+        <summary>Posso dividir apenas páginas específicas?</summary>
+        <p>No momento a divisão é aplicada a todas as páginas. Você pode remover páginas indesejadas do arquivo final utilizando o modo de edição no seu leitor de PDFs.</p>
+      </details>
+      <details>
+        <summary>Os quadrantes podem ser recombinados?</summary>
+        <p>Sim. Cada quadrante é salvo como uma página independente no PDF final, permitindo reorganizar ou imprimir conforme a necessidade.</p>
+      </details>
     </div>
   </section>
 </div>

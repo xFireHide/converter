@@ -40,11 +40,17 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
     />
-    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
     {% block head_extra %}{% endblock %}
     {% block structured_data %}{% endblock %}
   </head>
   <body>
+    {% set layout = namespace(show_sidebars=true) %}
+    {% block layout_options %}{% endblock %}
+
     {% set endpoint = request.endpoint or '' %}
     {% set pdf_divisor_active = endpoint.startswith('pdf_divisor') %}
     {% set pdf_to_image_active = endpoint.startswith('pdf_to_image') %}
@@ -53,14 +59,14 @@
     {% set background_active = endpoint.startswith('background_remover') %}
     {% set image_group_active = image_converter_active or background_active %}
     {% set audio_active = endpoint.startswith('audio_converter') %}
-    {% set video_active = endpoint.startswith('video_converter') %}
+    {% set video_downloader_active = endpoint.startswith('video_downloader') %}
+    {% set video_active = endpoint.startswith('video_converter') or video_downloader_active %}
     {% set url_active = endpoint.startswith('url_shortener') %}
 
     <nav class="navbar" role="navigation" aria-label="Principal">
       <div class="navbar-content">
         <a href="{{ url_for('home') }}" class="navbar-brand">
-          <span class="navbar-brand-icon">🔥</span>
-          <span class="navbar-brand-text">FireTools</span>
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="FireTools" class="navbar-brand-icon" />
         </a>
         <button
           class="navbar-toggle"
@@ -200,13 +206,24 @@
             <ul class="dropdown-menu">
               <li>
                 <a
-                  class="dropdown-link {{ 'is-active' if video_active else '' }}"
+                  class="dropdown-link {{ 'is-active' if endpoint.startswith('video_converter') else '' }}"
                   href="{{ url_for('video_converter_index') }}"
                   data-i18n="nav.video.converter"
                 >
                   Conversor
                 </a>
               </li>
+              {% if 'video_downloader' in current_app.blueprints %}
+              <li>
+                <a
+                  class="dropdown-link {{ 'is-active' if video_downloader_active else '' }}"
+                  href="{{ url_for('video_downloader_index') }}"
+                  data-i18n="nav.video.downloader"
+                >
+                  Downloader
+                </a>
+              </li>
+              {% endif %}
             </ul>
           </li>
           {% endif %}
@@ -242,23 +259,29 @@
       </div>
     </nav>
     <div class="main-layout">
+      {% if layout.show_sidebars %}
       <!-- Anúncio Lateral Esquerdo -->
-      <aside class="sidebar sidebar-left">
+      <aside class="sidebar sidebar-left" aria-label="Publicidade lateral">
         <div class="ad-sidebar">
+          <p class="ad-intro" data-i18n="ad.intro.left">Espaço reservado para anúncios que ajudam a manter a plataforma gratuita.</p>
           {% from 'components/ad_unit.html' import ad_unit %}
           {{ ad_unit('1234567001') }}
         </div>
       </aside>
-      
+      {% endif %}
+
       <!-- Conteúdo Principal -->
-    <main class="container">{% block content %}{% endblock %}</main>
-      
+    <main class="container" role="main" aria-live="polite">{% block content %}{% endblock %}</main>
+
+      {% if layout.show_sidebars %}
       <!-- Anúncio Lateral Direito -->
-      <aside class="sidebar sidebar-right">
+      <aside class="sidebar sidebar-right" aria-label="Publicidade lateral">
         <div class="ad-sidebar">
+          <p class="ad-intro" data-i18n="ad.intro.right">Nós investimos em servidores e ferramentas com a ajuda dessas campanhas.</p>
           {{ ad_unit('1234567002') }}
         </div>
       </aside>
+      {% endif %}
     </div>
     <footer class="footer">
       <div class="footer-content">

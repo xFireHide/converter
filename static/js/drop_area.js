@@ -71,7 +71,7 @@ function handleFiles(files, fileInput, fileList) {
     if (fileAccepted(file, allowed)) {
       accepted.push(file);
       if (dt) dt.items.add(file);
-      fileList.innerHTML += `<p>📄 ${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>`;
+      fileList.innerHTML += `<p>${file.name} (${(file.size / 1024).toFixed(2)} KB)</p>`;
     } else {
       rejected.push(file.name);
     }

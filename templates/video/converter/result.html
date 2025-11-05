@@ -8,13 +8,17 @@
     'keywords': 'download vídeo convertido, conversor de vídeo firetools'
   } %}
 {% endblock %}
+{% block layout_options %}
+  {{ super() }}
+  {% set layout.show_sidebars = false %}
+{% endblock %}
 {% block title %}Vídeo Convertido{% endblock %}
 {% block content %}
 <div class="main-content result-layout">
   <section class="result-hero">
-    <span class="result-icon">🎬</span>
-    <h1>Vídeo convertido com sucesso!</h1>
-    <p>Baixe o arquivo convertido usando o link disponível abaixo.</p>
+    <span class="result-icon"></span>
+    <h1 data-i18n="video.result.success">Vídeo convertido com sucesso!</h1>
+    <p data-i18n="video.result.file_ready">Baixe o arquivo convertido usando o link disponível abaixo.</p>
   </section>
 
   <section class="ads-slot" aria-label="Publicidade">
@@ -23,8 +27,8 @@
 
   <section class="result-downloads">
     <div class="download-card">
-      <h2 class="download-title">Arquivo Disponível</h2>
-      <p class="download-subtitle">
+      <h2 class="download-title" data-i18n="video.result.file_title">Arquivo Disponível</h2>
+      <p class="download-subtitle" data-i18n="video.result.file_subtitle">
         Salve o vídeo convertido. Permanecerá disponível por até 1 hora.
       </p>
       <ul class="download-list">
@@ -36,7 +40,7 @@
             href="{{ url_for('static', filename='video/converter/converted/' ~ filename) }}"
             download
           >
-            ⬇️ Baixar
+            <span data-i18n="video.result.download">Baixar</span>
           </a>
         </li>
       </ul>
@@ -49,8 +53,36 @@
 
   <div class="button-group button-group--center button-group--auto">
     <a class="btn btn-action" href="{{ url_for('video_converter_index') }}">
-      🔄 Converter outro vídeo
+      <span data-i18n="video.result.cta">Converter outro vídeo</span>
     </a>
   </div>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title" data-i18n="video.result.checklist.title">Checklist de publicação</h2>
+    </div>
+    <div class="card-body">
+      <p data-i18n="video.result.checklist.intro">Antes de enviar o arquivo para plataformas externas, execute uma revisão rápida:</p>
+      <ul>
+        <li data-i18n="video.result.checklist.1">Assista aos primeiros segundos e verifique se áudio e vídeo estão sincronizados.</li>
+        <li data-i18n="video.result.checklist.2">Confirme se o formato gerado está dentro das diretrizes do serviço onde será publicado.</li>
+        <li data-i18n="video.result.checklist.3">Otimize o nome do arquivo com palavras-chave que facilitem a organização posterior.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title" data-i18n="video.result.suggestions.title">Sugestões de uso</h2>
+    </div>
+    <div class="card-body">
+      <p data-i18n="video.result.suggestions.intro">Os vídeos processados podem ser aproveitados em múltiplos cenários:</p>
+      <ul>
+        <li data-i18n="video.result.suggestions.1">Crie versões curtas para redes sociais utilizando o arquivo convertido como base.</li>
+        <li data-i18n="video.result.suggestions.2">Incorpore legendas ou faixas de áudio alternativas para acessibilidade.</li>
+        <li data-i18n="video.result.suggestions.3">Distribua internamente em treinamentos e armazene em um repositório seguro.</li>
+      </ul>
+    </div>
+  </section>
 </div>
 {% endblock %}

@@ -8,12 +8,15 @@
     'keywords': 'pdf convertido, download pdf docx, download imagem do pdf'
   } %}
 {% endblock %}
+{% block layout_options %}
+  {{ super() }}
+  {% set layout.show_sidebars = false %}
+{% endblock %}
 
 {% block content %}
 <div class="main-content result-layout">
-  {% set result_icon = '🖼️' if is_image_format else '📝' %}
   <section class="result-hero">
-    <span class="result-icon">{{ result_icon }}</span>
+    <span class="result-icon"></span>
     <h1 data-i18n="pdfconvert.result.title">Conversão concluída!</h1>
     <p data-i18n="pdfconvert.result.caption">Baixe os arquivos gerados no formato escolhido ou envie outro PDF.</p>
     {% if target_format %}
@@ -44,7 +47,7 @@
             download
             data-i18n="pdfconvert.result.files.download"
           >
-            ⬇️ Baixar
+            Baixar
           </a>
         </li>
         {% endfor %}
@@ -58,9 +61,37 @@
 
   <div class="button-group button-group--center button-group--auto">
     <a class="btn btn-primary btn-action" href="{{ url_for('pdf_to_image_index') }}" data-i18n="pdfconvert.result.cta">
-      🔄 Converter outro PDF
+      Converter outro PDF
     </a>
   </div>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Como aproveitar os arquivos gerados</h2>
+    </div>
+    <div class="card-body">
+      <p>Organize a saída de acordo com as necessidades do seu time:</p>
+      <ul>
+        <li>Una páginas específicas em um único documento editável utilizando editores como Word ou Google Docs.</li>
+        <li>Envie as imagens resultantes para ferramentas de revisão visual e colete comentários da equipe.</li>
+        <li>Armazene os arquivos em diretórios compartilhados com naming convention padronizada.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Boas práticas de segurança</h2>
+    </div>
+    <div class="card-body">
+      <p>Proteja as informações do documento original após a conversão:</p>
+      <ul>
+        <li>Exclua os arquivos baixados quando não forem mais necessários para evitar vazamentos.</li>
+        <li>Ative proteção por senha em versões finais ou utilize assinaturas digitais quando aplicável.</li>
+        <li>Revise os metadados antes de compartilhar externamente, removendo informações sensíveis.</li>
+      </ul>
+    </div>
+  </section>
 </div>
 {% endblock %}
 

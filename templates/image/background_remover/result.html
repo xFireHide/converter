@@ -8,11 +8,15 @@
     'keywords': 'imagem sem fundo, download png transparente, background remover'
   } %}
 {% endblock %}
+{% block layout_options %}
+  {{ super() }}
+  {% set layout.show_sidebars = false %}
+{% endblock %}
 {% block title %}Background Removido{% endblock %}
 {% block content %}
 <div class="main-content result-layout">
   <section class="result-hero">
-    <span class="result-icon">✨</span>
+    <span class="result-icon"></span>
     <h1>Fundo removido com sucesso!</h1>
     <p>Faça o download da imagem transparente utilizando o link abaixo.</p>
   </section>
@@ -46,7 +50,7 @@
             href="{{ url_for('static', filename='image/background_remover/uploads/' ~ filename) }}"
             download
           >
-            ⬇️ Baixar
+            Baixar
           </a>
         </li>
       </ul>
@@ -59,8 +63,36 @@
 
   <div class="button-group button-group--center button-group--auto">
     <a class="btn btn-action" href="{{ url_for('background_remover_index') }}">
-      🔄 Processar outra imagem
+      Processar outra imagem
     </a>
   </div>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Onde utilizar a imagem recortada</h2>
+    </div>
+    <div class="card-body">
+      <p>Imagens com fundo transparente são ideais para diversos contextos visuais:</p>
+      <ul>
+        <li>Criação de banners e posts com sobreposições criativas em softwares de design.</li>
+        <li>Catálogos de produtos em ecommerce, destacando itens sem distrações.</li>
+        <li>Apresentações corporativas com fundo personalizado sem perder contraste.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-header">
+      <h2 class="card-title">Ajustes finais recomendados</h2>
+    </div>
+    <div class="card-body">
+      <p>Antes de publicar, considere estas etapas para lapidar o resultado:</p>
+      <ul>
+        <li>Refine bordas em softwares como Photoshop ou Photopea aplicando suavização leve.</li>
+        <li>Exporte versões em diferentes resoluções quando precisar de miniaturas e imagens hero.</li>
+        <li>Organize um banco interno de imagens aprovadas para facilitar reutilização pela equipe.</li>
+      </ul>
+    </div>
+  </section>
 </div>
 {% endblock %}
