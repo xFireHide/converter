@@ -168,6 +168,18 @@ def ads_txt():
     return send_from_directory(".", "ads.txt", mimetype="text/plain")
 
 
+@app.route("/sitemap.xml")
+def sitemap():
+    """Serve sitemap.xml for search engine indexing"""
+    return send_from_directory(".", "sitemap.xml", mimetype="application/xml")
+
+
+@app.route("/robots.txt")
+def robots():
+    """Serve robots.txt for search engine crawlers"""
+    return send_from_directory(".", "robots.txt", mimetype="text/plain")
+
+
 @app.route("/")
 def home():
     meta = {
