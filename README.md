@@ -18,7 +18,7 @@ The default upload limit is **200&nbsp;MB** and processed files are deleted afte
 - Python 3.11+ (the project currently runs on Python 3.13 in development)
 - `pip` / `venv`
 - FFmpeg (optional at runtime — bundled via `imageio-ffmpeg`, but installing the system binary improves performance)
-- Google Cloud CLI & Firebase CLI (only for deployment)
+- Google Cloud CLI (only for deployment)
 
 ## Getting Started
 
@@ -140,19 +140,7 @@ gcloud run deploy firetools \
 
 Remember to set all required environment variables inside the Cloud Run service (`SECRET_KEY`, size limits, rate-limit backend, etc.).
 
-### 2. Front the app with Firebase Hosting (optional)
-
-`firebase.json` proxies every request to the Cloud Run service named `firetools`. After Cloud Run is up:
-
-```bash
-firebase login
-firebase use <YOUR_FIREBASE_PROJECT>
-firebase deploy --only hosting
-```
-
-Static assets (CSS/JS/images) are then cached via Firebase CDN while dynamic requests hit Cloud Run.
-
-### 3. Post-deploy checklist
+### 2. Post-deploy checklist
 
 - Verify the PDF converter (DOCX + PNG) using a sample file.
 - Confirm audio/video conversions — FFmpeg must be available in the runtime image.
