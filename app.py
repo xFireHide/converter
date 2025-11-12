@@ -580,22 +580,6 @@ def terms():
     return render_template("terms.html")
 
 
-@app.route("/auto-politica-de-privacidade")
-@app.route("/politica-de-privacidade")
-def auto_privacy():
-    """Serve the auto-generated privacy policy HTML"""
-    templates_path = Path(app.root_path) / "templates"
-    return send_from_directory(str(templates_path), "auto-politica-de-privacidade.html", mimetype="text/html")
-
-
-@app.route("/auto-termos-de-servico")
-@app.route("/termos-de-servico")
-def auto_terms():
-    """Serve the auto-generated terms of service HTML"""
-    templates_path = Path(app.root_path) / "templates"
-    return send_from_directory(str(templates_path), "auto-termos-de-servico.html", mimetype="text/html")
-
-
 @app.route("/files/<path:filename>")
 def serve_file(filename):
     folder = current_app.config["PROCESSED_FOLDER"]
