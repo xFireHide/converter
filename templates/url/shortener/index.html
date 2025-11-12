@@ -3,10 +3,40 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Encurtador de URL Personalizado - FireTools',
-    'description': 'Encurte URLs longas, personalize o código final e monitore cliques em tempo real com o FireTools.',
-    'keywords': 'encurtador de url personalizado, link curto com estatísticas, rastrear cliques'
+    'title': 'Encurtador de URL Personalizado - FireTools | Free URL Shortener',
+    'description': 'Encurte URLs longas, personalize o código final e monitore cliques em tempo real com o FireTools. Free URL shortener online - Shorten links, custom URL shortener, track clicks, link shortener with analytics.',
+    'keywords': 'encurtador de url personalizado, link curto com estatísticas, rastrear cliques, url shortener, shorten url, link shortener, custom url shortener, url shortener with analytics, free url shortener, short link generator, url shortener online, track link clicks, shorten link free, url shortener tool'
   } %}
+{% endblock %}
+
+{% block title %}{{ meta.title if meta and meta.title else 'Encurtador de URL - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Encurte URLs longas de forma rápida e segura.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'encurtador url, shortener, link curto' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "URL Shortener - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free URL shortener with click tracking. Shorten long URLs, create custom short links and monitor clicks in real-time. No registration required.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('url_shortener_index') }}",
+    "featureList": [
+      "Shorten URLs",
+      "Custom link codes",
+      "Click tracking",
+      "Real-time analytics",
+      "Free online tool"
+    ]
+  }
+  </script>
 {% endblock %}
 
 {% block content %}

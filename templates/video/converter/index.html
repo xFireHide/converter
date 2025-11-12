@@ -3,15 +3,42 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Conversor de Vídeo Online - FireTools',
-    'description': 'Converta arquivos de vídeo para MP4, AVI, MKV e outros formatos otimizados para streaming e redes sociais. Processo seguro com limpeza automática.',
-    'keywords': 'converter vídeo online, mp4, avi, mkv, encoder gratuito'
+    'title': 'Conversor de Vídeo Online - FireTools | Free Video Converter',
+    'description': 'Converta arquivos de vídeo para MP4, AVI, MKV e outros formatos otimizados para streaming e redes sociais. Free video converter online - Convert video to MP4, AVI to MP4, MKV to MP4, video format converter. Processo seguro com limpeza automática.',
+    'keywords': 'converter vídeo online, mp4, avi, mkv, encoder gratuito, video converter, mp4 converter, avi to mp4 converter, mkv to mp4, video format converter, free video converter, online video converter, convert video online, video converter online free, mp4 converter online, avi converter, mkv converter, video encoder online'
   } %}
 {% endblock %}
 
 {% block title %}{{ meta.title if meta and meta.title else 'Conversor de Vídeo - FireTools' }}{% endblock %}
 {% block description %}{{ meta.description if meta and meta.description else 'Converta vídeos para MP4, AVI, MKV, MOV e outros formatos otimizados para streaming.' }}{% endblock %}
 {% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter video, mp4 para avi, avi para mp4' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Video Converter - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free online video converter. Convert videos to MP4, AVI, MKV, MOV and other formats. Optimized for streaming, social media and mobile devices.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('video_converter_index') }}",
+    "featureList": [
+      "Convert to MP4",
+      "Convert to AVI",
+      "Convert to MKV",
+      "Video format conversion",
+      "Free online tool",
+      "Optimized for streaming"
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="main-content">

@@ -13,6 +13,7 @@ from flask import (
     jsonify,
     render_template,
     request,
+    Response,
     send_from_directory,
     session,
     url_for,
@@ -171,13 +172,87 @@ def ads_txt():
 @app.route("/sitemap.xml")
 def sitemap():
     """Serve sitemap.xml for search engine indexing"""
-    return send_from_directory(".", "sitemap.xml", mimetype="application/xml")
+    from datetime import datetime
+    
+    base_url = request.url_root.rstrip('/')
+    if not base_url.startswith('http'):
+        # Fallback if we can't determine the scheme
+        base_url = 'https://firetools.site'
+    
+    sitemap_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{base_url}/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>{base_url}/pdf_divisor/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/pdf_to_image/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/image_converter/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/video_converter/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/audio_converter/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/background_remover/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/url_shortener/</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>{base_url}/privacy</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>{base_url}/terms</loc>
+    <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+</urlset>'''
+    
+    return Response(sitemap_content, mimetype='application/xml')
 
 
 @app.route("/robots.txt")
 def robots():
     """Serve robots.txt for search engine crawlers"""
-    return send_from_directory(".", "robots.txt", mimetype="text/plain")
+    robots_path = Path(app.root_path) / "robots.txt"
+    if not robots_path.exists():
+        abort(404)
+    return send_from_directory(str(robots_path.parent), robots_path.name, mimetype="text/plain")
 
 
 @app.route("/")
@@ -503,6 +578,22 @@ def privacy():
 @app.route("/terms")
 def terms():
     return render_template("terms.html")
+
+
+@app.route("/auto-politica-de-privacidade")
+@app.route("/politica-de-privacidade")
+def auto_privacy():
+    """Serve the auto-generated privacy policy HTML"""
+    templates_path = Path(app.root_path) / "templates"
+    return send_from_directory(str(templates_path), "auto-politica-de-privacidade.html", mimetype="text/html")
+
+
+@app.route("/auto-termos-de-servico")
+@app.route("/termos-de-servico")
+def auto_terms():
+    """Serve the auto-generated terms of service HTML"""
+    templates_path = Path(app.root_path) / "templates"
+    return send_from_directory(str(templates_path), "auto-termos-de-servico.html", mimetype="text/html")
 
 
 @app.route("/files/<path:filename>")

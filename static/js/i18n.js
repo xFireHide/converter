@@ -18,7 +18,8 @@ function storeOriginalTexts() {
 }
 
 function applyTranslations() {
-  document.documentElement.lang = currentLang;
+  document.documentElement.lang = currentLang === 'en' ? 'en' : 'pt-BR';
+  document.documentElement.setAttribute('data-lang', currentLang);
   
   // Process templates first (they might contain nested i18n)
   document

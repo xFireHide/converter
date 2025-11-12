@@ -4,15 +4,41 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Remover Fundo de Imagem com IA - FireTools',
-    'description': 'Faça upload de imagens JPG ou PNG e remova o fundo automaticamente mantendo detalhes finos. Resultado disponível para download em PNG transparente.',
-    'keywords': 'remover fundo de imagem, background remover, recorte automático'
+    'title': 'Remover Fundo de Imagem com IA - FireTools | Background Remover Free',
+    'description': 'Faça upload de imagens JPG ou PNG e remova o fundo automaticamente mantendo detalhes finos. Free background remover online - Remove background from image, AI background remover, transparent background maker. Resultado disponível para download em PNG transparente.',
+    'keywords': 'remover fundo de imagem, background remover, recorte automático, background remover, remove background from image, ai background remover, transparent background maker, background remover online, free background remover, remove bg online, image background remover, photo background remover, remove background free, transparent background creator'
   } %}
 {% endblock %}
 
 {% block title %}{{ meta.title if meta and meta.title else 'Removedor de Background - FireTools' }}{% endblock %}
 {% block description %}{{ meta.description if meta and meta.description else 'Remova o fundo de imagens automaticamente com IA e mantenha a transparência perfeita.' }}{% endblock %}
 {% block keywords %}{{ meta.keywords if meta and meta.keywords else 'remover fundo, background remover, recortar imagem' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Background Remover - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free AI-powered background remover. Remove background from images automatically with AI. Create transparent PNG images. Perfect for product photos, portraits and graphics.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('background_remover_index') }}",
+    "featureList": [
+      "AI background removal",
+      "Transparent PNG export",
+      "High quality processing",
+      "Free online tool",
+      "No registration required"
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="main-content tool-layout">

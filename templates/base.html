@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-lang="pt">
   <head>
     <script
       async
@@ -20,6 +20,11 @@
     <meta name="keywords" content="{% block keywords %}{{ page_meta.keywords if page_meta and page_meta.keywords else 'conversor online, pdf, imagem, áudio, vídeo' }}{% endblock %}" />
     <meta name="author" content="FireTools" />
     <link rel="canonical" href="{{ page_meta.canonical if page_meta and page_meta.canonical else request.url }}" />
+    
+    <!-- Hreflang for multi-language SEO -->
+    <link rel="alternate" hreflang="pt-BR" href="{{ request.url }}" />
+    <link rel="alternate" hreflang="en" href="{{ request.url }}" />
+    <link rel="alternate" hreflang="x-default" href="{{ request.url }}" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />

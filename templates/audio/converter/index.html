@@ -4,14 +4,41 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Conversor de Áudio Online - FireTools',
-    'description': 'Transforme arquivos de áudio entre MP3, WAV, FLAC, AAC e outros formatos com configurações otimizadas e exclusão automática.',
-    'keywords': 'converter áudio online, mp3 para wav, flac, aac'
+    'title': 'Conversor de Áudio Online - FireTools | Free Audio Converter',
+    'description': 'Transforme arquivos de áudio entre MP3, WAV, FLAC, AAC e outros formatos com configurações otimizadas e exclusão automática. Free audio converter online - Convert MP3 to WAV, WAV to MP3, FLAC converter, audio format converter. Processamento rápido e seguro.',
+    'keywords': 'converter áudio online, mp3 para wav, flac, aac, audio converter, mp3 converter, wav to mp3 converter, mp3 to wav converter, flac converter, audio format converter, free audio converter, online audio converter, convert audio online, audio converter online free, mp3 to wav, wav to mp3, flac to mp3, aac converter'
   } %}
 {% endblock %}
 {% block title %}{{ meta.title if meta and meta.title else 'Conversor de Áudio - FireTools' }}{% endblock %}
 {% block description %}{{ meta.description if meta and meta.description else 'Converta arquivos de áudio entre MP3, WAV, AAC, FLAC e outros formatos em segundos.' }}{% endblock %}
 {% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter audio, mp3 para wav, wav para mp3' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Audio Converter - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free online audio converter. Convert MP3 to WAV, WAV to MP3, FLAC, AAC, OGG and other audio formats. Preserve quality with optimized bitrates.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('audio_converter_index') }}",
+    "featureList": [
+      "Convert MP3 to WAV",
+      "Convert WAV to MP3",
+      "FLAC converter",
+      "AAC converter",
+      "Audio format conversion",
+      "Free online tool"
+    ]
+  }
+  </script>
+{% endblock %}
 {% block content %}
 <div class="main-content tool-layout">
   <section class="card">

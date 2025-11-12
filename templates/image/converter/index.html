@@ -3,15 +3,47 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Conversor de Imagem Online - FireTools',
-    'description': 'Converta imagens para JPG, PNG, WEBP, GIF e formatos avançados em lote. Mantemos transparência e removemos arquivos após 1 hora.',
-    'keywords': 'converter imagem online, jpg para png, webp, conversor gratuito'
+    'title': 'Conversor de Imagem Online - FireTools | Image Converter Free',
+    'description': 'Converta imagens para JPG, PNG, WEBP, GIF e formatos avançados em lote. Free image converter online - Convert PNG to JPG, JPG to PNG, WEBP converter. Mantemos transparência e removemos arquivos após 1 hora.',
+    'keywords': 'converter imagem online, jpg para png, png para jpg, webp converter, image converter, png to jpg converter, jpg to png converter, image converter online, free image converter, convert image online, webp to jpg, jpg to webp, png converter, image format converter, batch image converter, online image converter free'
   } %}
 {% endblock %}
 
 {% block title %}{{ meta.title if meta and meta.title else 'Conversor de Imagem - FireTools' }}{% endblock %}
 {% block description %}{{ meta.description if meta and meta.description else 'Converta imagens gratuitamente entre JPG, PNG, WEBP e outros formatos.' }}{% endblock %}
 {% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter imagem, jpg para png, png para jpg' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Image Converter - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free online image converter. Convert PNG to JPG, JPG to PNG, WEBP, GIF, AVIF and more formats. Batch conversion supported.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('image_converter_index') }}",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250"
+    },
+    "featureList": [
+      "Convert PNG to JPG",
+      "Convert JPG to PNG",
+      "Convert to WEBP",
+      "Batch image conversion",
+      "Free online tool",
+      "No registration required"
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="main-content">

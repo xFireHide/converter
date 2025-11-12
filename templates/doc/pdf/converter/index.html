@@ -3,13 +3,42 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Converter PDF online - FireTools',
-    'description': 'Transforme seu PDF em imagens PNG, JPG, WEBP ou em um documento DOCX editável em poucos segundos.',
-    'keywords': 'converter pdf, pdf para imagem, pdf para docx'
+    'title': 'Converter PDF online - FireTools | PDF to DOCX, PNG, JPG Converter',
+    'description': 'Transforme seu PDF em imagens PNG, JPG, WEBP ou em um documento DOCX editável em poucos segundos. Free PDF converter - Convert PDF to DOCX, PDF to PNG, PDF to JPG, PDF to images online. Processamento rápido e seguro.',
+    'keywords': 'converter pdf, pdf para imagem, pdf para docx, pdf converter, pdf to docx converter, pdf to png, pdf to jpg, pdf to image converter, convert pdf to word, pdf to images online, free pdf converter, pdf converter online, pdf to docx online, pdf to png converter, pdf to jpg converter, convert pdf online free'
   } %}
 {% endblock %}
 
-{% block title %}Converter PDF - FireTools{% endblock %}
+{% block title %}{{ meta.title if meta and meta.title else 'Converter PDF - FireTools' }}{% endblock %}
+{% block description %}{{ meta.description if meta and meta.description else 'Converta PDFs em DOCX editáveis ou exporte páginas como imagens PNG, JPG ou WEBP.' }}{% endblock %}
+{% block keywords %}{{ meta.keywords if meta and meta.keywords else 'converter pdf, pdf para imagem, pdf para docx' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PDF Converter - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free online PDF converter. Convert PDF to DOCX, PDF to PNG, PDF to JPG, PDF to WEBP. Export PDF pages as images or editable Word documents.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('pdf_to_image_index') }}",
+    "featureList": [
+      "Convert PDF to DOCX",
+      "Convert PDF to PNG",
+      "Convert PDF to JPG",
+      "Convert PDF to WEBP",
+      "Export PDF pages as images",
+      "Free online tool"
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="main-content">

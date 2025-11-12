@@ -4,15 +4,41 @@
 
 {% block meta %}
   {% set meta = {
-    'title': 'Divisor de PDF Gratuito - FireTools',
-    'description': 'Divida páginas de PDF em quadrantes menores ou páginas separadas gratuitamente. Arquivos são processados com segurança e removidos automaticamente.',
-    'keywords': 'divisor de pdf online, dividir pdf em quadrantes, ferramentas pdf gratuitas'
+    'title': 'Divisor de PDF Gratuito - FireTools | PDF Splitter Free',
+    'description': 'Divida páginas de PDF em quadrantes menores ou páginas separadas gratuitamente. Free PDF splitter online - Split PDF pages into quadrants, divide PDF into sections. Arquivos são processados com segurança e removidos automaticamente.',
+    'keywords': 'divisor de pdf online, dividir pdf em quadrantes, ferramentas pdf gratuitas, pdf splitter, split pdf online, divide pdf pages, pdf quadrant splitter, free pdf splitter, pdf page divider, split pdf into sections, pdf splitter online free, dividir pdf em partes, pdf split tool'
   } %}
 {% endblock %}
 
 {% block title %}{{ meta.title if meta and meta.title else 'Divisor de PDF - FireTools' }}{% endblock %}
 {% block description %}{{ meta.description if meta and meta.description else 'Divida páginas de PDF em quadrantes menores de forma rápida e segura.' }}{% endblock %}
 {% block keywords %}{{ meta.keywords if meta and meta.keywords else 'dividir pdf, pdf quadrantes' }}{% endblock %}
+
+{% block structured_data %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "PDF Splitter - FireTools",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "description": "Free online PDF splitter. Split PDF pages into quadrants or separate pages. Divide PDF documents quickly and securely.",
+    "url": "{{ request.url_root.rstrip('/') }}{{ url_for('pdf_divisor_index') }}",
+    "featureList": [
+      "Split PDF into quadrants",
+      "Divide PDF pages",
+      "Free online tool",
+      "Secure processing",
+      "Automatic file deletion"
+    ]
+  }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="main-content">
