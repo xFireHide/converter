@@ -76,3 +76,5 @@ static/image/background_remover/uploads/**
 static/doc/pdf/converter/converted/**
 !static/doc/pdf/converter/converted/**/.gitkeep
 short_curter.db
+/tools/video/downloader
+/templates/video/downloader

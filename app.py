@@ -360,6 +360,32 @@ def video_converter_result(filename: str):
     return render_template("video/converter/result.html", filename=safe_name)
 
 
+@app.route("/video_downloader/")
+@app.route("/youtube_downloader/")
+def video_downloader_index():
+    meta = {
+        "title": "Download de Vídeos do YouTube - FireTools",
+        "description": "Baixe vídeos do YouTube, Vimeo e outras plataformas em alta qualidade.",
+        "keywords": "youtube downloader, download video, youtube to mp4, youtube to mp3"
+    }
+    return render_template("video/downloader/index.html", meta=meta)
+
+
+@app.route("/video_downloader/result/<path:filename>")
+def video_downloader_result(filename: str):
+    safe_name = os.path.basename(filename)
+    if safe_name != filename:
+        abort(404)
+    
+    video_downloader_outputs = (settings.base_dir / "static" / "video" / "downloader" / "downloads").resolve()
+    candidate_path = (video_downloader_outputs / safe_name).resolve()
+    
+    if candidate_path.parent != video_downloader_outputs or not candidate_path.is_file():
+        abort(404)
+    
+    return render_template("video/downloader/result.html", filename=safe_name)
+
+
 @app.route("/audio_converter/result/<path:filename>")
 def audio_converter_result(filename: str):
     safe_name = os.path.basename(filename)

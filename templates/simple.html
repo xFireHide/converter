@@ -1,3 +1,4 @@
+{% from 'components/ad_unit.html' import ad_unit %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -17,14 +18,7 @@
         <!-- Anúncio Lateral Esquerdo -->
         <aside class="sidebar sidebar-left">
             <div class="ad-sidebar">
-                <div class="ad-container">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-6031916610010710"
-                         data-ad-slot="1234567001"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
+                {{ ad_unit('1234567001') }}
             </div>
         </aside>
         
@@ -39,14 +33,7 @@
         <!-- Anúncio Lateral Direito -->
         <aside class="sidebar sidebar-right">
             <div class="ad-sidebar">
-                <div class="ad-container">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-client="ca-pub-6031916610010710"
-                         data-ad-slot="1234567002"
-                         data-ad-format="auto"
-                         data-full-width-responsive="true"></ins>
-                </div>
+                {{ ad_unit('1234567002') }}
             </div>
         </aside>
     </div>
@@ -58,4 +45,3 @@
     </footer>
 </body>
 </html>
-

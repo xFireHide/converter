@@ -1,20 +1,21 @@
 {% macro ad_unit(slot_id) -%}
-<div class="ad-container" role="complementary" aria-label="Publicidade do Google">
+<div class="ad-container" role="complementary" aria-label="Publicidade">
   <div class="ad-label">
     <span class="ad-label-title" data-i18n="ad.label.title">Publicidade</span>
-    <span class="ad-label-subtitle" data-i18n="ad.label.subtitle">Conteúdo fornecido pelo Google AdSense</span>
+    <span class="ad-label-subtitle" data-i18n="ad.label.subtitle">Conteúdo patrocinado</span>
   </div>
-  <div class="ad-slot">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-6031916610010710"
-         data-ad-slot="{{ slot_id }}"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+  <div class="ad-slot" data-slot-id="{{ slot_id }}">
+    <script type="text/javascript">
+      atOptions = {
+        'key' : '***REMOVED***',
+        'format' : 'iframe',
+        'height' : 90,
+        'width' : 728,
+        'params' : {}
+      };
+    </script>
+    <script type="text/javascript" src="//www.highperformanceformat.com/***REMOVED***/invoke.js"></script>
   </div>
-  <script>
-       (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
   <noscript>
     <p class="ad-noscript" data-i18n="ad.noscript">Ative o JavaScript para visualizar este anúncio.</p>
   </noscript>
