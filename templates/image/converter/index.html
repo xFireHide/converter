@@ -127,6 +127,11 @@
     {% endwith %}
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567014') }}
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section">
     <span class="hero-icon"></span>
@@ -136,7 +141,13 @@
     </p>
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567005') }}
+  </div>
+
   <!-- Features Section -->
+
   <section class="features-grid">
     <div class="feature-card">
       <span class="feature-icon"></span>
@@ -154,6 +165,11 @@
       <p data-i18n="image.features.privacy.desc">Os arquivos são removidos automaticamente após 1 hora para manter seus dados seguros</p>
     </div>
   </section>
+
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567015') }}
+  </div>
 
   <!-- Converted Images -->
   {% if images %}

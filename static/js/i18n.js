@@ -1,11 +1,11 @@
 const I18N_FILES = {
-  pt: {},
-  en: '/static/js/i18n-en.json'
+  en: '/static/js/i18n-en.json',
+  pt: {}
 };
 
-let currentLang = 'pt';
+let currentLang = 'en';
 let translations = {};
-let originalTexts = new Map(); // Armazena textos originais em português
+let originalTexts = new Map(); // Armazena textos originais (português)
 
 function storeOriginalTexts() {
   // Armazena os textos originais de todos os elementos com data-i18n
@@ -28,10 +28,11 @@ function applyTranslations() {
       const key = el.getAttribute('data-i18n-template');
       let text;
       if (currentLang === 'pt') {
-        // Restaura texto original em português
+        // Restaura texto original (português)
         text = originalTexts.get(key);
         if (!text) return;
       } else {
+        // Aplica tradução em inglês
         const template = translations[key];
         if (!template) return;
         text = template;
@@ -68,9 +69,10 @@ function applyTranslations() {
       const key = el.getAttribute('data-i18n');
       let value;
       if (currentLang === 'pt') {
-        // Restaura texto original em português
+        // Restaura texto original (português)
         value = originalTexts.get(key);
       } else {
+        // Aplica tradução em inglês
         value = translations[key];
       }
       
@@ -105,24 +107,27 @@ async function setLanguage(lang) {
 }
 
 function initI18n() {
-  // Primeiro, armazena os textos originais em português
+  // Primeiro, armazena os textos originais (português)
   storeOriginalTexts();
   
   const saved = localStorage.getItem('firetools-lang');
-  const initial = saved || 'pt';
-  if (initial !== 'pt') {
-    setLanguage(initial);
+  const initial = saved || 'en';
+  if (initial === 'en') {
+    // Carrega traduções em inglês por padrão
+    setLanguage('en');
   } else {
+    // Mantém português (textos originais)
+    currentLang = 'pt';
     applyTranslations();
   }
   const toggle = document.getElementById('language-toggle');
   if (toggle) {
     const updateToggleLabel = () => {
-      toggle.textContent = currentLang === 'pt' ? 'EN' : 'PT';
+      toggle.textContent = currentLang === 'en' ? 'PT' : 'EN';
     };
     updateToggleLabel();
     toggle.addEventListener('click', () => {
-      const next = currentLang === 'pt' ? 'en' : 'pt';
+      const next = currentLang === 'en' ? 'pt' : 'en';
       setLanguage(next).then(updateToggleLabel);
     });
   }

@@ -107,6 +107,11 @@
     {% endwith %}
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567022') }}
+  </div>
+
   <section class="hero-section">
     <span class="hero-icon"></span>
     <h1 data-i18n="background.hero.title">Removedor de Background</h1>
@@ -115,9 +120,10 @@
     </p>
   </section>
 
-  <section class="ads-slot" aria-label="Publicidade">
-    {{ ad_unit('1234567605') }}
-  </section>
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567008') }}
+  </div>
 
   <section class="features-grid">
     <div class="feature-card">

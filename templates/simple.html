@@ -15,12 +15,11 @@
     </nav>
     
     <div class="main-layout">
-        <!-- Anúncio Lateral Esquerdo -->
-        <aside class="sidebar sidebar-left">
-            <div class="ad-sidebar">
+        <section class="ad-row ad-row-top">
+            <div class="ad-panel">
                 {{ ad_unit('1234567001') }}
             </div>
-        </aside>
+        </section>
         
         <!-- Conteúdo Principal -->
         <main class="container">
@@ -30,17 +29,16 @@
             </div>
         </main>
         
-        <!-- Anúncio Lateral Direito -->
-        <aside class="sidebar sidebar-right">
-            <div class="ad-sidebar">
+        <section class="ad-row ad-row-bottom">
+            <div class="ad-panel">
                 {{ ad_unit('1234567002') }}
             </div>
-        </aside>
+        </section>
     </div>
     
     <footer class="footer">
         <div class="footer-content">
-            <p>&copy; 2025 FireTools. Todos os direitos reservados.</p>
+            <p data-i18n="footer.copyright">&copy; 2025 FireTools. Todos os direitos reservados.</p>
         </div>
     </footer>
 </body>

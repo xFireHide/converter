@@ -39,6 +39,11 @@
     </p>
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567013') }}
+  </div>
+
   <!-- Features Grid -->
   <section class="features-grid">
     {% if 'pdf_divisor' in current_app.blueprints %}
@@ -120,6 +125,11 @@
     {% endif %}
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567033') }}
+  </div>
+
   <!-- About Section -->
   <section class="card" aria-labelledby="about-firetools">
     <div class="card-header">
@@ -139,6 +149,11 @@
       </ul>
     </div>
   </section>
+
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567035') }}
+  </div>
 
   <!-- Use cases Section -->
   <section class="card" aria-labelledby="cases-firetools">
@@ -169,6 +184,11 @@
       </div>
     </div>
   </section>
+
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567034') }}
+  </div>
 
   <!-- FAQ Section -->
   <section class="card" aria-labelledby="faq-firetools">

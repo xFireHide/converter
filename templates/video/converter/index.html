@@ -121,6 +121,11 @@
     {% endwith %}
   </section>
 
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567026') }}
+  </div>
+
   <!-- Hero Section -->
   <section class="hero-section">
     <span class="hero-icon"></span>
@@ -129,6 +134,11 @@
       Converta vídeos para formatos populares com presets otimizados para streaming, redes sociais e dispositivos móveis.
     </p>
   </section>
+
+  {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+  <div class="ad-horizontal-top">
+    {{ ad_unit_horizontal('1234567010') }}
+  </div>
 
   <!-- Features Section -->
   <section class="features-grid">

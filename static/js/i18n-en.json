@@ -355,5 +355,8 @@
   "privacy.section8.title": "8. Updates to this policy",
   "privacy.section8.content": "We may update this Privacy Policy periodically. We recommend checking this page frequently to verify any changes. The date of the last update is indicated at the beginning of the document.",
   "privacy.section9.title": "9. Contact",
-  "privacy.section9.content": "Questions about this policy can be sent to"
+  "privacy.section9.content": "Questions about this policy can be sent to",
+  "footer.privacy": "Privacy Policy",
+  "footer.terms": "Terms of Use",
+  "footer.copyright": "© 2025 FireTools. All rights reserved."
 }

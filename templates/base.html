@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-lang="pt">
+<html lang="en" data-lang="en" class="theme-dark">
   <head>
 {% block meta %}{% endblock %}
 {% set page_meta = meta if meta is defined else None %}
@@ -11,8 +11,8 @@
     <link rel="canonical" href="{{ page_meta.canonical if page_meta and page_meta.canonical else request.url }}" />
     
     <!-- Hreflang for multi-language SEO -->
-    <link rel="alternate" hreflang="pt-BR" href="{{ request.url }}" />
     <link rel="alternate" hreflang="en" href="{{ request.url }}" />
+    <link rel="alternate" hreflang="pt-BR" href="{{ request.url }}" />
     <link rel="alternate" hreflang="x-default" href="{{ request.url }}" />
 
     <!-- Open Graph -->
@@ -40,6 +40,7 @@
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/favicon.png') }}">
     {% block head_extra %}{% endblock %}
     {% block structured_data %}{% endblock %}
+    <script type="text/javascript"> var infolinks_pid = 3441633; var infolinks_wsid = 0; </script> <script type="text/javascript" src="//resources.infolinks.com/js/infolinks_main.js"></script>
   </head>
   <body>
     {% set layout = namespace(show_sidebars=true) %}
@@ -235,43 +236,60 @@
           </li>
       {% endif %}
           <li class="nav-item nav-lang">
-            <button id="language-toggle" class="language-toggle" type="button" aria-label="Toggle language">EN</button>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme" title="Alternar tema">
+              <span class="theme-icon">☀️</span>
+            </button>
+          </li>
+          <li class="nav-item nav-lang">
+            <button id="language-toggle" class="language-toggle" type="button" aria-label="Toggle language">PT</button>
           </li>
         </ul>
       </div>
     </nav>
     <div class="main-layout">
       {% if layout.show_sidebars %}
-      <!-- Anúncio Lateral Esquerdo -->
-      <aside class="sidebar sidebar-left" aria-label="Publicidade lateral">
-        <div class="ad-sidebar">
-          <p class="ad-intro" data-i18n="ad.intro.left">Espaço reservado para anúncios que ajudam a manter a plataforma gratuita.</p>
+      <section class="ad-row ad-row-top" aria-label="Publicidade">
+        <div class="ad-panel">
           {% from 'components/ad_unit.html' import ad_unit %}
           {{ ad_unit('1234567001') }}
         </div>
-      </aside>
+      </section>
       {% endif %}
 
       <!-- Conteúdo Principal -->
-    <main class="container" role="main" aria-live="polite">{% block content %}{% endblock %}</main>
+      <main class="container" role="main" aria-live="polite">
+        {% if layout.show_sidebars %}
+        <div class="ad-horizontal-top">
+          {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+          {{ ad_unit_horizontal('1234567003') }}
+        </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+      </main>
 
       {% if layout.show_sidebars %}
-      <!-- Anúncio Lateral Direito -->
-      <aside class="sidebar sidebar-right" aria-label="Publicidade lateral">
-        <div class="ad-sidebar">
-          <p class="ad-intro" data-i18n="ad.intro.right">Nós investimos em servidores e ferramentas com a ajuda dessas campanhas.</p>
+      <section class="ad-row ad-row-bottom" aria-label="Publicidade">
+        <div class="ad-panel">
           {{ ad_unit('1234567002') }}
         </div>
-      </aside>
+      </section>
       {% endif %}
     </div>
+    
+    {% if layout.show_sidebars %}
+    <div class="ad-horizontal-bottom">
+      {% from 'components/ad_unit.html' import ad_unit_horizontal %}
+      {{ ad_unit_horizontal('1234567004') }}
+    </div>
+    {% endif %}
+    
     <footer class="footer">
       <div class="footer-content">
         <div class="footer-links">
-          <a href="{{ url_for('privacy') }}">Política de Privacidade</a>
-          <a href="{{ url_for('terms') }}">Termos de Uso</a>
+          <a href="{{ url_for('privacy') }}" data-i18n="footer.privacy">Política de Privacidade</a>
+          <a href="{{ url_for('terms') }}" data-i18n="footer.terms">Termos de Uso</a>
         </div>
-        <p>&copy; 2025 FireTools. Todos os direitos reservados.</p>
+        <p data-i18n="footer.copyright">&copy; 2025 FireTools. Todos os direitos reservados.</p>
       </div>
     </footer>
   </body>
@@ -369,5 +387,41 @@
         }
       });
     });
+
+    // Theme Toggle
+    (function() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = themeToggle?.querySelector('.theme-icon');
+      const html = document.documentElement;
+      
+      // Função para aplicar tema
+      function applyTheme(theme) {
+        html.classList.remove('theme-light', 'theme-dark');
+        html.classList.add(theme);
+        localStorage.setItem('firetools-theme', theme);
+        
+        if (themeIcon) {
+          themeIcon.textContent = theme === 'theme-dark' ? '☀️' : '🌙';
+        }
+      }
+      
+      // Carrega tema salvo ou usa preferência do sistema
+      const savedTheme = localStorage.getItem('firetools-theme');
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      } else {
+        // Por padrão, força modo escuro (noturno)
+        applyTheme('theme-dark');
+      }
+      
+      // Toggle ao clicar
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = html.classList.contains('theme-dark') ? 'theme-dark' : 'theme-light';
+          const newTheme = currentTheme === 'theme-light' ? 'theme-dark' : 'theme-light';
+          applyTheme(newTheme);
+        });
+      }
+    })();
   </script>
 </html>
