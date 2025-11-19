@@ -953,6 +953,12 @@ a:hover {
   color: var(--text-light);
 }
 
+.form-hint {
+  margin-top: var(--spacing-xs);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
 /* Drop Area */
 .drop-area {
   border: 2px dashed var(--border-color);

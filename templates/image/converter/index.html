@@ -63,7 +63,7 @@
         icon='',
         title='Arraste suas imagens aqui',
         subtitle='ou clique para selecionar arquivos',
-        file_types='JPG, PNG, WEBP, GIF',
+        file_types='JPG, PNG, WEBP, GIF, HEIC, AVIF, SVG',
         size_hint='Até ' ~ max_file_size_mb ~ 'MB',
         input_name='images',
         accept='image/*',
@@ -90,6 +90,9 @@
           </optgroup>
           {% endfor %}
         </select>
+        <p class="form-hint" data-i18n="image.form.formats_hint">
+          Agora exportamos também AVIF/HEIC, PDF, JP2, ICNS, HDR, SGI, XBM e PNM.
+        </p>
       </div>
 
       <div class="button-group button-group--stretch">

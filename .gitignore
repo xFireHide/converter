@@ -78,3 +78,5 @@ static/doc/pdf/converter/converted/**
 short_curter.db
 /tools/video/downloader
 /templates/video/downloader
+run.sh
+

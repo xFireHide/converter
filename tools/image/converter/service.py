@@ -42,34 +42,41 @@ MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 MAX_IMAGE_PIXELS = 25_000_000
 
 SUPPORTED_INPUT_EXTENSIONS = {
-    "png",
+    "apng",
+    "avif",
+    "bmp",
+    "cur",
+    "dds",
+    "eps",
+    "fli",
+    "flc",
+    "gif",
+    "hdr",
+    "heic",
+    "heif",
+    "icns",
+    "ico",
+    "im",
+    "j2k",
+    "jp2",
     "jpg",
     "jpeg",
     "jfif",
-    "gif",
-    "webp",
-    "bmp",
+    "pbm",
+    "pcd",
+    "pcx",
+    "pgm",
+    "png",
+    "pnm",
+    "psd",
+    "sgi",
+    "svg",
+    "tga",
     "tif",
     "tiff",
-    "ico",
-    "ppm",
-    "pgm",
-    "pbm",
-    "pnm",
-    "svg",
-    "heic",
-    "heif",
-    "avif",
-    "eps",
-    "psd",
-    "jp2",
-    "j2k",
-    "tga",
-    "hdr",
-    "icns",
-    "xpm",
+    "webp",
     "xbm",
-    "pcx",
+    "xpm",
 }
 
 OUTPUT_FORMAT_GROUPS: List[Tuple[str, List[Tuple[str, str]]]] = [
@@ -97,6 +104,10 @@ OUTPUT_FORMAT_GROUPS: List[Tuple[str, List[Tuple[str, str]]]] = [
             ("xpm", "XPM"),
             ("pcx", "PCX"),
             ("eps", "EPS"),
+            ("icns", "ICNS (ícone macOS)"),
+            ("hdr", "HDR (Radiance)"),
+            ("sgi", "SGI (RGB)"),
+            ("xbm", "XBM (bitmap X11)"),
         ],
     ),
     (
@@ -244,6 +255,14 @@ def convert_image(input_path: str | Path, target_format: str) -> str:
                 save_kwargs.update(
                     {"sizes": [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)]}
                 )
+            elif fmt == "icns":
+                pillow_format = "ICNS"
+                ext = "icns"
+                if img.mode != "RGBA":
+                    img = img.convert("RGBA")
+                save_kwargs.update(
+                    {"sizes": [(16, 16), (32, 32), (64, 64), (128, 128), (256, 256)]}
+                )
             elif fmt == "pdf":
                 pillow_format = "PDF"
                 ext = "pdf"
@@ -291,6 +310,23 @@ def convert_image(input_path: str | Path, target_format: str) -> str:
                 pillow_format = "EPS"
                 if img.mode in ("RGBA", "P"):
                     img = img.convert("RGB")
+            elif fmt == "hdr":
+                pillow_format = "HDR"
+                ext = "hdr"
+                if img.mode not in ("RGB", "RGBA"):
+                    img = img.convert("RGB")
+                elif img.mode == "RGBA":
+                    img = img.convert("RGB")
+            elif fmt == "sgi":
+                pillow_format = "SGI"
+                ext = "sgi"
+                if img.mode not in ("RGB", "RGBA"):
+                    img = img.convert("RGB")
+            elif fmt == "xbm":
+                pillow_format = "XBM"
+                ext = "xbm"
+                if img.mode != "1":
+                    img = img.convert("1")
             else:
                 pillow_format = fmt.upper()
 
