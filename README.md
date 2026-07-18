@@ -1,54 +1,44 @@
 # FileConverter
 
-Aplicativo **desktop** (interface gráfica em tkinter) para converter arquivos em
-lote. Inspirado na GUI do projeto *Image-to-SVG*: você adiciona vários arquivos,
-escolhe a pasta de saída e o formato, e a conversão roda em paralelo com barra de
-progresso e log.
+Desktop app (tkinter GUI) for **batch file conversion**. Add multiple files, pick
+the output folder and format — conversion runs in parallel with a progress bar and log.
 
-## Conversores
+## Converters
 
-| Tipo    | Entradas                                   | Saídas                                              |
-|---------|--------------------------------------------|-----------------------------------------------------|
-| Imagem  | PNG, JPG, WEBP, GIF, BMP, TIFF, HEIC, SVG… | PNG, JPG, WEBP, GIF, BMP, TIFF, ICO, PDF, AVIF…     |
-| Áudio   | MP3, WAV, FLAC, AAC, M4A, OGG…             | MP3, AAC, M4A, OGG, OPUS, FLAC, ALAC, WAV, AIFF…    |
-| Vídeo   | MP4, MOV, MKV, AVI, WEBM…                  | MP4, MKV, WEBM, MOV, AVI, HEVC, AV1, ProRes, GIF…   |
-| PDF     | PDF                                        | PNG, JPG, WEBP (uma por página) ou DOCX (Word)      |
+| Type  | Inputs                                     | Outputs                                          |
+|-------|--------------------------------------------|--------------------------------------------------|
+| Image | PNG, JPG, WEBP, GIF, BMP, TIFF, HEIC, SVG… | PNG, JPG, WEBP, GIF, BMP, TIFF, ICO, PDF, AVIF…  |
+| Audio | MP3, WAV, FLAC, AAC, M4A, OGG…             | MP3, AAC, M4A, OGG, OPUS, FLAC, ALAC, WAV, AIFF… |
+| Video | MP4, MOV, MKV, AVI, WEBM…                  | MP4, MKV, WEBM, MOV, AVI, HEVC, AV1, ProRes, GIF…|
+| PDF   | PDF                                        | PNG/JPG/WEBP (one per page) or DOCX              |
 
-## Requisitos
+## Requirements
 
-- Python 3.10+ (com tkinter — já incluso no Python do macOS/Windows oficiais).
-- **ffmpeg** para áudio/vídeo: vem empacotado via `imageio-ffmpeg`; se preferir,
-  instale o do sistema (`brew install ffmpeg`).
+- Python 3.10+ with tkinter (bundled in the official macOS/Windows Python).
+- **ffmpeg** for audio/video: bundled via `imageio-ffmpeg` (or use `brew install ffmpeg`).
 
-## Como rodar
+## Run
 
 ```bash
-./run.sh
+./run.sh        # creates the venv, installs deps, opens the GUI
 ```
 
-O script cria o ambiente virtual, instala as dependências e abre a interface.
-Para rodar manualmente:
+Manually:
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 python gui.py
 ```
 
-### Linha de comando (opcional)
+### CLI (optional)
 
 ```bash
-python cli.py imagem png foto.jpg -o saida/
-python cli.py audio  mp3 musica.flac
-python cli.py video  mp4 clipe.mov -o convertidos/
-python cli.py pdf    docx documento.pdf
+python cli.py image png photo.jpg -o out/
+python cli.py audio mp3 song.flac
+python cli.py video mp4 clip.mov -o converted/
+python cli.py pdf   docx document.pdf
 ```
 
-## Formatos extras de imagem (opcionais)
-
-Descomente em `requirements.txt` e reinstale para habilitar:
-
-- `pillow-heif` → HEIC/HEIF
-- `pillow-avif-plugin` → AVIF
-- `cairosvg` → ler/converter SVG
+Optional image formats — uncomment in `requirements.txt` and reinstall:
+`pillow-heif` (HEIC/HEIF), `pillow-avif-plugin` (AVIF), `cairosvg` (SVG).
