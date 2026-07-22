@@ -1,0 +1,13 @@
+[build]
+  publish = "web"
+
+# Long-cache the heavy vendored libraries (ffmpeg core is ~31 MB)
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"

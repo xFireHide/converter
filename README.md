@@ -1,4 +1,21 @@
-# FileConverter
+# FireConverter
+
+## Web version (Netlify)
+
+A static web version lives in [`web/`](web/) — batch conversion running 100% client-side
+(Canvas for images, pdf.js for PDF, ffmpeg.wasm for audio/video). No server, files never
+leave the browser.
+
+**Deploy to Netlify** — pick one:
+
+- **Git**: push this repo and import it on [app.netlify.com](https://app.netlify.com).
+  `netlify.toml` already sets `publish = "web"`; no build command needed.
+- **Drag & drop**: drop the `web/` folder on https://app.netlify.com/drop.
+- **CLI**: `netlify deploy --prod --dir web`
+
+Run locally: `python3 -m http.server -d web 8000` → http://localhost:8000
+
+## Desktop app
 
 Desktop app (tkinter GUI) for **batch file conversion**. Add multiple files, pick
 the output folder and format — conversion runs in parallel with a progress bar and log.

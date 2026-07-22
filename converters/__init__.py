@@ -1,4 +1,4 @@
-"""Conversores de arquivos do FileConverter.
+"""Conversores de arquivos do FireConverter.
 
 Cada módulo de conversor expõe a mesma interface:
 

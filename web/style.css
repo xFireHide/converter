@@ -1,0 +1,157 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+[hidden] { display: none !important; }
+
+:root {
+  --bg: #0f1117;
+  --panel: #171a23;
+  --panel-2: #1e2230;
+  --border: #2a2f40;
+  --text: #e8eaf0;
+  --muted: #8b91a5;
+  --accent: #4f8cff;
+  --accent-2: #3b6fd4;
+  --ok: #3ecf8e;
+  --err: #ff6b6b;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header { text-align: center; padding: 40px 16px 12px; }
+header h1 { font-size: 2rem; letter-spacing: -0.02em; }
+.tagline { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+
+main { width: min(860px, 94vw); margin: 24px auto; flex: 1; }
+
+#dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  background: var(--panel);
+  padding: 44px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+}
+#dropzone:hover, #dropzone:focus, #dropzone.dragover {
+  border-color: var(--accent);
+  background: var(--panel-2);
+  outline: none;
+}
+.dz-icon { font-size: 2.4rem; display: block; margin-bottom: 10px; }
+.dz-hint { color: var(--muted); font-size: 0.82rem; margin-top: 8px; }
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 18px 0 10px;
+}
+#toolbar label { color: var(--muted); font-size: 0.9rem; }
+.toolbar-actions { display: flex; gap: 8px; }
+
+select {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 0.9rem;
+  margin-left: 6px;
+}
+
+.btn {
+  background: var(--panel-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn:hover { background: var(--border); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn.primary:hover { background: var(--accent-2); }
+.btn.subtle { color: var(--muted); }
+.btn:disabled { opacity: .5; cursor: default; }
+
+#file-list { list-style: none; }
+#file-list li {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  gap: 10px;
+  align-items: center;
+}
+.f-info { min-width: 0; }
+.f-name { font-size: 0.92rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.f-meta { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+.kind-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  padding: 1px 7px;
+  border-radius: 20px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  margin-right: 6px;
+}
+.f-status { font-size: 0.82rem; color: var(--muted); min-width: 90px; text-align: right; }
+.f-status.ok { color: var(--ok); }
+.f-status.err { color: var(--err); }
+
+.progress {
+  grid-column: 1 / -1;
+  height: 4px;
+  background: var(--panel-2);
+  border-radius: 4px;
+  overflow: hidden;
+  display: none;
+}
+.progress.active { display: block; }
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  transition: width .2s;
+}
+
+.dl-link {
+  color: var(--accent);
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+.dl-link:hover { background: var(--accent); color: #fff; }
+.remove-btn {
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 1rem; padding: 4px;
+}
+.remove-btn:hover { color: var(--err); }
+
+.note { color: var(--muted); text-align: center; font-size: 0.85rem; margin-top: 14px; }
+
+footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 26px 16px; }
+
+@media (max-width: 560px) {
+  #file-list li { grid-template-columns: 1fr auto; }
+  .f-status { text-align: left; }
+}

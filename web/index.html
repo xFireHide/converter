@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FireConverter — convert images, audio, video & PDF in your browser</title>
+  <meta name="description" content="Free batch file converter that runs 100% in your browser. Convert images, audio, video and PDF — no upload, files never leave your device.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔄</text></svg>">
+</head>
+<body>
+  <header>
+    <h1>🔄 FireConverter</h1>
+    <p class="tagline">Batch-convert images, audio, video &amp; PDF — 100% in your browser. Files never leave your device.</p>
+  </header>
+
+  <main>
+    <div id="dropzone" tabindex="0">
+      <input type="file" id="file-input" multiple hidden>
+      <div class="dz-inner">
+        <span class="dz-icon">📁</span>
+        <p><strong>Drop files here</strong> or click to browse</p>
+        <p class="dz-hint">Images (PNG, JPG, WEBP, GIF, BMP, SVG…) · Audio (MP3, WAV, FLAC, OGG…) · Video (MP4, MOV, MKV, WEBM…) · PDF</p>
+      </div>
+    </div>
+
+    <div id="toolbar" hidden>
+      <label>Set all to:
+        <select id="master-format"></select>
+      </label>
+      <div class="toolbar-actions">
+        <button id="convert-all" class="btn primary">Convert all</button>
+        <button id="download-all" class="btn" hidden>Download all (.zip)</button>
+        <button id="clear-all" class="btn subtle">Clear</button>
+      </div>
+    </div>
+
+    <ul id="file-list"></ul>
+
+    <p id="ffmpeg-note" class="note" hidden>⏳ Loading media engine (~31 MB, first time only)…</p>
+  </main>
+
+  <footer>
+    <p>Everything runs locally via WebAssembly — nothing is uploaded to any server.</p>
+  </footer>
+
+  <script src="vendor/jszip.min.js"></script>
+  <script src="vendor/pdfjs/pdf.min.js"></script>
+  <script src="vendor/ffmpeg/ffmpeg.js"></script>
+  <script src="vendor/ffmpeg/util.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

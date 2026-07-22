@@ -1,4 +1,4 @@
-"""CLI simples do FileConverter.
+"""CLI simples do FireConverter.
 
 Exemplos:
     python cli.py imagem png foto.jpg -o saida/

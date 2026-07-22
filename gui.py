@@ -1,4 +1,4 @@
-"""Interface gráfica do FileConverter (tkinter).
+"""Interface gráfica do FireConverter (tkinter).
 
 Conversão em lote de imagens, áudio, vídeo e PDF — espelha o estilo da GUI do
 projeto Image-to-SVG: lista de arquivos, pasta de saída, formato, progresso e log.
@@ -25,7 +25,7 @@ def _max_workers(n_files: int) -> int:
 class ConverterGui:
     def __init__(self, root: tk.Tk) -> None:
         self.root = root
-        self.root.title("FileConverter")
+        self.root.title("FireConverter")
         self.root.minsize(560, 480)
 
         self.files: list[Path] = []
